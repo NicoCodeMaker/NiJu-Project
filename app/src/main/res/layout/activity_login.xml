@@ -124,10 +124,10 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="413dp"
-        android:layout_height="136dp"
+        android:layout_width="418dp"
+        android:layout_height="91dp"
         app:srcCompat="@drawable/mark_water"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="593dp" />
+        tools:layout_editor_absoluteX="-7dp"
+        tools:layout_editor_absoluteY="644dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
