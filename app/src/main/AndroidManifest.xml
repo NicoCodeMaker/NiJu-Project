@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Niju_Project">
+        android:theme="@style/Theme.NiJu_Project">
         <activity
             android:name=".SplashActivity"
             android:exported="false" />

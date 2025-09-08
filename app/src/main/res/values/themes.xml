@@ -1,9 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Niju_Project" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
+
+    <!-- Tema base de la aplicación -->
+    <style name="Base.Theme.NiJu_Project" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Aquí puedes personalizar colores -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Niju_Project" parent="Base.Theme.Niju_Project" />
+    <!-- Tema que usarán tus Activities -->
+    <style name="Theme.NiJu_Project" parent="Base.Theme.NiJu_Project" />
+
 </resources>
