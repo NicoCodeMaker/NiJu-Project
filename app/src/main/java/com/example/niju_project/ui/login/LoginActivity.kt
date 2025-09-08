@@ -1,11 +1,13 @@
 package com.example.niju_project.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.niju_project.R   // IMPORTANTE: este debe ser el R de tu proyecto, no android.R
+import com.example.niju_project.MainActivity
+import com.example.niju_project.R
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,7 +26,15 @@ class LoginActivity : AppCompatActivity() {
             if (email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Login con $email", Toast.LENGTH_SHORT).show()
+                // ✅ Aquí va tu validación real
+                if (email == "admin@niju.com" && pass == "1234") {
+                    // Login válido → pasa a MainActivity
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish() // no vuelve al login con "back"
+                } else {
+                    Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
