@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NiJu_Project">
 
-
+        <!-- Pantalla inicial de la app -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -23,77 +23,61 @@
             </intent-filter>
         </activity>
 
+        <!-- Pantalla de login -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login" />
+
+        <!-- Actividad principal (sin ser launcher) -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
 
-        <!-- Actividad principal -->
+        <!-- Otra actividad (sin intent-filter) -->
         <activity
             android:name=".layoutMain"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" />
 
-            <!-- Intent filter para hacer esta la actividad principal -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <!-- Meta-data opcional para splash screen -->
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
-
-        <!-- Actividades adicionales que puedes agregar después -->
-
-        <!-- Actividad de detalles de playa -->
+        <!-- Ejemplo de otras actividades (comentadas, si las necesitas descomenta y usa bien <meta-data>) -->
+        <!--
         <activity
             android:name=".BeachDetailActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
 
-        <!-- Actividad de contextos -->
         <activity
             android:name=".ContextsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
 
-        <!-- Actividad de favoritos -->
         <activity
             android:name=".FavoritesActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
 
-        <!-- Actividad de perfil -->
         <activity
             android:name=".ProfileActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        -->
     </application>
 
 </manifest>

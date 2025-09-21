@@ -10,7 +10,7 @@
     <!-- Header con logo NiJu -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="147dp"
+        android:layout_height="136dp"
         android:layout_marginBottom="32dp"
         android:gravity="center"
         android:orientation="vertical">
@@ -18,8 +18,8 @@
         <!-- Título NiJu -->
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="93dp"
-            android:layout_height="156dp"
+            android:layout_width="86dp"
+            android:layout_height="91dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
             android:layout_weight="1"
@@ -28,53 +28,71 @@
 
     </LinearLayout>
 
+
+
     <!-- Card de la playa -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="12dp"
         android:layout_marginBottom="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#E8F4FD"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_gradient_background">
 
+            <!-- Header del card con pin -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_location_pin"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <!-- Imagen de la playa -->
             <ImageView
                 android:id="@+id/ivBeachImage"
-                android:layout_width="238dp"
-                android:layout_height="178dp"
-                android:layout_marginVertical="10dp"
-                android:layout_marginHorizontal="70dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="10"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/beach_scene"
                 android:scaleType="centerCrop"
-                android:src="@drawable/beach_scene" />
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="16dp" />
 
+            <!-- Sección de título -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:paddingBottom="24dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="Beach"
-                    android:textColor="#2E3A47"
-                    android:textSize="20sp"
+                    android:textColor="#1A1A1A"
+                    android:textSize="30dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="La playa"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="#666666" />
 
             </LinearLayout>
 
@@ -83,19 +101,20 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Botón principal -->
+
+    <!-- Espaciador -->
     <Button
         android:id="@+id/btnStartSession"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background"
+        android:elevation="4dp"
         android:text="Comenzar sesión de hoy"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:background="@drawable/button_background"
-        android:layout_marginBottom="32dp"
-        android:elevation="4dp" />
+        android:textStyle="bold" />
 
-    <!-- Espaciador -->
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -105,58 +124,59 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bg"
+        android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="#FFFFFF"
-        android:elevation="8dp">
+        android:padding="16dp">
 
         <!-- Inicio -->
+
+        <!-- Contextos -->
         <LinearLayout
             android:id="@+id/navHome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="8dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_home_active"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_home_active" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Inicio"
-                android:textSize="12sp"
-                android:textColor="#2196F3" />
+                android:textColor="#2196F3"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
-        <!-- Contextos -->
         <LinearLayout
             android:id="@+id/navContexts"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="8dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_contexts"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_contexts" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Contextos"
-                android:textSize="12sp"
-                android:textColor="#6B7280" />
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -166,22 +186,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="8dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_star"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_star" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Favoritos"
-                android:textSize="12sp"
-                android:textColor="#6B7280" />
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -191,22 +211,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="8dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_profile"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_profile" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Perfil"
-                android:textSize="12sp"
-                android:textColor="#6B7280" />
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
