@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="428dp"
+    android:height="140dp"
+    android:viewportWidth="428"
+    android:viewportHeight="140">
+
+    <!-- Forma principal inferior -->
+    <path
+        android:pathData="M0,140 L428,140 L428,40 Q320,0 214,40 Q107,80 0,40 Z"
+        android:fillColor="#BFDBFE"
+        android:fillAlpha="0.6" />
+
+    <!-- Forma secundaria superpuesta -->
+    <path
+        android:pathData="M0,140 L428,140 L428,60 Q350,20 214,60 Q78,100 0,60 Z"
+        android:fillColor="#DBEAFE"
+        android:fillAlpha="0.8" />
+
+    <!-- Forma terciaria más suave -->
+    <path
+        android:pathData="M0,140 L428,140 L428,80 Q380,40 214,80 Q48,120 0,80 Z"
+        android:fillColor="#F0F9FF"
+        android:fillAlpha="0.9" />
+</vector>

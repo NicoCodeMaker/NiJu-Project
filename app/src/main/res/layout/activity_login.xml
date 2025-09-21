@@ -4,24 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2f2fb"
+    android:background="@drawable/gradient_background"
     tools:context=".ui.login.LoginActivity">
-<ProgressBar
+
+    <!-- Formas decorativas de fondo -->
+    <ImageView
+        android:id="@+id/topShape"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/top_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
         android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Header con título y personaje -->
+
+    <!-- Contenedor principal del formulario con fondo blanco redondeado -->
 
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="355dp"
-        android:layout_height="117dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_height="200dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="52dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,9 +45,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="229dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -39,100 +54,150 @@
                 android:id="@+id/appName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/app_name"
-                android:textColor="#1E3A8A"
-                android:textSize="40sp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="NiJu"
+                android:textColor="#5865F2"
+                android:textSize="96sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/appSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
+                android:fontFamily="@font/roboto_medium"
                 android:text="@string/subtitle"
-                android:textColor="#374151"
-                android:textSize="22sp" />
+                android:textColor="#6B7280"
+                android:textSize="35sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/nino"
             android:layout_width="120dp"
-            android:layout_height="140dp"
+            android:layout_height="176dp"
+            android:layout_marginStart="16dp"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/nino" />
-
-        <!-- Logo al lado derecho -->
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/inputEmail"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/formContainer"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/edittext_background"
-        android:hint="@string/prompt_email"
-        android:inputType="textEmailAddress"
-        android:autofillHints="emailAddress"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
-
-    <EditText
-        android:id="@+id/inputPassword"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/edittext_background"
-        android:hint="@string/prompt_password"
-        android:inputType="textPassword"
-        android:autofillHints="password"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputEmail" />
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#2563EB"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/btn_login"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputPassword" />
-
-    <TextView
-        android:id="@+id/tvForgotPassword"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/forgot_password"
-        android:textColor="#6B7280"
-        android:textSize="14sp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="40dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@id/header">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <!-- Campo Email con estilo mejorado -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/prompt_email"
+                android:textColor="#374151"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/inputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="emailAddress"
+                android:background="@drawable/edittext_rounded_background"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="ejemplo@correo.com"
+                android:inputType="textEmailAddress"
+                android:padding="16dp"
+                android:textColorHint="#9CA3AF"
+                android:textSize="16sp" />
+
+            <!-- Campo Password con estilo mejorado -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/prompt_password"
+                android:textColor="#374151"
+                android:textSize="16sp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <EditText
+                    android:id="@+id/inputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:autofillHints="password"
+                    android:background="@drawable/edittext_rounded_background"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:padding="16dp"
+                    android:paddingEnd="50dp"
+                    android:textColorHint="#9CA3AF"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/passwordToggle"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Toggle password visibility"
+                    android:src="@drawable/ic_eye_off" />
+            </FrameLayout>
+
+            <!-- Botón de login con estilo mejorado -->
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_rounded_background"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/btn_login"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <!-- Enlace de olvido de contraseña -->
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/forgot_password"
+                android:textColor="#6B7280"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Formas decorativas inferiores -->
     <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="0dp"
-        android:layout_height="79dp"
+        android:id="@+id/bottomShape"
+        android:layout_width="398dp"
+        android:layout_height="96dp"
         android:scaleType="fitXY"
-        android:contentDescription="@null"
-        app:srcCompat="@drawable/mark_water"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/bottom_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
