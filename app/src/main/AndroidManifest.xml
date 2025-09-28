@@ -36,7 +36,7 @@
 
         <!-- Otra actividad (sin intent-filter) -->
         <activity
-            android:name=".layoutMain"
+            android:name=".HomeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
 

@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         val btnComenzar = findViewById<Button>(R.id.startButton) // id del botón
         btnComenzar.setOnClickListener {
             // Abrir la otra pantalla
-            val intent = Intent(this, layoutMain::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish() // evita volver atrás al splash
         }
