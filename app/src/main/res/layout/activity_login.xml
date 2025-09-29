@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".LoginActivity">
 
-    <!-- Formas decorativas de fondo -->
     <ImageView
         android:id="@+id/topShape"
         android:layout_width="0dp"
@@ -19,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -27,10 +26,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Header con título y personaje -->
-
-    <!-- Contenedor principal del formulario con fondo blanco redondeado -->
 
     <LinearLayout
         android:id="@+id/header"
@@ -99,7 +94,6 @@
             android:orientation="vertical"
             android:padding="32dp">
 
-            <!-- Campo Email con estilo mejorado -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +104,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/inputEmail"
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginBottom="20dp"
@@ -123,7 +117,6 @@
                 android:textColorHint="#9CA3AF"
                 android:textSize="16sp" />
 
-            <!-- Campo Password con estilo mejorado -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,36 +126,19 @@
                 android:textColor="#374151"
                 android:textSize="16sp" />
 
-            <FrameLayout
+            <EditText
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp">
+                android:layout_height="56dp"
+                android:autofillHints="password"
+                android:background="@drawable/edittext_rounded_background"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="••••••••"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textColorHint="#9CA3AF"
+                android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/inputPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:autofillHints="password"
-                    android:background="@drawable/edittext_rounded_background"
-                    android:fontFamily="@font/roboto_regular"
-                    android:hint="••••••••"
-                    android:inputType="textPassword"
-                    android:padding="16dp"
-                    android:paddingEnd="50dp"
-                    android:textColorHint="#9CA3AF"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:id="@+id/passwordToggle"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="Toggle password visibility"
-                    android:src="@drawable/ic_eye_off" />
-            </FrameLayout>
-
-            <!-- Botón de login con estilo mejorado -->
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
@@ -175,7 +151,18 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
-            <!-- Enlace de olvido de contraseña -->
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_rounded_background"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Registrarse"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
@@ -188,7 +175,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Formas decorativas inferiores -->
     <ImageView
         android:id="@+id/bottomShape"
         android:layout_width="398dp"
@@ -197,7 +183,6 @@
         android:src="@drawable/bottom_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

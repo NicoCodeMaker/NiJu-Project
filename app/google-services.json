@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "353928540025",
+    "project_id": "niju-project",
+    "storage_bucket": "niju-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353928540025:android:f955c9de96bc39ba0889a8",
+        "android_client_info": {
+          "package_name": "com.example.niju_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCojzIS-kCAN-A0r5zUpbZdtFn2Bedz00E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
