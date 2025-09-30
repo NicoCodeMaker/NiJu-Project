@@ -27,6 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- HEADER -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="355dp"
@@ -75,6 +76,7 @@
             app:srcCompat="@drawable/nino" />
     </LinearLayout>
 
+    <!-- FORM -->
     <androidx.cardview.widget.CardView
         android:id="@+id/formContainer"
         android:layout_width="0dp"
@@ -94,6 +96,7 @@
             android:orientation="vertical"
             android:padding="32dp">
 
+            <!-- EMAIL -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,6 +120,7 @@
                 android:textColorHint="#9CA3AF"
                 android:textSize="16sp" />
 
+            <!-- PASSWORD -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,6 +134,7 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:layout_marginBottom="24dp"
                 android:autofillHints="password"
                 android:background="@drawable/edittext_rounded_background"
                 android:fontFamily="@font/roboto_regular"
@@ -139,11 +144,12 @@
                 android:textColorHint="#9CA3AF"
                 android:textSize="16sp" />
 
+            <!-- LOGIN -->
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/button_rounded_background"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/btn_login"
@@ -151,11 +157,12 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
+            <!-- REGISTER -->
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/button_rounded_background"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Registrarse"
@@ -163,6 +170,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
+            <!-- FORGOT PASSWORD -->
             <TextView
                 android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
@@ -175,6 +183,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- BOTTOM DECOR -->
     <ImageView
         android:id="@+id/bottomShape"
         android:layout_width="398dp"
