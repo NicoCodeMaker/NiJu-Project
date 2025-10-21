@@ -1,21 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/option_fav"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:orientation="horizontal"
-    android:padding="14dp"
-    android:background="@drawable/item_bg">
+    android:gravity="center_vertical"
+    android:background="@drawable/option_item_bg"
+    android:layout_marginBottom="10dp"
+    android:paddingHorizontal="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_icon_yellow"
+        android:padding="8dp"
         android:src="@drawable/ic_star"
-        android:tint="#4CAF50"
-        android:layout_marginEnd="12dp"/>
+        app:tint="#FFFFFF" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Favoritos"
+        android:textColor="#333333"
         android:textSize="16sp"
-        android:textColor="#333"/>
+        android:layout_marginStart="10dp" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_arrow_right"
+        app:tint="#999999" />
 </LinearLayout>
