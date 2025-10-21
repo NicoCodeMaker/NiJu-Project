@@ -29,8 +29,7 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
+        targetCompatibility = JavaVersion.VERSION_11    }
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -59,5 +58,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("de.hdodenhof.circleimageview.CircleImageView")
 }

@@ -4,100 +4,110 @@
     android:layout_height="match_parent"
     android:background="#E3F3FF">
 
-    <!-- Tu contenido principal (ScrollView, tarjetas, etc.) -->
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav_bar"
-        android:paddingBottom="80dp">
 
-        <!-- aquí va el contenido -->
-    </ScrollView>
 
-    <!-- Barra inferior fija -->
+    <!-- 🔹 Barra de navegación inferior -->
     <LinearLayout
-        android:id="@+id/bottom_nav_bar"
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_bg"
         android:elevation="8dp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
+        <!-- Inicio -->
         <LinearLayout
+            android:id="@+id/navHome"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_home_active"
-                android:tint="#4CAF50"/>
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_home_active" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Inicio"
-                android:textSize="12sp"
-                android:textColor="#4CAF50"/>
+                android:textColor="#2196F3"
+                android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Contextos -->
         <LinearLayout
+            android:id="@+id/navContexts"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_contexts"
-                android:tint="#9E9E9E"/>
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_contexts" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Contextos"
-                android:textSize="12sp"
-                android:textColor="#9E9E9E"/>
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Favoritos -->
         <LinearLayout
+            android:id="@+id/navFavorites"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_star"
-                android:tint="#9E9E9E"/>
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_star" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Favoritos"
-                android:textSize="12sp"
-                android:textColor="#9E9E9E"/>
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Perfil -->
         <LinearLayout
+            android:id="@+id/navProfile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_profile"
-                android:tint="#9E9E9E"/>
-            <TextView
-                android:text="Perfil"
-                android:textSize="12sp"
-                android:textColor="#9E9E9E"/>
-        </LinearLayout>
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_profile" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perfil"
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
