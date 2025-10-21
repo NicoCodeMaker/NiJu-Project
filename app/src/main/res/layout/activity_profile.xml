@@ -108,17 +108,24 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text="Palabras"
+                            android:text="Palabras\n"
                             android:textAlignment="center"
                             android:textColor="#fff"
                             android:textStyle="bold" />
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentBottom="true"
+                            android:layout_width="53dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
-                            android:layout_margin="8dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="27dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="45dp"
+                            android:layout_marginEnd="31dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="20dp"
                             android:src="@drawable/ic_edit"
                             app:tint="#FFFFFF" />
                     </RelativeLayout>
