@@ -1,73 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
-    android:padding="16dp">
+    android:gravity="center_horizontal"
+    android:background="#FFFFFF"
+    android:padding="24dp"
+    tools:context=".ui.ContextsActivity">
 
-    <!-- Título -->
+    <!-- Logo superior -->
+
+    <ImageView
+        android:id="@+id/logoNiJu"
+        android:layout_width="83dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo_sin" />
+
+    <!-- Título principal -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contextos"
+        android:text="NiJu"
         android:textSize="28sp"
         android:textStyle="bold"
+        android:textColor="#003366"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Subtítulo -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elige un contexto"
+        android:textSize="18sp"
         android:textColor="#1A1A1A"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="24dp" />
 
     <!-- Grid de contextos -->
     <GridLayout
         android:id="@+id/gridContexts"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:columnCount="2"
         android:rowCount="2"
-        android:columnOrderPreserved="false"
         android:alignmentMode="alignMargins"
-        android:rowOrderPreserved="false">
+        android:rowOrderPreserved="false"
+        android:columnOrderPreserved="false"
+        android:layout_marginBottom="32dp">
 
-        <!-- Playa -->
+        <!-- Beach -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="160dp"
-            android:layout_margin="8dp"
             android:layout_columnWeight="1"
+            android:layout_margin="8dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="6dp">
+            app:cardElevation="6dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/card_gradient_background">
+                android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:src="@drawable/beach_scene"
-                    android:layout_marginBottom="8dp"
-                    android:scaleType="centerCrop" />
+                    android:contentDescription="Beach" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Playa"
+                    android:text="Beach"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="#1A1A1A" />
+                    android:textColor="#1A1A1A"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="La playa"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Ciudad -->
+        <!-- Restaurant -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="160dp"
-            android:layout_margin="8dp"
             android:layout_columnWeight="1"
+            android:layout_margin="8dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp">
 
@@ -76,28 +109,229 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/card_gradient_background">
+                android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:src="@drawable/ic_city"
-                    android:layout_marginBottom="8dp"
-                    android:scaleType="centerCrop" />
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/restaurant"
+                    android:contentDescription="Restaurant" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ciudad"
+                    android:text="Restaurant"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="#1A1A1A" />
+                    android:textColor="#1A1A1A"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Restaurante"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Airport -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/airport"
+                    android:contentDescription="Airport" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Airport"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A1A"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aeropuerto"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Supermarket -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/supermarket"
+                    android:contentDescription="Supermarket" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Supermarket"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A1A"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Supermercado"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </GridLayout>
 
-    <!-- Barra inferior de navegación -->
-    <include layout="@layout/bottom_navigation" />
+    <!-- Botón inferior -->
+    <Button
+        android:id="@+id/btnStartSession"
+        android:layout_width="358dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#007BFF"
+        android:paddingVertical="12dp"
+        android:text="Comenzar sesión de hoy"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- 🔹 Barra de navegación inferior -->
+    <LinearLayout
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_bg"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Inicio -->
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_home_active" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicio"
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Contextos -->
+        <LinearLayout
+            android:id="@+id/navContexts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_contexts" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contextos"
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Favoritos -->
+        <LinearLayout
+            android:id="@+id/navFavorites"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_star" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favoritos"
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Perfil -->
+        <LinearLayout
+            android:id="@+id/navProfile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_profile" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perfil"
+                android:textColor="#6B7280"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
