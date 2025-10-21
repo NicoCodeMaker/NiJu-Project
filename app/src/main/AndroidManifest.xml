@@ -40,44 +40,10 @@
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
 
-        <!-- Ejemplo de otras actividades (comentadas, si las necesitas descomenta y usa bien <meta-data>) -->
-        <!--
-        <activity
-            android:name=".BeachDetailActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
         <activity
             android:name=".ContextsActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".FavoritesActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        -->
+            android:exported="true"
+            android:label="Contextos" />
     </application>
 
 </manifest>

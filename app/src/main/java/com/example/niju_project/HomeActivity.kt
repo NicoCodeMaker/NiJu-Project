@@ -6,6 +6,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -106,12 +108,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun navigateToContexts() {
-        showToast("Navegando a Contextos")
-
-        // Ejemplo de navegación
-        // val intent = Intent(this, ContextsActivity::class.java)
-        // startActivity(intent)
+        val intent = Intent(this, ContextsActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
+
 
     private fun navigateToFavorites() {
         showToast("Navegando a Favoritos")
