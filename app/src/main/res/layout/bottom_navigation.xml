@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E3F3FF">
+
+    <!-- Tu contenido principal (ScrollView, tarjetas, etc.) -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav_bar"
+        android:paddingBottom="80dp">
+
+        <!-- aquí va el contenido -->
+    </ScrollView>
+
+    <!-- Barra inferior fija -->
+    <LinearLayout
+        android:id="@+id/bottom_nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_active"
+                android:tint="#4CAF50"/>
+            <TextView
+                android:text="Inicio"
+                android:textSize="12sp"
+                android:textColor="#4CAF50"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_contexts"
+                android:tint="#9E9E9E"/>
+            <TextView
+                android:text="Contextos"
+                android:textSize="12sp"
+                android:textColor="#9E9E9E"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                android:tint="#9E9E9E"/>
+            <TextView
+                android:text="Favoritos"
+                android:textSize="12sp"
+                android:textColor="#9E9E9E"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_profile"
+                android:tint="#9E9E9E"/>
+            <TextView
+                android:text="Perfil"
+                android:textSize="12sp"
+                android:textColor="#9E9E9E"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

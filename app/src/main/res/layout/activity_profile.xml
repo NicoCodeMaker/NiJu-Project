@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E3F3FF">
+
+    <!-- CONTENIDO SCROLLABLE -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_nav"
+        android:paddingBottom="80dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:gravity="center_horizontal">
+
+            <!-- Botón Atrás -->
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_button_bg"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Atrás"
+                android:layout_gravity="start"
+                android:padding="8dp"
+                android:elevation="3dp"/>
+
+            <!-- Fondo circular -->
+            <View
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/circle_background"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"/>
+
+            <!-- Imagen de perfil -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_profile_user"
+                android:layout_gravity="center"
+                android:layout_marginTop="-110dp"
+                android:layout_marginBottom="10dp"
+                tools:ignore="MissingClass" />
+
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/user_name"
+                android:text="Julian Mora"
+                android:textColor="#000"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <!-- Ubicación -->
+            <TextView
+                android:id="@+id/user_location"
+                android:text="Bogotá, Colombia"
+                android:textColor="#555"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Tarjetas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+
+                <!-- Palabras -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#A3D5FF">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Palabras\n00"
+                            android:textAlignment="center"
+                            android:textColor="#fff"
+                            android:textStyle="bold"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_edit"
+                            android:tint="#FFFFFF"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="8dp"/>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Contextos -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#5BB1FF">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Contextos\n00"
+                        android:textAlignment="center"
+                        android:textColor="#fff"
+                        android:textStyle="bold"/>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Plan -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FDBB63">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Plan\nPro"
+                        android:textAlignment="center"
+                        android:textColor="#fff"
+                        android:textStyle="bold"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- Opciones -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <include layout="@layout/item_option_fav"/>
+                <include layout="@layout/item_option_config"/>
+                <include layout="@layout/item_option_logout"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BARRA INFERIOR -->
+    <LinearLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_bg"
+        android:elevation="8dp"
+        android:padding="8dp">
+
+        <!-- Inicio -->
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_active"
+                android:tint="#2196F3" />
+
+            <TextView
+                android:text="Inicio"
+                android:textSize="12sp"
+                android:textColor="#2196F3"/>
+        </LinearLayout>
+
+        <!-- Contextos -->
+        <LinearLayout
+            android:id="@+id/navContexts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_contexts"
+                android:tint="#6B7280"/>
+            <TextView
+                android:text="Contextos"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+        </LinearLayout>
+
+        <!-- Favoritos -->
+        <LinearLayout
+            android:id="@+id/navFavorites"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                android:tint="#6B7280"/>
+            <TextView
+                android:text="Favoritos"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+        </LinearLayout>
+
+        <!-- Perfil -->
+        <LinearLayout
+            android:id="@+id/navProfile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_profile"
+                android:tint="#6B7280"/>
+            <TextView
+                android:text="Perfil"
+                android:textSize="12sp"
+                android:textColor="#6B7280"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
