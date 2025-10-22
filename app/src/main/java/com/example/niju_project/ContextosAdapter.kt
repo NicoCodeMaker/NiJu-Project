@@ -1,22 +1,25 @@
 package com.example.niju_project
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.niju_project.R
+
+data class Contexto(
+    val nombre: String,
+    val icono: Int
+)
 
 class ContextosAdapter(
-    private val contextos: List<Contexto>,
-    private val onClick: (Contexto) -> Unit
+    private val listaContextos: List<Contexto>,
+    private val onContextoClick: (Contexto) -> Unit
 ) : RecyclerView.Adapter<ContextosAdapter.ContextoViewHolder>() {
 
-    private var selectedPosition = RecyclerView.NO_POSITION
-
-    inner class ContextoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvNombre: TextView = itemView.findViewById(R.id.tv_nombre_contexto)
-        val ivIcono: ImageView = itemView.findViewById(R.id.iv_icono_contexto)
+    class ContextoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val icono: ImageView = itemView.findViewById(R.id.iv_restaurante)
+        val nombre: TextView = itemView.findViewById(R.id.tv_restaurante)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContextoViewHolder {
@@ -26,25 +29,16 @@ class ContextosAdapter(
     }
 
     override fun onBindViewHolder(holder: ContextoViewHolder, position: Int) {
-        val contexto = contextos[position]
+        val contexto = listaContextos[position]
+        holder.nombre.text = contexto.nombre
+        holder.icono.setImageResource(contexto.icono)
 
-        holder.tvNombre.text = contexto.nombre
-        holder.ivIcono.setImageResource(contexto.icono)
-
-        // Cambia el fondo si está seleccionado
-        holder.itemView.setBackgroundResource(
-            if (position == selectedPosition) R.drawable.bg_contexto_selected
-            else R.drawable.bg_contexto_default
-        )
-
+        // Evento de clic para cambiar color del borde, progreso, etc.
         holder.itemView.setOnClickListener {
-            val previous = selectedPosition
-            selectedPosition = holder.adapterPosition
-            notifyItemChanged(previous)
-            notifyItemChanged(selectedPosition)
-            onClick(contexto)
+            onContextoClick(contexto)
+            holder.itemView.setBackgroundResource(R.drawable.bg_contexto_selected)
         }
     }
 
-    override fun getItemCount(): Int = contextos.size
+    override fun getItemCount(): Int = listaContextos.size
 }
