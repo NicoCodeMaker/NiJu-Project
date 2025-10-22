@@ -253,9 +253,9 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Favoritos -->
+        <!-- Ruta -->
         <LinearLayout
-            android:id="@+id/navFavorites"
+            android:id="@+id/navRuta"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -266,12 +266,12 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_star" />
+                android:src="@drawable/ic_road" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Favoritos"
+                android:text="Ruta"
                 android:textColor="#6B7280"
                 android:textSize="12sp" />
         </LinearLayout>
