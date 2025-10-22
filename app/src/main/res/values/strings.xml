@@ -29,4 +29,5 @@
     <string name="contexto_icon">Contextual Icon</string>
     <string name="logo" />
     <string name="point1" />
+    <string name="show_password" />
 </resources>

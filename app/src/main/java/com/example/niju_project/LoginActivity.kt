@@ -2,9 +2,11 @@ package com.example.niju_project
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etPassword: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var ivTogglePassword: ImageView
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,22 @@ class LoginActivity : AppCompatActivity() {
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         progressBar = findViewById(R.id.progressBar)
+        ivTogglePassword = findViewById(R.id.ivTogglePassword) // 👈 Añadido
+
+        // 🔹 Mostrar / ocultar contraseña
+        ivTogglePassword.setOnClickListener {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_closed)
+            } else {
+                // Mostrar contraseña
+                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_open)
+            }
+            isPasswordVisible = !isPasswordVisible
+            etPassword.setSelection(etPassword.text.length) // Mantener cursor al final
+        }
 
         // Si ya está logueado, lo mandamos directo al Main
         if (mAuth.currentUser != null) {

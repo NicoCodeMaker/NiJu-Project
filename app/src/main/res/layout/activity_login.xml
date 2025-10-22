@@ -130,19 +130,36 @@
                 android:textColor="#374151"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/etPassword"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginBottom="24dp"
-                android:autofillHints="password"
-                android:background="@drawable/edittext_rounded_background"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="••••••••"
-                android:inputType="textPassword"
-                android:padding="16dp"
-                android:textColorHint="#9CA3AF"
-                android:textSize="16sp" />
+                android:layout_marginBottom="24dp">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints="password"
+                    android:background="@drawable/edittext_rounded_background"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="48dp"
+                    android:textColorHint="#9CA3AF"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/ivTogglePassword"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/show_password"
+                    android:src="@drawable/ic_eye_closed" />
+            </RelativeLayout>
+
 
             <!-- LOGIN -->
             <Button
