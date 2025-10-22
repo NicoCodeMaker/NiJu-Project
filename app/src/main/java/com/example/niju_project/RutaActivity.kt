@@ -2,14 +2,12 @@ package com.example.niju_project
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class ProfileActivity : AppCompatActivity() {
+class RutaActivity : AppCompatActivity() {
 
-    private lateinit var backButton: ImageButton
     private lateinit var navHome: LinearLayout
     private lateinit var navContexts: LinearLayout
     private lateinit var navRuta: LinearLayout
@@ -17,22 +15,13 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_ruta)
 
-        // Inicializar vistas
         initViews()
-
-        // Configurar la navegación inferior
         setupNavigation()
-
-        // Configurar botón atrás
-        backButton.setOnClickListener {
-            finish()
-        }
     }
 
     private fun initViews() {
-        backButton = findViewById(R.id.back_button)
         navHome = findViewById(R.id.navHome)
         navContexts = findViewById(R.id.navContexts)
         navRuta = findViewById(R.id.navRuta)
@@ -51,12 +40,12 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         navRuta.setOnClickListener {
-            startActivity(Intent(this, RutaActivity::class.java))
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            Toast.makeText(this, "Ya estás en tu ruta", Toast.LENGTH_SHORT).show()
         }
 
         navProfile.setOnClickListener {
-            Toast.makeText(this, "Ya estás en Perfil", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ProfileActivity::class.java))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
@@ -66,7 +55,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun highlightCurrentTab() {
-        // Aquí puedes cambiar colores o íconos del bottom navigation
-        // para indicar que "Perfil" está activo
+        // Aquí luego puedes implementar el cambio visual del ícono activo
+        // (por ejemplo, cambiar color o fondo del tab de "Ruta")
     }
 }

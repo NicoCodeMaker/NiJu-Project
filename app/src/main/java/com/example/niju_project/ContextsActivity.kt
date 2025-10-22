@@ -1,57 +1,59 @@
 package com.example.niju_project
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
-
 
 class ContextsActivity : AppCompatActivity() {
-
-    private lateinit var navHome: TextView
-    private lateinit var navContexts: TextView
-    private lateinit var navFavorites: TextView
-    private lateinit var navProfile: TextView
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contexts)
 
-        initViews()
-        setupClickListeners()
-    }
+        // 🔹 Referencias a la barra inferior
+        val navHome = findViewById<LinearLayout>(R.id.navHome)
+        val navContexts = findViewById<LinearLayout>(R.id.navContexts)
+        val navRuta = findViewById<LinearLayout>(R.id.navRuta)
+        val navProfile = findViewById<LinearLayout>(R.id.navProfile)
 
-    private fun initViews() {
-        navHome = findViewById(R.id.navHome)
-        navContexts = findViewById(R.id.navContexts)
-        navFavorites = findViewById(R.id.navFavorites)
-        navProfile = findViewById(R.id.navProfile)
+        // 🔹 Botón principal
+        val btnStartSession = findViewById<Button>(R.id.btnStartSession)
 
-    }
-
-    private fun setupClickListeners() {
+        // 🧭 Navegación inferior
         navHome.setOnClickListener {
-            finish() // vuelve a Home
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            if (this !is HomeActivity) {
+                startActivity(Intent(this, HomeActivity::class.java))
+                overridePendingTransition(0, 0)
+                finish()
+            }
         }
 
         navContexts.setOnClickListener {
-            showToast("Ya estás en Contextos")
+            // Ya estás en ContextsActivity → no hace nada
         }
 
-        navFavorites.setOnClickListener {
-            showToast("Navegando a Favoritos")
+        navRuta.setOnClickListener {
+            if (this !is RutaActivity) {
+                startActivity(Intent(this, RutaActivity::class.java))
+                overridePendingTransition(0, 0)
+                finish()
+            }
         }
 
         navProfile.setOnClickListener {
-            showToast("Navegando a Perfil")
+            if (this !is ProfileActivity) {
+                startActivity(Intent(this, ProfileActivity::class.java))
+                overridePendingTransition(0, 0)
+                finish()
+            }
         }
-    }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        // 🔹 Acción del botón principal
+        btnStartSession.setOnClickListener {
+            // Aquí puedes dirigir a la pantalla de sesión del día (por ejemplo, LessonActivity)
+            val intent = Intent(this, LessonActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E3F3FF">
+    android:background="#E3F3FF"
+    tools:context=".ProfileActivity">
 
+    <!-- 🔹 SCROLL PRINCIPAL -->
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_nav"
+        android:layout_above="@id/bottom_navigation"
         android:paddingBottom="80dp"
-        android:scrollbars="none"
-        tools:ignore="UnknownId">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +72,7 @@
                 android:textStyle="bold"
                 android:gravity="center" />
 
-            <!-- Ubicación -->
+            <!-- Ubicación / Fecha de registro -->
             <TextView
                 android:id="@+id/user_location"
                 android:layout_width="wrap_content"
@@ -82,7 +83,7 @@
                 android:gravity="center"
                 android:layout_marginBottom="16dp" />
 
-            <!-- 🔹 TARJETAS DE PALABRAS, CONTEXTOS Y PLAN 🔹 -->
+            <!-- 🔹 TARJETAS DE ESTADÍSTICAS 🔹 -->
             <LinearLayout
                 android:id="@+id/stats_container"
                 android:layout_width="match_parent"
@@ -111,7 +112,7 @@
                             android:gravity="center"
                             android:text="Palabras\n"
                             android:textAlignment="center"
-                            android:textColor="#fff"
+                            android:textColor="#FFFFFF"
                             android:textStyle="bold" />
 
                         <ImageView
@@ -119,13 +120,9 @@
                             android:layout_height="25dp"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
                             android:layout_marginStart="27dp"
-                            android:layout_marginLeft="8dp"
                             android:layout_marginTop="45dp"
                             android:layout_marginEnd="31dp"
-                            android:layout_marginRight="8dp"
                             android:layout_marginBottom="20dp"
                             android:src="@drawable/ic_edit"
                             app:tint="#FFFFFF" />
@@ -148,7 +145,7 @@
                         android:gravity="center"
                         android:text="Contextos\n00"
                         android:textAlignment="center"
-                        android:textColor="#fff"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
 
@@ -168,7 +165,7 @@
                         android:gravity="center"
                         android:text="Plan\nPro"
                         android:textAlignment="center"
-                        android:textColor="#fff"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -195,108 +192,9 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 🔹 BARRA INFERIOR 🔹 -->
-    <!-- 🔹 Barra de navegación inferior -->
-    <LinearLayout
+    <!-- 🔹 INCLUDE DEL BOTTOM REUTILIZABLE -->
+    <include
         android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/rounded_bg"
-        android:elevation="8dp"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <!-- Inicio -->
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_home_active" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Inicio"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Contextos -->
-        <LinearLayout
-            android:id="@+id/navContexts"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_contexts" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contextos"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Ruta -->
-        <LinearLayout
-            android:id="@+id/navRuta"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_road" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ruta"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Perfil -->
-        <LinearLayout
-            android:id="@+id/navProfile"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_profile" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Perfil"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </LinearLayout>
+        layout="@layout/bottom_navigation"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
