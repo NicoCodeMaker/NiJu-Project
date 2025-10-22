@@ -183,6 +183,14 @@
                 <!-- FAVORITOS -->
                 <include layout="@layout/item_option_fav" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerFavoritos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="16dp" />
+
                 <!-- CONFIGURACIÓN -->
                 <include layout="@layout/item_option_config" />
 
