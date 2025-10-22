@@ -1,83 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA">
+    android:orientation="vertical"
+    android:background="#F5F5F5"
+    tools:context=".ui.RutaActivity">
 
-    <!-- Scroll independiente -->
-    <ScrollView
+    <!-- Contenedor Scrollable -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_ruta"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="80dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:orientation="vertical">
 
-            <!-- Título -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mi Ruta de Aprendizaje"
-                android:textColor="#0D47A1"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Barra de progreso -->
-            <ProgressBar
-                android:id="@+id/learningProgressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:max="100"
-                android:progress="20"
-                android:progressTint="#1565C0"
-                android:backgroundTint="#D6D6D6"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Camino de aprendizaje -->
+            <!-- Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
-                <!-- Ejemplo módulo 1 -->
+                <ImageView
+                    android:id="@+id/logo_abc"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:contentDescription="@string/logo"
+                    android:src="@mipmap/ic_launcher_round" />
+
+                <TextView
+                    android:id="@+id/tv_mi_ruta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Mi Ruta"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <!-- Card progreso -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:strokeColor="@color/grey_200"
+                app:strokeWidth="1dp">
+
                 <LinearLayout
-                    android:id="@+id/module1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_module_default"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_lesson"
-                        android:layout_marginEnd="10dp" />
+                    android:orientation="vertical">
 
                     <TextView
-                        android:text="Módulo 1: Fundamentos"
-                        android:textColor="#000000"
-                        android:textSize="16sp" />
+                        android:id="@+id/tv_progreso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Progreso"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="8dp"
+                        android:progress="40"
+                        app:indicatorColor="@color/green_500"
+                        app:trackColor="@color/grey_200"/>
+
+                    <TextView
+                        android:id="@+id/tv_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="40%"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <!-- Aquí puedes duplicar más módulos -->
-            </LinearLayout>
+            <!-- Contextos -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contextos"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_contextos"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:overScrollMode="never"/>
+
+            <!-- Ruta -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ruta"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:layout_marginTop="12dp"/>
+
+            <FrameLayout
+                android:id="@+id/route_canvas_container"
+                android:layout_width="match_parent"
+                android:layout_height="720dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_module_default"
+                android:clipToPadding="false">
+
+                <LinearLayout
+                    android:id="@+id/points_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="40dp">
+
+                        <ImageView
+                            android:id="@+id/point1_icon"
+                            android:layout_width="97dp"
+                            android:layout_height="105dp"
+                            android:contentDescription="@string/point1"
+                            android:src="@drawable/ic_restaurant" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Contexto de restaurante" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    <!-- Incluye la barra de navegación -->
+    <!-- Bottom Navigation fijo -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <!-- 🔹 BARRA DE NAVEGACIÓN INFERIOR REUTILIZABLE -->
     <include
         android:id="@+id/bottom_navigation"
-        layout="@layout/bottom_navigation" />
-</RelativeLayout>
+        layout="@layout/bottom_navigation"
+        android:layout_alignParentBottom="true" />
+</LinearLayout>

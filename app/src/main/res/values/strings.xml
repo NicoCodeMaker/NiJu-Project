@@ -26,4 +26,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be &gt; 5 characters</string>
     <string name="login_failed">Login failed</string>
+    <string name="contexto_icon">Contextual Icon</string>
+    <string name="logo" />
+    <string name="point1" />
 </resources>
