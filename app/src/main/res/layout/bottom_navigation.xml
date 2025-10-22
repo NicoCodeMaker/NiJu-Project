@@ -1,14 +1,13 @@
-<!-- 🔹 BARRA INFERIOR 🔹 -->
-<!-- 🔹 Barra de navegación inferior -->
-<LinearLayout android:id="@+id/bottom_navigation"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_navigation"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:layout_alignParentBottom="true"
     android:background="@drawable/rounded_bg"
     android:elevation="8dp"
     android:orientation="horizontal"
-    android:padding="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:padding="8dp">
 
     <!-- Inicio -->
     <LinearLayout

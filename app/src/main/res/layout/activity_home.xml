@@ -1,225 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#F5F5F5"
-    android:padding="2dp">
+    tools:context=".HomeActivity">
 
-    <!-- Header con logo NiJu -->
-    <LinearLayout
+    <!-- 🔹 CONTENIDO PRINCIPAL CON SCROLL -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="136dp"
-        android:layout_marginBottom="32dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:background="@drawable/top_shape">
-
-        <!-- Título NiJu -->
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="66dp"
-            android:layout_height="109dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:src="@drawable/logo_niju" />
-
-    </LinearLayout>
-
-
-
-    <!-- Card de la playa -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="12dp"
-        android:layout_marginBottom="24dp">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/card_gradient_background">
+            android:gravity="center_horizontal">
 
-            <!-- Header del card con pin -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"/>
-
-            <!-- Imagen de la playa -->
-            <ImageView
-                android:id="@+id/ivBeachImage"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/beach_scene"
-                android:scaleType="centerCrop"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Sección de título -->
+            <!-- Header con logo NiJu -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="136dp"
+                android:layout_marginBottom="32dp"
                 android:gravity="center"
-                android:paddingHorizontal="24dp"
-                android:paddingBottom="24dp">
+                android:orientation="vertical"
+                android:background="@drawable/top_shape">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="Beach"
-                    android:textColor="#1A1A1A"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="La playa"
-                    android:textSize="14sp"
-                    android:textColor="#666666" />
-
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="66dp"
+                    android:layout_height="109dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo_niju" />
             </LinearLayout>
 
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <!-- Botón principal -->
-
-    <!-- Espaciador -->
-    <Button
-        android:id="@+id/btnStartSession"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/button_background"
-        android:elevation="4dp"
-        android:text="Comenzar sesión de hoy"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- Barra de navegación inferior -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_bg"
-        android:elevation="8dp"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <!-- Inicio -->
-
-        <!-- Contextos -->
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_home_active" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Card de la playa -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Inicio"
-                android:textColor="#2196F3"
-                android:textSize="12sp" />
+                app:cardCornerRadius="20dp"
+                app:cardElevation="12dp"
+                android:layout_marginBottom="24dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_gradient_background">
+
+                    <ImageView
+                        android:id="@+id/ivBeachImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:src="@drawable/beach_scene"
+                        android:scaleType="centerCrop"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingHorizontal="24dp"
+                        android:paddingBottom="24dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Beach"
+                            android:textColor="#1A1A1A"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="La playa"
+                            android:textSize="14sp"
+                            android:textColor="#666666" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Botón principal -->
+            <Button
+                android:id="@+id/btnStartSession"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_background"
+                android:elevation="4dp"
+                android:text="Comenzar sesión de hoy"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/navContexts"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_contexts" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contextos"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <!-- Ruta -->
-        <LinearLayout
-            android:id="@+id/navRuta"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_road" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ruta"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Perfil -->
-        <LinearLayout
-            android:id="@+id/navProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_profile" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Perfil"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</LinearLayout>
+    <!-- 🔹 BARRA DE NAVEGACIÓN INFERIOR REUTILIZABLE -->
+    <include
+        android:id="@+id/bottom_navigation"
+        layout="@layout/bottom_navigation"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

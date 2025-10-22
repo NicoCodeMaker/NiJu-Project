@@ -93,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToMain() {
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
 }
