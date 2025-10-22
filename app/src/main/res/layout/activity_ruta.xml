@@ -118,7 +118,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ruta"
+                android:text="Etapas"
                 android:textStyle="bold"
                 android:textSize="26sp"
                 android:textColor="@color/black"
@@ -139,7 +139,7 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <!-- 🔸 Ejemplo de punto de la ruta -->
+                    <!-- 🔸 Restaurante -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -158,14 +158,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Restaurante"
+                            android:text="Etapa 1"
                             android:textSize="22sp"
                             android:textStyle="bold"
                             android:textColor="@color/black" />
+                        <!-- ⭐ Ícono de favorito -->
+                        <ImageView
+                            android:id="@+id/iv_etapa1"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="80dp"
+                            android:layout_marginEnd="80dp"
+                            android:contentDescription="Marcar favorito"
+                            android:src="@drawable/ic_star"
+                            app:tint="#FFB300" />
+
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
+            <!-- 🔹 Aeropuerto -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -200,15 +213,80 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Aeropuerto"
+                            android:text="Etapa 2"
                             android:textSize="22sp"
                             android:textStyle="bold"
                             android:textColor="@color/black" />
+                        <ImageView
+                            android:id="@+id/iv_etapa2"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="80dp"
+                            android:layout_marginEnd="80dp"
+                            android:contentDescription="Marcar favorito"
+                            android:src="@drawable/ic_star"
+                            app:tint="#FFB300" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <!--Etapa3-->
+            <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            android:backgroundTint="@android:color/white"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:id="@+id/points_container3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- 🔸 Ejemplo de punto de la ruta -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="16dp">
+
+                    <ImageView
+                        android:id="@+id/point3_icon"
+                        android:layout_width="97dp"
+                        android:layout_height="105dp"
+                        android:contentDescription="@string/point1"
+                        android:src="@drawable/supermarket" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Etapa 3"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+                    <ImageView
+                        android:id="@+id/iv_etapa3"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginEnd="80dp"
+                        android:contentDescription="Marcar favorito"
+                        android:src="@drawable/ic_star"
+                        app:tint="#FFB300" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
             <!-- 🔹 BOTÓN PRINCIPAL -->
+
             <Button
                 android:id="@+id/btnIniciarRuta"
                 android:layout_width="match_parent"
