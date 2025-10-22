@@ -1,74 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#F5F5F5"
     tools:context=".RutaActivity">
 
-    <!-- Contenedor Scrollable -->
-    <androidx.core.widget.NestedScrollView
+    <!-- 🔹 CONTENIDO PRINCIPAL CON SCROLL -->
+    <ScrollView
         android:id="@+id/scroll_ruta"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
         android:fillViewport="true"
-        android:clipToPadding="false"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="80dp">
+        android:overScrollMode="never"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-            <!-- Header -->
+            <!-- 🔹 HEADER CURVADO CON LOGO -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="136dp"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:background="@drawable/top_shape">
 
                 <ImageView
                     android:id="@+id/logo_abc"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
+                    android:src="@mipmap/ic_launcher_round"
                     android:contentDescription="@string/logo"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/tv_mi_ruta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
                     android:text="Mi Ruta"
                     android:textSize="26sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
             </LinearLayout>
 
-            <!-- Card progreso -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- 🔹 CARD DE PROGRESO -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="16dp"
-                android:padding="16dp"
-                app:strokeColor="@color/grey_200"
-                app:strokeWidth="1dp">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <TextView
                         android:id="@+id/tv_progreso"
@@ -76,7 +71,8 @@
                         android:layout_height="wrap_content"
                         android:text="Progreso"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progressIndicator"
@@ -85,7 +81,7 @@
                         android:layout_marginTop="8dp"
                         android:progress="40"
                         app:indicatorColor="@color/green_500"
-                        app:trackColor="@color/grey_200"/>
+                        app:trackColor="@color/grey_200" />
 
                     <TextView
                         android:id="@+id/tv_percent"
@@ -93,43 +89,48 @@
                         android:layout_height="wrap_content"
                         android:text="40%"
                         android:textStyle="bold"
-                        android:layout_marginTop="8dp"/>
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/black" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
-            <!-- Contextos -->
+            <!-- 🔹 SECCIÓN DE CONTEXTOS -->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Contextos"
                 android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="20dp"
+                android:paddingStart="4dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvContextos"
                 android:layout_width="match_parent"
-                android:layout_height="96dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="140dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:overScrollMode="never"/>
+                android:overScrollMode="never" />
 
-            <!-- Ruta -->
+            <!-- 🔹 SECCIÓN DE RUTA -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ruta"
                 android:textStyle="bold"
-                android:textSize="40sp"
-                android:layout_marginTop="12dp"/>
+                android:textSize="26sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="12dp" />
 
-            <FrameLayout
-                android:id="@+id/route_canvas_container"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="720dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_module_default"
-                android:clipToPadding="false">
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                android:backgroundTint="@android:color/white"
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:id="@+id/points_container"
@@ -138,14 +139,13 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
+                    <!-- 🔸 Ejemplo de punto de la ruta -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginTop="40dp"
-                        android:background="@color/light_blue">
-
+                        android:layout_marginTop="16dp">
 
                         <ImageView
                             android:id="@+id/point1_icon"
@@ -158,17 +158,73 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Contexto de restaurante"
-                            android:textStyle="bold"/>
+                            android:text="Restaurante"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black" />
                     </LinearLayout>
                 </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+            </androidx.cardview.widget.CardView>
 
-    <!-- Bottom Navigation fijo -->
-    <!-- 🔹 BARRA DE NAVEGACIÓN INFERIOR REUTILIZABLE -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                android:backgroundTint="@android:color/white"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:id="@+id/points_container2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- 🔸 Ejemplo de punto de la ruta -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+                            android:id="@+id/point2_icon"
+                            android:layout_width="97dp"
+                            android:layout_height="105dp"
+                            android:contentDescription="@string/point1"
+                            android:src="@drawable/airport" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Aeropuerto"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 🔹 BOTÓN PRINCIPAL -->
+            <Button
+                android:id="@+id/btnIniciarRuta"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="40dp"
+                android:text="Iniciar recorrido"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:background="@drawable/button_background"
+                android:elevation="4dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 🔹 BARRA DE NAVEGACIÓN INFERIOR -->
     <include
         android:id="@+id/bottom_navigation"
         layout="@layout/bottom_navigation"/>
-</LinearLayout>
+</RelativeLayout>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_context_root"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="10dp"
@@ -10,61 +9,21 @@
     android:layout_marginStart="2dp"
     android:background="@drawable/bg_contexto_default">
 
-    <!--Contexto de restaurante-->
     <ImageView
-        android:id="@+id/iv_restaurante"
+        android:id="@+id/iv_contexto_icono"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_restaurant"
         android:scaleType="centerInside" />
 
     <TextView
-        android:id="@+id/tv_restaurante"
+        android:id="@+id/tv_contexto_nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="restaurante"
+        android:text="Contexto"
         android:textSize="13sp"
         android:textColor="@color/black"
-        android:layout_marginTop="6dp"
-        android:ellipsize="end"
-        android:maxLines="1"/>
-    <!--Contexto de Supermercado-->
-
-    <ImageView
-        android:id="@+id/iv_supermercado"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_supermarket"
-        android:scaleType="centerInside" />
-
-    <TextView
-        android:id="@+id/tv_supermercado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="supermercado"
-        android:textSize="13sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="6dp"
-        android:ellipsize="end"
-        android:maxLines="1"/>
-    <ImageView
-        android:id="@+id/iv_aeropuerto"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_airport"
-        android:scaleType="centerInside" />
-
-    <TextView
-        android:id="@+id/tv_aeropuerto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="aeropuerto"
-        android:textSize="13sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="14dp"
         android:ellipsize="end"
         android:maxLines="1"/>
 </LinearLayout>
