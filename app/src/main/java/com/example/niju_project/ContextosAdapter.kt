@@ -18,8 +18,12 @@ class ContextosAdapter(
 ) : RecyclerView.Adapter<ContextosAdapter.ContextoViewHolder>() {
 
     class ContextoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icono: ImageView = itemView.findViewById(R.id.iv_restaurante)
-        val nombre: TextView = itemView.findViewById(R.id.tv_restaurante)
+        val ivRestaurante: ImageView = itemView.findViewById(R.id.iv_restaurante)
+        val tvRestaurante: TextView = itemView.findViewById(R.id.tv_restaurante)
+        val ivSupermercado: ImageView = itemView.findViewById(R.id.iv_supermercado)
+        val tvSupermercado: TextView = itemView.findViewById(R.id.tv_supermercado)
+        val ivAeropuerto: ImageView = itemView.findViewById(R.id.iv_aeropuerto)
+        val tvAeropuerto: TextView = itemView.findViewById(R.id.tv_aeropuerto)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContextoViewHolder {
@@ -30,14 +34,22 @@ class ContextosAdapter(
 
     override fun onBindViewHolder(holder: ContextoViewHolder, position: Int) {
         val contexto = listaContextos[position]
-        holder.nombre.text = contexto.nombre
-        holder.icono.setImageResource(contexto.icono)
-
-        // Evento de clic para cambiar color del borde, progreso, etc.
-        holder.itemView.setOnClickListener {
-            onContextoClick(contexto)
-            holder.itemView.setBackgroundResource(R.drawable.bg_contexto_selected)
+        // Según el nombre del contexto, mostramos uno u otro grupo
+        when (contexto.nombre.lowercase()) {
+            "restaurante" -> {
+                holder.tvRestaurante.text = contexto.nombre
+                holder.ivRestaurante.setImageResource(contexto.icono)
+            }
+            "supermercado" -> {
+                holder.tvSupermercado.text = contexto.nombre
+                holder.ivSupermercado.setImageResource(contexto.icono)
+            }
+            "aeropuerto" -> {
+                holder.tvAeropuerto.text = contexto.nombre
+                holder.ivAeropuerto.setImageResource(contexto.icono)
+            }
         }
+
     }
 
     override fun getItemCount(): Int = listaContextos.size
