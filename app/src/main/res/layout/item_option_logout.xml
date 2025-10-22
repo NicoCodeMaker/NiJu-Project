@@ -25,10 +25,4 @@
         android:textColor="#333333"
         android:textSize="16sp"
         android:layout_marginStart="10dp" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_arrow_right"
-        app:tint="#999999" />
 </LinearLayout>
