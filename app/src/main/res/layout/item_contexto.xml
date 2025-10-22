@@ -10,12 +10,13 @@
     android:layout_marginStart="2dp"
     android:background="@drawable/bg_contexto_default">
 
+    <!--Contexto de restaurante-->
     <ImageView
         android:id="@+id/iv_restaurante"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/restaurant"
+        android:src="@drawable/ic_restaurant"
         android:scaleType="centerInside" />
 
     <TextView
@@ -23,6 +24,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="restaurante"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+    <!--Contexto de Supermercado-->
+
+    <ImageView
+        android:id="@+id/iv_supermercado"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_supermarket"
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/tv_supermercado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="supermercado"
         android:textSize="13sp"
         android:textColor="@color/black"
         android:layout_marginTop="6dp"

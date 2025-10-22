@@ -22,7 +22,7 @@ class RutaActivity : AppCompatActivity() {
         val listaContextos = listOf(
             Contexto("Restaurante", R.drawable.ic_restaurant),
             Contexto("Supermercado", R.drawable.ic_supermarket),
-            Contexto("Playa", R.drawable.ic_beach)
+            Contexto("aeropuerto", R.drawable.ic_airport)
         )
 
         val adapter = ContextosAdapter(listaContextos) {
