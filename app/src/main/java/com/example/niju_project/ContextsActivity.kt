@@ -17,6 +17,11 @@ class ContextsActivity : AppCompatActivity() {
         val navRuta = findViewById<LinearLayout>(R.id.navRuta)
         val navProfile = findViewById<LinearLayout>(R.id.navProfile)
 
+        updateBottomNavColors(
+            current = navContexts,
+            navHome, navContexts, navRuta, navProfile
+        )
+
         // 🔹 Botón principal
         val btnStartSession = findViewById<Button>(R.id.btnStartSession)
 
@@ -55,5 +60,9 @@ class ContextsActivity : AppCompatActivity() {
             val intent = Intent(this, LessonActivity::class.java)
             startActivity(intent)
         }
+
+
     }
+
+
 }

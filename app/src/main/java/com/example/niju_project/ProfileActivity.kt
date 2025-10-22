@@ -30,6 +30,11 @@ class ProfileActivity : AppCompatActivity() {
         initViews()
         setupNavigation()
 
+        updateBottomNavColors(
+            current = navProfile,
+            navHome, navContexts, navRuta, navProfile
+        )
+
         backButton.setOnClickListener { finish() }
 
         // 🔹 Mostrar el usuario actual

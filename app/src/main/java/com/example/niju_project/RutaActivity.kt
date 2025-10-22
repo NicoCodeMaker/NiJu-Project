@@ -50,6 +50,11 @@ class RutaActivity : AppCompatActivity() {
         binding.rvContextos.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvContextos.adapter = adapter
+
+        updateBottomNavColors(
+            current = navRuta,
+            navHome, navContexts, navRuta, navProfile
+        )
     }
 
     private fun actualizarProgreso(porcentaje: Int) {

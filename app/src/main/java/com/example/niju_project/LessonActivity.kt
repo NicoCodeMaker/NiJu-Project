@@ -18,6 +18,8 @@ class LessonActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.lessonProgress)
         val progressText = findViewById<TextView>(R.id.txtProgress)
 
+
+
         // Simular progreso actual (luego se puede obtener de BD o ViewModel)
         var progress = 40
         progressBar.progress = progress

@@ -14,6 +14,7 @@ class FavoritesActivity : AppCompatActivity() {
     private lateinit var navRuta: LinearLayout
     private lateinit var navProfile: LinearLayout
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
@@ -24,6 +25,7 @@ class FavoritesActivity : AppCompatActivity() {
 
         // Botón atrás
         backButton.setOnClickListener { finish() }
+
     }
 
     private fun initViews() {
@@ -33,6 +35,8 @@ class FavoritesActivity : AppCompatActivity() {
         navRuta = findViewById(R.id.navRuta)
         navProfile = findViewById(R.id.navProfile)
     }
+
+
 
     private fun setupNavigation() {
         navHome.setOnClickListener {

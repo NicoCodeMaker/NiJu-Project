@@ -23,6 +23,11 @@ class HomeActivity : AppCompatActivity() {
 
         initViews()
         setupClickListeners()
+
+        updateBottomNavColors(
+            current = navHome,
+            navHome, navContexts, navRuta, navProfile
+        )
     }
 
     private fun initViews() {
@@ -33,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
         navRuta = findViewById(R.id.navRuta)
         navProfile = findViewById(R.id.navProfile)
     }
+
 
     private fun setupClickListeners() {
         btnStartSession.setOnClickListener {
