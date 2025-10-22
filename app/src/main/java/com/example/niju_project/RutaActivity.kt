@@ -15,14 +15,18 @@ class RutaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRutaBinding
     private lateinit var progressIndicator: LinearProgressIndicator
 
-    // 🔹 Botones de navegación inferior
     private lateinit var navHome: LinearLayout
     private lateinit var navContexts: LinearLayout
     private lateinit var navRuta: LinearLayout
     private lateinit var navProfile: LinearLayout
-
-    // 🔹 Botón de retroceso (opcional)
     private var backButton: ImageButton? = null
+
+    // 🔹 Lista de contextos con su porcentaje fijo
+    private val listaContextos = listOf(
+        Contexto("Restaurante", R.drawable.ic_restaurant, 40),
+        Contexto("Supermercado", R.drawable.ic_supermarket, 30),
+        Contexto("Aeropuerto", R.drawable.ic_airport, 60)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +35,16 @@ class RutaActivity : AppCompatActivity() {
 
         progressIndicator = binding.progressIndicator
 
-        // 🔹 Inicializar Bottom Navigation
+        // 🔹 Inicializar navegación inferior
         navHome = binding.bottomNavigation.navHome
         navContexts = binding.bottomNavigation.navContexts
         navRuta = binding.bottomNavigation.navRuta
         navProfile = binding.bottomNavigation.navProfile
-
         setupNavigation()
 
-        // 🔹 Lista de contextos reales
-        val listaContextos = listOf(
-            Contexto("Restaurante", R.drawable.ic_restaurant),
-            Contexto("Supermercado", R.drawable.ic_supermarket),
-            Contexto("Aeropuerto", R.drawable.ic_airport)
-        )
-
-        val adapter = ContextosAdapter(listaContextos) {
-            actualizarProgreso()
+        // 🔹 Adapter con callback
+        val adapter = ContextosAdapter(listaContextos) { contexto ->
+            actualizarProgreso(contexto.progreso)
         }
 
         binding.rvContextos.layoutManager =
@@ -55,11 +52,9 @@ class RutaActivity : AppCompatActivity() {
         binding.rvContextos.adapter = adapter
     }
 
-    private fun actualizarProgreso() {
-        var progresoActual = progressIndicator.progress
-        if (progresoActual < 100) progresoActual += 20
-        progressIndicator.setProgress(progresoActual, true)
-        binding.tvPercent.text = "$progresoActual%"
+    private fun actualizarProgreso(porcentaje: Int) {
+        progressIndicator.setProgress(porcentaje, true)
+        binding.tvPercent.text = "$porcentaje%"
     }
 
     private fun setupNavigation() {
@@ -89,6 +84,6 @@ class RutaActivity : AppCompatActivity() {
     }
 
     private fun highlightCurrentTab() {
-        // Aquí puedes cambiar el color o ícono activo de la pestaña actual
+        // Aquí puedes resaltar el icono actual si lo deseas
     }
 }

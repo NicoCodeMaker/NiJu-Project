@@ -67,6 +67,11 @@
             android:exported="true"
             android:label="Perfil" />
 
+        <activity
+            android:name=".FavoritesActivity"
+            android:exported="true"
+            android:label="Favoritos" />
+
     </application>
 
 </manifest>

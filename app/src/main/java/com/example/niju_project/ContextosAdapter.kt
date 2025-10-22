@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 // Modelo de datos para cada contexto
 data class Contexto(
     val nombre: String,
-    val icono: Int
+    val icono: Int,
+    val progreso: Int
 )
 
 class ContextosAdapter(

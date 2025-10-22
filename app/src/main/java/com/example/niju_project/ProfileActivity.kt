@@ -20,6 +20,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var userNameTextView: TextView
     private lateinit var userLocationTextView: TextView
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var optionFav: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,14 @@ class ProfileActivity : AppCompatActivity() {
 
         // 🔹 Cerrar sesión
         btnLogout.setOnClickListener { logoutUser() }
+
+        optionFav.setOnClickListener {
+            val intent = Intent(this, FavoritesActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+
+
     }
 
     private fun initViews() {
@@ -47,6 +56,7 @@ class ProfileActivity : AppCompatActivity() {
         btnLogout = findViewById(R.id.btnLogout)
         userNameTextView = findViewById(R.id.user_name)
         userLocationTextView = findViewById(R.id.user_location)
+        optionFav = findViewById(R.id.option_fav)
     }
 
     private fun showUserData() {
@@ -89,6 +99,8 @@ class ProfileActivity : AppCompatActivity() {
             Toast.makeText(this, "Ya estás en Perfil", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
     private fun logoutUser() {
         mAuth.signOut()
