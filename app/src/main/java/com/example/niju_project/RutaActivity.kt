@@ -23,9 +23,9 @@ class RutaActivity : AppCompatActivity() {
 
     // 🔹 Lista de contextos con su porcentaje fijo
     private val listaContextos = listOf(
-        Contexto("Restaurante", R.drawable.ic_restaurant, 40),
-        Contexto("Supermercado", R.drawable.ic_supermarket, 30),
-        Contexto("Aeropuerto", R.drawable.ic_airport, 60)
+        Contexto("Restaurante", R.drawable.restaurant, 40),
+        Contexto("Supermercado", R.drawable.supermarket, 30),
+        Contexto("Aeropuerto", R.drawable.airport, 60)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
