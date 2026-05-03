@@ -43,29 +43,21 @@ android {
 
 dependencies {
     implementation("commons-codec:commons-codec:1.15")
-
     implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.0")
-
     implementation("com.google.zxing:core:3.5.3")
-
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
     // ── Firebase BoM ────────────────────────────────────────────────────────
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-
-    // Firebase Analytics
     implementation("com.google.firebase:firebase-analytics")
-
-    // Firebase Auth
     implementation("com.google.firebase:firebase-auth-ktx")
-
-    // Firestore
     implementation("com.google.firebase:firebase-firestore-ktx")
 
-
-    // ── Google Sign-In ───────────────────────────────────────────────────────
-    // Necesario para signInWithGoogle() en LoginActivity
-    implementation("com.google.android.gms:play-services-auth:21.5.1")
+    // ── Google Sign-In MODERNO (Credential Manager) ──────────────────────────
+    // Reemplaza play-services-auth legacy que falla en Android 14+
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // ── AndroidX / UI ────────────────────────────────────────────────────────
     implementation(libs.androidx.core.ktx)
@@ -78,14 +70,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment)
 
-    // CircleImageView para fotos de perfil
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    // ── Corrutinas y Lifecycle (Fase 1) ──────────────────────────────────────
+    // ── Corrutinas y Lifecycle ────────────────────────────────────────────────
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("com.google.firebase:firebase-auth-ktx")
 
     // ── Tests ─────────────────────────────────────────────────────────────────
     testImplementation(libs.junit)
@@ -93,6 +83,4 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation("org.jboss.aerogear:aerogear-otp-java:1.0.0")
-    implementation("commons-codec:commons-codec:1.15")
-
 }

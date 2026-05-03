@@ -6,6 +6,11 @@
     <!-- Permiso para acceder a la galería de fotos -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
+    <!-- Requerido por Credential Manager para descubrir proveedores de credenciales (Google) -->
+    <queries>
+        <package android:name="com.google.android.gms" />
+    </queries>
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
