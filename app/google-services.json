@@ -12,7 +12,12 @@
           "package_name": "nijuapp.com"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBgH2vhpDn5RH0SQQGRCYtMjZVs2Q5_mLE"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
