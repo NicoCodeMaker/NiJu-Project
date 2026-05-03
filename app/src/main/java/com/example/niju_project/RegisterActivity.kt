@@ -7,6 +7,10 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.niju_project.utils.TOTPHelper
+import com.example.niju_project.data.model.UserModel
+import com.example.niju_project.data.repository.UserRepository
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +29,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var progressBar:       ProgressBar
 
     private lateinit var mAuth: FirebaseAuth
-    private val db = FirebaseFirestore.getInstance()
+    private val userRepository = UserRepository()
     private var isPasswordVisible = false
     private var isConfirmVisible  = false
 
@@ -95,46 +99,45 @@ class RegisterActivity : AppCompatActivity() {
                     return@addOnCompleteListener
                 }
 
-                val uid    = mAuth.currentUser?.uid ?: return@addOnCompleteListener
-                // Generamos el secret TOTP y lo guardamos en Firestore
+                val uid = mAuth.currentUser?.uid ?: return@addOnCompleteListener
                 val secret = TOTPHelper.generateSecretKey()
 
-                val userData = hashMapOf(
-                    "name"             to name,
-                    "email"            to email,
-                    "totpSecret"       to secret,
-                    "twoFactorEnabled" to false      // se activa cuando el usuario confirma el QR
+                // Usamos el modelo y el repositorio (Fase 2)
+                val user = UserModel(
+                    uid = uid,
+                    name = name,
+                    email = email,
+                    totpSecret = secret,
+                    twoFactorEnabled = false
                 )
 
-                db.collection("users").document(uid)
-                    .set(userData)
-                    .addOnSuccessListener {
+                lifecycleScope.launch {
+                    val result = userRepository.upsertUser(user)
+                    
+                    if (result.isSuccess) {
                         // Actualizar displayName en Firebase Auth
                         val profileUpdate = UserProfileChangeRequest.Builder()
                             .setDisplayName(name).build()
+                        
                         mAuth.currentUser?.updateProfile(profileUpdate)
                             ?.addOnCompleteListener {
                                 mAuth.currentUser?.sendEmailVerification()
                                 showLoading(false)
-                                Toast.makeText(
-                                    this,
-                                    "¡Cuenta creada! Configura tu 2FA ahora.",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                // ─── Ir a TwoFactorActivity en modo SETUP ───
-                                val intent = Intent(this, TwoFactorActivity::class.java).apply {
-                                    putExtra("mode",        "setup")
+                                Toast.makeText(this@RegisterActivity, "¡Cuenta creada! Configura tu 2FA.", Toast.LENGTH_LONG).show()
+                                
+                                val intent = Intent(this@RegisterActivity, TwoFactorActivity::class.java).apply {
+                                    putExtra("mode", "setup")
                                     putExtra("totp_secret", secret)
-                                    putExtra("user_email",  email)
+                                    putExtra("user_email", email)
                                 }
                                 startActivity(intent)
                                 finishAffinity()
                             }
-                    }
-                    .addOnFailureListener {
+                    } else {
                         showLoading(false)
-                        Toast.makeText(this, "Error guardando datos: ${it.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@RegisterActivity, "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
                     }
+                }
             }
     }
 
