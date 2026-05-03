@@ -1,6 +1,5 @@
 package com.example.niju_project
 
-import com.example.niju_project.utils.TOTPHelper
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -8,50 +7,33 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
-import java.util.concurrent.TimeUnit
-
-
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
-    // ─── UI refs ────────────────────────────────────────────────────────────
-    private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
+    private lateinit var etEmail:          EditText
+    private lateinit var etPassword:       EditText
     private lateinit var ivTogglePassword: ImageView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var btnLogin: Button
-    private lateinit var btnRegister: Button
-    private lateinit var btnGoogle: Button
-    private lateinit var btnPhone: Button
+    private lateinit var progressBar:      ProgressBar
+    private lateinit var btnLogin:         Button
+    private lateinit var btnRegister:      Button
+    private lateinit var btnGoogle:        Button
+    private lateinit var btnPhone:         Button
     private lateinit var tvForgotPassword: TextView
 
-    // ─── Auth ────────────────────────────────────────────────────────────────
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var mAuth:            FirebaseAuth
+    private lateinit var googleClient:     GoogleSignInClient
     private var isPasswordVisible = false
-
-
 
     companion object {
         private const val RC_SIGN_IN = 9001
         private const val TAG = "LoginActivity"
-
-        // Guarda el verificationId para el flujo de SMS
-        var pendingVerificationId: String? = null
     }
 
-    // ────────────────────────────────────────────────────────────────────────
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -61,17 +43,9 @@ class LoginActivity : AppCompatActivity() {
         bindViews()
         setupListeners()
 
-        val secret = TOTPHelper.generateSecretKey()
-        val code = TOTPHelper.generateCode(secret)
-
-        Log.d("TOTP_TEST", "Secret: $secret")
-        Log.d("TOTP_TEST", "Code: $code")
-
-        // Auto-login si ya hay sesión activa
         if (mAuth.currentUser != null) goToMain()
     }
 
-    // ─── Bind views ─────────────────────────────────────────────────────────
     private fun bindViews() {
         etEmail          = findViewById(R.id.etEmail)
         etPassword       = findViewById(R.id.etPassword)
@@ -84,9 +58,7 @@ class LoginActivity : AppCompatActivity() {
         tvForgotPassword = findViewById(R.id.tvForgotPassword)
     }
 
-    // ─── Listeners ──────────────────────────────────────────────────────────
     private fun setupListeners() {
-        // Toggle contraseña
         ivTogglePassword.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
             etPassword.inputType = if (isPasswordVisible)
@@ -98,144 +70,132 @@ class LoginActivity : AppCompatActivity() {
             )
             etPassword.setSelection(etPassword.text.length)
         }
-
-        btnLogin.setOnClickListener { loginWithEmail() }
-        btnRegister.setOnClickListener { openRegister() }
-        btnGoogle.setOnClickListener { signInWithGoogle() }
-        btnPhone.setOnClickListener { openPhoneAuth() }
+        btnLogin.setOnClickListener         { loginWithEmail() }
+        btnRegister.setOnClickListener      { startActivity(Intent(this, RegisterActivity::class.java)) }
+        btnGoogle.setOnClickListener        { signInWithGoogle() }
+        btnPhone.setOnClickListener         { startActivity(Intent(this, PhoneAuthActivity::class.java)) }
         tvForgotPassword.setOnClickListener { sendPasswordReset() }
     }
 
-    // ─── Email / Password ────────────────────────────────────────────────────
+    // ── Email / Password ─────────────────────────────────────────────────────
     private fun loginWithEmail() {
         val email    = etEmail.text.toString().trim()
         val password = etPassword.text.toString().trim()
-
-        if (!validateInputs(email, password)) return
+        if (!validate(email, password)) return
         showLoading(true)
 
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                showLoading(false)
                 if (task.isSuccessful) {
-                    val user = mAuth.currentUser
-                    // Si el usuario tiene 2FA habilitado (flag en SharedPreferences),
-                    // redirigir a TwoFactorActivity; de lo contrario ir al Home.
-                    val prefs = getSharedPreferences("niju_prefs", MODE_PRIVATE)
-                    val twoFaEnabled = prefs.getBoolean("2fa_enabled_${user?.uid}", false)
-                    if (twoFaEnabled) {
-                        openTwoFactor(user?.email ?: "")
-                    } else {
-                        goToMain()
-                    }
+                    checkTwoFactorAndProceed()
                 } else {
-                    showError("Error: ${task.exception?.message}")
+                    showLoading(false)
+                    toast("Error: ${task.exception?.message}")
                 }
             }
     }
 
-    // ─── Google Sign-In ──────────────────────────────────────────────────────
+    /**
+     * Consulta Firestore para ver si el usuario tiene 2FA activo.
+     * Si SÍ  → recupera el secret y abre TwoFactorActivity en modo "verify"
+     * Si NO  → va directo al Home
+     */
+    private fun checkTwoFactorAndProceed() {
+        val uid = mAuth.currentUser?.uid ?: run { showLoading(false); return }
+
+        FirebaseFirestore.getInstance()
+            .collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+                showLoading(false)
+                val twoFaEnabled = doc.getBoolean("twoFactorEnabled") ?: false
+                val totpSecret   = doc.getString("totpSecret") ?: ""
+
+                if (twoFaEnabled && totpSecret.isNotEmpty()) {
+                    // Abre 2FA en modo VERIFY con el secret real
+                    val intent = Intent(this, TwoFactorActivity::class.java).apply {
+                        putExtra("mode",         "verify")
+                        putExtra("totp_secret",  totpSecret)
+                        putExtra("user_email",   mAuth.currentUser?.email ?: "")
+                    }
+                    startActivity(intent)
+                    finish()
+                } else {
+                    goToMain()
+                }
+            }
+            .addOnFailureListener {
+                showLoading(false)
+                // Si Firestore falla, igual dejamos entrar (degradado)
+                Log.w(TAG, "No se pudo leer Firestore: ${it.message}")
+                goToMain()
+            }
+    }
+
+    // ── Google Sign-In ───────────────────────────────────────────────────────
     private fun setupGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id)) // desde google-services.json
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleClient = GoogleSignIn.getClient(this, gso)
     }
 
     private fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
         @Suppress("DEPRECATION")
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(googleClient.signInIntent, RC_SIGN_IN)
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account.idToken!!)
+                val account = GoogleSignIn
+                    .getSignedInAccountFromIntent(data)
+                    .getResult(ApiException::class.java)
+                showLoading(true)
+                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) checkTwoFactorAndProceed()
+                        else { showLoading(false); toast("Google Sign-In fallido") }
+                    }
             } catch (e: ApiException) {
-                Log.w(TAG, "Google sign in failed", e)
-                showError("Google Sign-In falló: ${e.statusCode}")
+                toast("Error Google: ${e.statusCode}")
             }
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        showLoading(true)
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                showLoading(false)
-                if (task.isSuccessful) {
-                    goToMain()
-                } else {
-                    showError("Autenticación con Google fallida")
-                }
-            }
-    }
-
-    // ─── Phone Auth (abre PhoneAuthActivity) ────────────────────────────────
-    private fun openPhoneAuth() {
-        startActivity(Intent(this, PhoneAuthActivity::class.java))
-    }
-
-    // ─── Recuperar contraseña ────────────────────────────────────────────────
+    // ── Recuperar contraseña ─────────────────────────────────────────────────
     private fun sendPasswordReset() {
         val email = etEmail.text.toString().trim()
-        if (email.isEmpty()) {
-            etEmail.error = "Ingrese su correo primero"
-            return
+        if (email.isEmpty()) { etEmail.error = "Ingresa tu correo primero"; return }
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) toast("Correo de recuperación enviado")
+            else toast("Error: ${task.exception?.message}")
         }
-        mAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Correo de recuperación enviado", Toast.LENGTH_LONG).show()
-                } else {
-                    showError("Error: ${task.exception?.message}")
-                }
-            }
     }
 
-    // ─── Navegar a registro ──────────────────────────────────────────────────
-    private fun openRegister() {
-        startActivity(Intent(this, RegisterActivity::class.java))
-    }
-
-    // ─── Navegar a 2FA ───────────────────────────────────────────────────────
-    private fun openTwoFactor(email: String) {
-        val intent = Intent(this, TwoFactorActivity::class.java)
-        intent.putExtra("user_email", email)
-        startActivity(intent)
-    }
-
-    // ─── Validaciones ────────────────────────────────────────────────────────
-    private fun validateInputs(email: String, password: String): Boolean {
-        if (email.isEmpty()) { etEmail.error = "Ingrese un correo"; return false }
+    // ── Validación ───────────────────────────────────────────────────────────
+    private fun validate(email: String, password: String): Boolean {
+        if (email.isEmpty()) { etEmail.error = "Ingresa un correo"; return false }
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.error = "Correo inválido"; return false
-        }
-        if (password.isEmpty()) { etPassword.error = "Ingrese una contraseña"; return false }
-        if (password.length < 6) {
-            etPassword.error = "Mínimo 6 caracteres"; return false
-        }
+            etEmail.error = "Correo inválido"; return false }
+        if (password.isEmpty()) { etPassword.error = "Ingresa una contraseña"; return false }
+        if (password.length < 6) { etPassword.error = "Mínimo 6 caracteres"; return false }
         return true
     }
 
-    // ─── Helpers ─────────────────────────────────────────────────────────────
+    // ── Helpers ──────────────────────────────────────────────────────────────
     private fun showLoading(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
-        btnLogin.isEnabled    = !show
-        btnGoogle.isEnabled   = !show
-        btnPhone.isEnabled    = !show
+        btnLogin.isEnabled     = !show
+        btnGoogle.isEnabled    = !show
+        btnPhone.isEnabled     = !show
     }
 
-    private fun showError(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
+    private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 
     private fun goToMain() {
         startActivity(Intent(this, HomeActivity::class.java))

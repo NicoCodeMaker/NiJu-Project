@@ -8,6 +8,7 @@
     android:background="@drawable/gradient_background"
     tools:context=".TwoFactorActivity">
 
+    <!-- Forma decorativa superior -->
     <ImageView
         android:id="@+id/topShape"
         android:layout_width="0dp"
@@ -18,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- ProgressBar global (fetching secret) -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -28,123 +30,216 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
+    <!-- ══ TARJETA PRINCIPAL ══════════════════════════════════════════════ -->
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="28dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="10dp"
-        app:cardBackgroundColor="@android:color/white"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="32dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="32dp">
+            app:cardCornerRadius="24dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="@android:color/white">
 
-            <!-- Icono de escudo -->
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginBottom="20dp"
-                android:contentDescription="2FA"
-                android:src="@drawable/ic_shield"
-                app:tint="#5865F2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Verificación en 2 pasos"
-                android:textColor="#1F2937"
-                android:textSize="20sp" />
-
-            <!-- Descripción dinámica (correo del usuario) -->
-            <TextView
-                android:id="@+id/tvDescription"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="Ingresa el código de 6 dígitos enviado a tu correo"
-                android:textColor="#6B7280"
-                android:textSize="14sp" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="28dp">
 
-            <ImageView
-                android:id="@+id/ivQr"
-                android:layout_width="220dp"
-                android:layout_height="220dp"
-                android:layout_marginBottom="20dp"
-                android:contentDescription="QR Code"/>
+                <!-- Icono de escudo -->
+                <ImageView
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="2FA"
+                    android:src="@drawable/ic_shield"
+                    app:tint="#5865F2" />
 
-            <!-- Campo OTP -->
-            <EditText
-                android:id="@+id/etCode"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/edittext_rounded_background"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center"
-                android:hint="• • • • • •"
-                android:inputType="numberDecimal"
-                android:maxLength="6"
-                android:textColorHint="#D1D5DB"
-                android:textSize="28sp"
-                android:letterSpacing="0.3" />
+                <!-- Título dinámico -->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="Verificación en 2 pasos"
+                    android:textColor="#1F2937"
+                    android:textSize="20sp" />
 
-            <!-- Contador de tiempo -->
-            <TextView
-                android:id="@+id/tvTimer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="El código expira en 120s"
-                android:textColor="#9CA3AF"
-                android:textSize="13sp" />
+                <!-- Descripción dinámica -->
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="Ingresa el código de tu app autenticadora"
+                    android:textColor="#6B7280"
+                    android:textSize="14sp" />
 
-            <!-- Botón verificar -->
-            <Button
-                android:id="@+id/btnVerify"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/button_rounded_background"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Verificar código"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                <!-- ══ SECCIÓN SETUP: QR + Secret ══════════════════════════ -->
+                <LinearLayout
+                    android:id="@+id/layoutSetup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-            <!-- Reenviar código -->
-            <Button
-                android:id="@+id/btnResend"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/button_outline_background"
-                android:enabled="false"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Reenviar código"
-                android:textAllCaps="false"
-                android:textColor="#5865F2"
-                android:textSize="15sp" />
+                    <!-- QR Code -->
+                    <ImageView
+                        android:id="@+id/ivQr"
+                        android:layout_width="220dp"
+                        android:layout_height="220dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="#F9FAFB"
+                        android:contentDescription="QR TOTP"
+                        android:padding="8dp" />
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                    <!-- Entrada manual: label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="¿No puedes escanear? Ingresa este código manualmente:"
+                        android:textColor="#6B7280"
+                        android:textSize="12sp" />
 
+                    <!-- Secret en texto -->
+                    <TextView
+                        android:id="@+id/tvSecret"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="#F3F4F6"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="XXXX XXXX XXXX XXXX"
+                        android:textColor="#1F2937"
+                        android:textIsSelectable="true"
+                        android:textSize="16sp" />
+
+                    <!-- Copiar secret -->
+                    <Button
+                        android:id="@+id/btnCopySecret"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_outline_background"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingHorizontal="20dp"
+                        android:text="Copiar código secreto"
+                        android:textAllCaps="false"
+                        android:textColor="#5865F2"
+                        android:textSize="13sp" />
+
+                    <!-- Separador -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="#E5E7EB" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="Ahora ingresa el código que muestra tu app para confirmar:"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <!-- ══ SECCIÓN VERIFY: solo el hint ═══════════════════════ -->
+                <LinearLayout
+                    android:id="@+id/layoutVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <!-- Imagen ilustrativa del teléfono con authenticator -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:background="#EEF2FF"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:text="📱  Abre Google Authenticator o Microsoft Authenticator y busca NiJu"
+                        android:textColor="#4338CA"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <!-- ══ CAMPO OTP (compartido) ══════════════════════════════ -->
+                <EditText
+                    android:id="@+id/etCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edittext_rounded_background"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:hint="● ● ● ● ● ●"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:textColorHint="#D1D5DB"
+                    android:textSize="30sp"
+                    android:letterSpacing="0.25" />
+
+                <!-- Timer (solo visible en modo verify) -->
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Código válido por 30s"
+                    android:textColor="#9CA3AF"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
+                <!-- Botón verificar / confirmar -->
+                <Button
+                    android:id="@+id/btnVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/button_rounded_background"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Verificar"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+    <!-- Forma decorativa inferior -->
     <ImageView
         android:id="@+id/bottomShape"
         android:layout_width="0dp"
-        android:layout_height="96dp"
+        android:layout_height="80dp"
         android:scaleType="fitXY"
         android:src="@drawable/bottom_shape"
         app:layout_constraintBottom_toBottomOf="parent"
