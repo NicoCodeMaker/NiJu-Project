@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import android.widget.ScrollView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +25,7 @@ class PracticeActivity : AppCompatActivity() {
     private lateinit var btnOption3: Button
     private lateinit var btnNext: Button
     private lateinit var progressBar: ProgressBar
-    private lateinit var layoutContent: LinearLayout
+    private lateinit var layoutContent: ScrollView
 
     private var selectedAnswer = ""
     private lateinit var optionButtons: List<Button>

@@ -71,6 +71,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, PracticeActivity::class.java))
         }
 
+        navHome.setOnClickListener {
+            // Ya estamos en Home, no hacer nada
+        }
+
         navContexts.setOnClickListener {
             startActivity(Intent(this, ContextsActivity::class.java))
             finish()
@@ -83,8 +87,14 @@ class HomeActivity : AppCompatActivity() {
 
         navProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
-            finish()
+            // No llamar finish() para mantener la pila de navegación correcta
         }
+
+        // Resaltar ícono activo
+        updateBottomNavColors(
+            current = navHome,
+            navHome, navContexts, navRuta, navProfile
+        )
     }
 
     override fun onResume() {

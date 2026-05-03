@@ -71,6 +71,40 @@ class ProfileActivity : AppCompatActivity() {
                 })
             }
         }
+
+        // Opción Favoritos
+        findViewById<LinearLayout>(R.id.option_fav).setOnClickListener {
+            startActivity(Intent(this, FavoritesActivity::class.java))
+        }
+
+        // Opción Configuración
+        findViewById<LinearLayout>(R.id.option_config).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        // Bottom navigation
+        val navHome     = findViewById<LinearLayout>(R.id.navHome)
+        val navContexts = findViewById<LinearLayout>(R.id.navContexts)
+        val navRuta     = findViewById<LinearLayout>(R.id.navRuta)
+
+        navHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            })
+        }
+        navContexts.setOnClickListener {
+            startActivity(Intent(this, ContextsActivity::class.java))
+            finish()
+        }
+        navRuta.setOnClickListener {
+            startActivity(Intent(this, RutaActivity::class.java))
+            finish()
+        }
+        // navProfile ya está activo; resaltar icono actual
+        updateBottomNavColors(
+            current = findViewById(R.id.navProfile),
+            navHome, navContexts, navRuta, findViewById(R.id.navProfile)
+        )
     }
 
     private fun observeViewModel() {
@@ -108,6 +142,10 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadUserProfile()
+        // El ViewModel carga el perfil en init{} y se mantiene durante el ciclo de vida.
+        // Solo recargamos si el estado actual es Error para permitir reintento.
+        if (viewModel.uiState.value is ProfileUiState.Error) {
+            viewModel.loadUserProfile()
+        }
     }
 }

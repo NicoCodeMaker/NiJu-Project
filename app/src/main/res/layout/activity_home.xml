@@ -10,7 +10,7 @@
     <!-- SCROLL PRINCIPAL -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="821dp"
+        android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"
         android:fillViewport="true"
         android:padding="6dp"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="-30dp"
+                android:layout_marginTop="12dp"
                 android:paddingHorizontal="24dp">
 
                 <!-- Streak Card -->
