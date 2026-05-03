@@ -12,6 +12,7 @@ import com.example.niju_project.ui.profile.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import androidx.core.content.ContextCompat
+import de.hdodenhof.circleimageview.CircleImageView
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -23,6 +24,12 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvStreak: TextView
     private lateinit var tvXp: TextView
     private lateinit var tvLevel: TextView
+    private lateinit var tvWordsCount: TextView
+    private lateinit var tvContextsCount: TextView
+    private lateinit var tvPlanName: TextView
+    private lateinit var tvDailyGoalProgress: TextView
+    private lateinit var progressDailyGoal: ProgressBar
+    private lateinit var profileImage: CircleImageView
     private lateinit var btnLogout: LinearLayout
     private lateinit var optionSetup2FA: LinearLayout
     private lateinit var progressBar: ProgressBar
@@ -37,17 +44,22 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        userNameTextView  = findViewById(R.id.user_name)
-        userEmailTextView = findViewById(R.id.user_location)
-        tv2FAStatus       = findViewById(R.id.tv2fa_status)
-        btnLogout         = findViewById(R.id.btnLogout)
-        optionSetup2FA    = findViewById(R.id.option_setup_2fa)
-        progressBar       = findViewById(R.id.progressBar)
+        userNameTextView   = findViewById(R.id.user_name)
+        userEmailTextView  = findViewById(R.id.user_location)
+        tv2FAStatus        = findViewById(R.id.tv2fa_status)
+        btnLogout          = findViewById(R.id.btnLogout)
+        optionSetup2FA     = findViewById(R.id.option_setup_2fa)
+        progressBar        = findViewById(R.id.progressBar)
+        profileImage       = findViewById(R.id.profile_image)
 
-        // 🟡 FIX: campos gamificación — si no existen en el layout se ignoran con seguridad
-        tvStreak = findViewById<TextView?>(R.id.tvStreak) ?: TextView(this)
-        tvXp     = findViewById<TextView?>(R.id.tvXP)     ?: TextView(this)
-        tvLevel  = findViewById<TextView?>(R.id.tvLevel)  ?: TextView(this)
+        tvStreak           = findViewById<TextView?>(R.id.tvStreak) ?: TextView(this)
+        tvXp               = findViewById<TextView?>(R.id.tvXP) ?: TextView(this)
+        tvLevel            = findViewById<TextView?>(R.id.tvLevel) ?: TextView(this)
+        tvWordsCount       = findViewById<TextView?>(R.id.tvWordsCount) ?: TextView(this)
+        tvContextsCount    = findViewById<TextView?>(R.id.tvContextsCount) ?: TextView(this)
+        tvPlanName         = findViewById<TextView?>(R.id.tvPlanName) ?: TextView(this)
+        tvDailyGoalProgress = findViewById<TextView?>(R.id.tvDailyGoalProgress) ?: TextView(this)
+        progressDailyGoal  = findViewById<ProgressBar?>(R.id.progressDailyGoal) ?: ProgressBar(this)
     }
 
     private fun setupListeners() {
@@ -72,12 +84,10 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
-        // Opción Favoritos
         findViewById<LinearLayout>(R.id.option_fav).setOnClickListener {
             startActivity(Intent(this, FavoritesActivity::class.java))
         }
 
-        // Opción Configuración
         findViewById<LinearLayout>(R.id.option_config).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
@@ -100,7 +110,6 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, RutaActivity::class.java))
             finish()
         }
-        // navProfile ya está activo; resaltar icono actual
         updateBottomNavColors(
             current = findViewById(R.id.navProfile),
             navHome, navContexts, navRuta, findViewById(R.id.navProfile)
@@ -115,21 +124,57 @@ class ProfileActivity : AppCompatActivity() {
                     is ProfileUiState.Success -> {
                         progressBar.visibility = View.GONE
                         val user = state.user
-                        userNameTextView.text  = user.name ?: "Usuario"
-                        userEmailTextView.text = user.email ?: "Sin email"
 
-                        // 🟡 FIX: mostrar datos de gamificación
+                        // Datos básicos
+                        userNameTextView.text  = user.name.ifBlank { "Usuario" }
+                        userEmailTextView.text = "Registro: ${user.email}"
+
+                        // Gamificación (pill superior)
                         tvStreak.text = "🔥 ${user.streak} días"
                         tvXp.text     = "⭐ ${user.xp} XP"
-                        tvLevel.text  = "Nivel ${user.level}"
+                        tvLevel.text  = "🏅 Nivel ${user.level}"
 
-                        tv2FAStatus.text = if (user.twoFactorEnabled) "2FA: Activo ✓" else "2FA: Inactivo"
+                        // Tarjetas de estadísticas reales
+                        tvWordsCount.text    = user.xp.toString()          // XP como proxy de palabras aprendidas
+                        tvContextsCount.text = user.level.toString()       // Nivel como contextos completados
+                        tvPlanName.text      = if (user.xp >= 5000) "Pro" else "Free"
+
+                        // Meta diaria
+                        val goal    = if (user.dailyGoal > 0) user.dailyGoal else 50
+                        val todayXp = (user.xp % goal).coerceAtMost(goal)
+                        val pct     = ((todayXp.toFloat() / goal) * 100).toInt().coerceIn(0, 100)
+                        tvDailyGoalProgress.text = "$todayXp / $goal XP"
+                        progressDailyGoal.progress = pct
+
+                        // 2FA
+                        tv2FAStatus.text = if (user.twoFactorEnabled) "Activo ✓" else "Inactivo"
                         tv2FAStatus.setTextColor(
                             if (user.twoFactorEnabled)
                                 ContextCompat.getColor(this@ProfileActivity, android.R.color.holo_green_dark)
                             else
                                 ContextCompat.getColor(this@ProfileActivity, android.R.color.holo_orange_dark)
                         )
+
+                        // Imagen de perfil
+                        val photoUrl = user.photoUrl
+                        if (!photoUrl.isNullOrBlank()) {
+                            // Si tienes Glide: Glide.with(this@ProfileActivity).load(photoUrl).into(profileImage)
+                            // Si tienes Picasso: Picasso.get().load(photoUrl).into(profileImage)
+                            // Por ahora usamos el icono por defecto si no hay librería configurada
+                            try {
+                                val glideClass = Class.forName("com.bumptech.glide.Glide")
+                                val withMethod = glideClass.getMethod("with", android.content.Context::class.java)
+                                val requestManager = withMethod.invoke(null, this@ProfileActivity)
+                                val loadMethod = requestManager.javaClass.getMethod("load", String::class.java)
+                                val requestBuilder = loadMethod.invoke(requestManager, photoUrl)
+                                val intoMethod = requestBuilder.javaClass.getMethod("into", android.widget.ImageView::class.java)
+                                intoMethod.invoke(requestBuilder, profileImage)
+                            } catch (e: Exception) {
+                                profileImage.setImageResource(R.drawable.ic_profile_user)
+                            }
+                        } else {
+                            profileImage.setImageResource(R.drawable.ic_profile_user)
+                        }
                     }
                     is ProfileUiState.Error -> {
                         progressBar.visibility = View.GONE
@@ -142,8 +187,6 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // El ViewModel carga el perfil en init{} y se mantiene durante el ciclo de vida.
-        // Solo recargamos si el estado actual es Error para permitir reintento.
         if (viewModel.uiState.value is ProfileUiState.Error) {
             viewModel.loadUserProfile()
         }

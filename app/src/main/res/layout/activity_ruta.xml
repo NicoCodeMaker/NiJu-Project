@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@drawable/background_gradient"
     tools:context=".RutaActivity">
 
-    <!-- 🔹 CONTENIDO PRINCIPAL CON SCROLL -->
+    <!-- SCROLL PRINCIPAL -->
     <ScrollView
         android:id="@+id/scroll_ruta"
         android:layout_width="match_parent"
@@ -15,49 +15,63 @@
         android:layout_above="@id/bottom_navigation"
         android:fillViewport="true"
         android:overScrollMode="never"
-        android:padding="16dp">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:orientation="vertical">
 
-            <!-- 🔹 HEADER CURVADO CON LOGO -->
-            <LinearLayout
+            <!-- ══════════ HEADER WAVE ══════════ -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="136dp"
-                android:layout_marginBottom="32dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:background="@drawable/top_shape">
+                android:layout_height="190dp"
+                android:background="@drawable/top_wave_shape">
 
                 <ImageView
                     android:id="@+id/logo_abc"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:src="@mipmap/ic_launcher_round"
-                    android:contentDescription="@string/logo"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_width="88dp"
+                    android:layout_height="78dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/logo_niju"
+                    android:contentDescription="@string/logo" />
 
                 <TextView
                     android:id="@+id/tv_mi_ruta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/logo_abc"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
                     android:text="Mi Ruta"
-                    android:textSize="26sp"
+                    android:textColor="#1A2340"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+                    android:fontFamily="sans-serif-medium" />
 
-            <!-- 🔹 CARD DE PROGRESO -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/logo_abc"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:text="Tu camino de aprendizaje"
+                    android:textColor="#4A5568"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <!-- ══════════ CARD DE PROGRESO ══════════ -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="8dp"
-                android:layout_marginBottom="24dp"
-                android:backgroundTint="@android:color/white">
+                app:cardElevation="5dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -65,231 +79,334 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/tv_progreso"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Progreso"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_road"
+                            android:layout_marginEnd="8dp"
+                            app:tint="#7B61FF" />
+
+                        <TextView
+                            android:id="@+id/tv_progreso"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Progreso general"
+                            android:textColor="#1A2340"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="40%"
+                            android:textColor="#7B61FF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progressIndicator"
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
-                        android:layout_marginTop="8dp"
                         android:progress="40"
-                        app:indicatorColor="@color/green_500"
-                        app:trackColor="@color/grey_200" />
-
-                    <TextView
-                        android:id="@+id/tv_percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="40%"
-                        android:textStyle="bold"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@color/black" />
+                        app:indicatorColor="#7B61FF"
+                        app:trackColor="#EDE9FE"
+                        app:trackCornerRadius="5dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- 🔹 SECCIÓN DE CONTEXTOS -->
+            <!-- ══════════ CONTEXTOS HORIZONTALES ══════════ -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="10dp"
                 android:text="Contextos"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="20dp"
-                android:paddingStart="4dp" />
+                android:textColor="#1A2340"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvContextos"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="20dp"
+                android:paddingHorizontal="20dp"
+                android:clipToPadding="false"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:overScrollMode="never" />
 
-            <!-- 🔹 SECCIÓN DE RUTA -->
+            <!-- ══════════ ETAPAS ══════════ -->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="12dp"
                 android:text="Etapas"
-                android:textStyle="bold"
-                android:textSize="26sp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="12dp" />
+                android:textColor="#1A2340"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
+            <!-- Etapa 1 - Restaurante -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="6dp"
-                android:backgroundTint="@android:color/white"
-                android:layout_marginBottom="24dp">
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:id="@+id/points_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
 
-                    <!-- 🔸 Restaurante -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="16dp">
+                    <!-- Imagen con marco redondeado -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp">
 
                         <ImageView
                             android:id="@+id/point1_icon"
-                            android:layout_width="97dp"
-                            android:layout_height="105dp"
-                            android:contentDescription="@string/point1"
-                            android:src="@drawable/restaurant" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/restaurant"
+                            android:contentDescription="@string/point1" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Info -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:background="#EEF2FF"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="3dp"
                             android:text="Etapa 1"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black" />
-                        <!-- ⭐ Ícono de favorito -->
-                        <ImageView
-                            android:id="@+id/iv_etapa1"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginEnd="80dp"
-                            android:contentDescription="Marcar favorito"
-                            android:src="@drawable/ic_star"
-                            app:tint="#FFB300" />
+                            android:textColor="#3949AB"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Restaurant"
+                            android:textColor="#1A2340"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Restaurante"
+                            android:textColor="#6B7280"
+                            android:textSize="13sp" />
                     </LinearLayout>
+
+                    <!-- Favorito -->
+                    <ImageView
+                        android:id="@+id/iv_etapa1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_star"
+                        android:contentDescription="Marcar favorito"
+                        app:tint="#FFB300" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <!-- 🔹 Aeropuerto -->
+
+            <!-- Etapa 2 - Aeropuerto -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="6dp"
-                android:backgroundTint="@android:color/white"
-                android:layout_marginBottom="24dp">
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:id="@+id/points_container2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
 
-                    <!-- 🔸 Ejemplo de punto de la ruta -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="16dp">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp">
 
                         <ImageView
                             android:id="@+id/point2_icon"
-                            android:layout_width="97dp"
-                            android:layout_height="105dp"
-                            android:contentDescription="@string/point1"
-                            android:src="@drawable/airport" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/airport"
+                            android:contentDescription="@string/point1" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:background="#F0FFF4"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="3dp"
                             android:text="Etapa 2"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black" />
-                        <ImageView
-                            android:id="@+id/iv_etapa2"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginEnd="80dp"
-                            android:contentDescription="Marcar favorito"
-                            android:src="@drawable/ic_star"
-                            app:tint="#FFB300" />
+                            android:textColor="#2E7D32"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Airport"
+                            android:textColor="#1A2340"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Aeropuerto"
+                            android:textColor="#6B7280"
+                            android:textSize="13sp" />
                     </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_etapa2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_star"
+                        android:contentDescription="Marcar favorito"
+                        app:tint="#FFB300" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <!--Etapa3-->
-            <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="6dp"
-            android:backgroundTint="@android:color/white"
-            android:layout_marginBottom="24dp">
 
-            <LinearLayout
-                android:id="@+id/points_container3"
+            <!-- Etapa 3 - Supermercado -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="36dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardBackgroundColor="#FFFFFF">
 
-                <!-- 🔸 Ejemplo de punto de la ruta -->
                 <LinearLayout
+                    android:id="@+id/points_container3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="16dp">
+                    android:padding="16dp">
 
-                    <ImageView
-                        android:id="@+id/point3_icon"
-                        android:layout_width="97dp"
-                        android:layout_height="105dp"
-                        android:contentDescription="@string/point1"
-                        android:src="@drawable/supermarket" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/point3_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/supermarket"
+                            android:contentDescription="@string/point1" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Etapa 3"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFF8EC"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="3dp"
+                            android:text="Etapa 3"
+                            android:textColor="#E65100"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Supermarket"
+                            android:textColor="#1A2340"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Supermercado"
+                            android:textColor="#6B7280"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
                     <ImageView
                         android:id="@+id/iv_etapa3"
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="80dp"
-                        android:layout_marginEnd="80dp"
-                        android:contentDescription="Marcar favorito"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/ic_star"
+                        android:contentDescription="Marcar favorito"
                         app:tint="#FFB300" />
                 </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- 🔹 BARRA DE NAVEGACIÓN INFERIOR -->
+    <!-- BOTTOM NAV -->
     <include
         android:id="@+id/bottom_navigation"
-        layout="@layout/bottom_navigation"/>
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

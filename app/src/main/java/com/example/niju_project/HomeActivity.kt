@@ -2,7 +2,6 @@ package com.example.niju_project
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,8 +18,11 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tvGreeting: TextView
     private lateinit var tvStreak: TextView
     private lateinit var tvXP: TextView
+    private lateinit var tvLevel: TextView
+    private lateinit var tvDailyProgress: TextView
+    private lateinit var progressDaily: ProgressBar
     private lateinit var btnStartSession: Button
-    
+
     private lateinit var navHome: LinearLayout
     private lateinit var navContexts: LinearLayout
     private lateinit var navRuta: LinearLayout
@@ -36,27 +38,38 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        tvGreeting = findViewById(R.id.tvGreeting)
-        tvStreak = findViewById(R.id.tvStreak)
-        tvXP = findViewById(R.id.tvXP)
+        tvGreeting      = findViewById(R.id.tvGreeting)
+        tvStreak        = findViewById(R.id.tvStreak)
+        tvXP            = findViewById(R.id.tvXP)
+        tvLevel         = findViewById(R.id.tvLevel)
+        tvDailyProgress = findViewById(R.id.tvDailyProgress)
+        progressDaily   = findViewById(R.id.progressDaily)
         btnStartSession = findViewById(R.id.btnStartSession)
-        
-        navHome = findViewById(R.id.navHome)
+
+        navHome     = findViewById(R.id.navHome)
         navContexts = findViewById(R.id.navContexts)
-        navRuta = findViewById(R.id.navRuta)
-        navProfile = findViewById(R.id.navProfile)
+        navRuta     = findViewById(R.id.navRuta)
+        navProfile  = findViewById(R.id.navProfile)
     }
 
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.uiState.collectLatest { state ->
                 when (state) {
-                    is HomeUiState.Loading -> { /* Mostrar algun loader si es necesario */ }
+                    is HomeUiState.Loading -> { /* loader si es necesario */ }
                     is HomeUiState.Success -> {
                         val user = state.user
                         tvGreeting.text = "¡Hola, ${user.name}!"
-                        tvStreak.text = user.streak.toString()
-                        tvXP.text = user.xp.toString()
+                        tvStreak.text   = user.streak.toString()
+                        tvXP.text       = user.xp.toString()
+                        tvLevel.text    = user.level.toString()
+
+                        // Meta diaria
+                        val goal    = if (user.dailyGoal > 0) user.dailyGoal else 50
+                        val current = user.xp % goal   // XP del día (simplificado)
+                        val pct     = ((current.toFloat() / goal) * 100).toInt().coerceIn(0, 100)
+                        tvDailyProgress.text = "$current / $goal XP"
+                        progressDaily.progress = pct
                     }
                     is HomeUiState.Error -> {
                         Toast.makeText(this@HomeActivity, state.message, Toast.LENGTH_SHORT).show()
@@ -71,9 +84,12 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, PracticeActivity::class.java))
         }
 
-        navHome.setOnClickListener {
-            // Ya estamos en Home, no hacer nada
+        // Accesos rápidos
+        findViewById<LinearLayout>(R.id.btnFavoritos)?.setOnClickListener {
+            startActivity(Intent(this, FavoritesActivity::class.java))
         }
+
+        navHome.setOnClickListener { /* ya estamos aquí */ }
 
         navContexts.setOnClickListener {
             startActivity(Intent(this, ContextsActivity::class.java))
@@ -87,10 +103,8 @@ class HomeActivity : AppCompatActivity() {
 
         navProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
-            // No llamar finish() para mantener la pila de navegación correcta
         }
 
-        // Resaltar ícono activo
         updateBottomNavColors(
             current = navHome,
             navHome, navContexts, navRuta, navProfile

@@ -22,6 +22,7 @@ class ContextsActivity : AppCompatActivity() {
     private lateinit var adapter: ContextosAdapter
     private lateinit var rvContexts: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var btnStartSession: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,7 @@ class ContextsActivity : AppCompatActivity() {
     private fun initViews() {
         rvContexts = findViewById(R.id.rvContexts)
         progressBar = findViewById(R.id.progressBar)
+        btnStartSession = findViewById(R.id.btnStartSession)
     }
 
     private fun setupRecyclerView() {
@@ -76,6 +78,10 @@ class ContextsActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.navProfile).setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
             finish()
+        }
+
+        btnStartSession.setOnClickListener {
+            startActivity(Intent(this, PracticeActivity::class.java))
         }
     }
 }
