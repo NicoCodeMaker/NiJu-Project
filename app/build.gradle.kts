@@ -51,12 +51,16 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
     // ── Firebase BoM ────────────────────────────────────────────────────────
-    implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 
-    // Firebase Authentication (email, teléfono, Google)
-    implementation("com.google.firebase:firebase-auth")
+    // Firebase Analytics
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Firebase Auth
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
 
     // ── Google Sign-In ───────────────────────────────────────────────────────

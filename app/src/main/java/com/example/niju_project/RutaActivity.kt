@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.niju_project.databinding.ActivityRutaBinding
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.example.niju_project.data.model.ContextModel
 
 class RutaActivity : AppCompatActivity() {
 
@@ -23,9 +24,21 @@ class RutaActivity : AppCompatActivity() {
 
     // 🔹 Lista de contextos con su porcentaje fijo
     private val listaContextos = listOf(
-        Contexto("Restaurante", R.drawable.restaurant, 40),
-        Contexto("Supermercado", R.drawable.supermarket, 30),
-        Contexto("Aeropuerto", R.drawable.airport, 60)
+        ContextModel(
+            id = "restaurant",
+            name = "Restaurante",
+            description = "Aprende vocabulario de restaurantes"
+        ),
+        ContextModel(
+            id = "supermarket",
+            name = "Supermercado",
+            description = "Aprende vocabulario de supermercado"
+        ),
+        ContextModel(
+            id = "airport",
+            name = "Aeropuerto",
+            description = "Aprende vocabulario de aeropuerto"
+        )
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +57,14 @@ class RutaActivity : AppCompatActivity() {
 
         // 🔹 Adapter con callback
         val adapter = ContextosAdapter(listaContextos) { contexto ->
-            actualizarProgreso(contexto.progreso)
+
+            Toast.makeText(
+                this,
+                "Seleccionaste ${contexto.name}",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            actualizarProgreso(40)
         }
 
         binding.rvContextos.layoutManager =
