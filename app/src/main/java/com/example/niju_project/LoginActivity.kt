@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         bindViews()
         setupListeners()
 
-        if (mAuth.currentUser != null) goToMain()
+        if (mAuth.currentUser != null) checkTwoFactorAndProceed()
     }
 
     private fun bindViews() {
@@ -102,6 +102,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun checkTwoFactorAndProceed() {
         val uid = mAuth.currentUser?.uid ?: run { showLoading(false); return }
+        showLoading(true)
 
         FirebaseFirestore.getInstance()
             .collection("users").document(uid)
