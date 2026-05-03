@@ -20,24 +20,42 @@ import kotlinx.coroutines.launch
 
 sealed class PracticeUiState {
     object Loading : PracticeUiState()
+
     data class Question(
         val flashcard: FlashcardModel,
         val options: List<String>,
         val index: Int,
         val total: Int
     ) : PracticeUiState()
+
+    /** Se emite cuando el usuario acierta — muestra el panel ¡Correcto! */
+    data class CorrectAnswer(
+        val flashcard: FlashcardModel,
+        val xpGained: Int,
+        val index: Int,
+        val total: Int
+    ) : PracticeUiState()
+
+    /** Se emite cuando el usuario falla — muestra el panel ¡Casi! */
+    data class WrongAnswer(
+        val correctWord: String,
+        val index: Int,
+        val total: Int
+    ) : PracticeUiState()
+
     data class SessionResult(
         val correct: Int,
         val total: Int,
         val xpGained: Int
     ) : PracticeUiState()
+
     data class Error(val message: String) : PracticeUiState()
 }
 
 class PracticeViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val flashcardRepo: FlashcardRepository = FlashcardRepository(),
-    private val progressRepo: ProgressRepository  = ProgressRepository(),
+    private val progressRepo: ProgressRepository   = ProgressRepository(),
     private val userRepo: UserRepository           = UserRepository(),
     private val sm2: SpacedRepetitionService       = SpacedRepetitionService()
 ) : ViewModel() {
@@ -45,38 +63,35 @@ class PracticeViewModel(
     private val _state = MutableStateFlow<PracticeUiState>(PracticeUiState.Loading)
     val uiState: StateFlow<PracticeUiState> = _state.asStateFlow()
 
-    private val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-
-    // 🔴 FIX CRÍTICO 1: leer contextId del SavedStateHandle (viene del Intent extra)
+    private val uid: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val contextId: String? = savedStateHandle["context_id"]
 
     private var allFlashcards = listOf<FlashcardModel>()
-    private var questions    = listOf<FlashcardModel>()
-    private var currentIdx   = 0
-    private var correct      = 0
+    private var questions     = listOf<FlashcardModel>()
+    private var currentIdx    = 0
+    private var correct       = 0
+    private var totalXpGained = 0
 
     init { loadQuestions() }
 
     private fun loadQuestions() {
         viewModelScope.launch {
             _state.value = PracticeUiState.Loading
-
-            // 🔴 FIX CRÍTICO 1: usar subcolección si hay contextId, global si no
-            val result = if (!contextId.isNullOrBlank()) {
+            val result = if (!contextId.isNullOrBlank())
                 flashcardRepo.getFlashcardsByContext(contextId)
-            } else {
+            else
                 flashcardRepo.getAllFlashcards()
-            }
 
             result.onSuccess { list ->
                 if (list.isEmpty()) {
-                    _state.value = PracticeUiState.Error("No hay tarjetas disponibles para esta práctica")
+                    _state.value = PracticeUiState.Error("No hay tarjetas disponibles")
                     return@onSuccess
                 }
                 allFlashcards = list
                 questions     = list.shuffled().take(10)
                 currentIdx    = 0
                 correct       = 0
+                totalXpGained = 0
                 showNextQuestion()
             }.onFailure {
                 _state.value = PracticeUiState.Error(it.message ?: "Error al cargar tarjetas")
@@ -86,35 +101,33 @@ class PracticeViewModel(
 
     private fun showNextQuestion() {
         if (currentIdx >= questions.size) { finishSession(); return }
-
         val q = questions[currentIdx]
 
-        // 🔴 FIX CRÍTICO 2: opciones falsas REALES usando otras flashcards del contexto
-        val falseOptions = allFlashcards
+        val distractors = allFlashcards
             .filter { it.id != q.id && it.english.isNotBlank() }
             .shuffled()
             .take(2)
             .map { it.english }
-
-        // Rellenar si no hay suficientes distractores
-        val distractors = falseOptions.toMutableList()
+            .toMutableList()
         while (distractors.size < 2) distractors.add("…")
-
-        val options = (distractors + q.english).shuffled()
 
         _state.value = PracticeUiState.Question(
             flashcard = q,
-            options   = options,
+            options   = (distractors + q.english).shuffled(),
             index     = currentIdx + 1,
             total     = questions.size
         )
     }
 
+    /**
+     * Llamado cuando el usuario selecciona una respuesta y pulsa Confirmar.
+     * Emite [PracticeUiState.CorrectAnswer] o [PracticeUiState.WrongAnswer]
+     * según si acertó. El avance real al siguiente ítem ocurre en [advance].
+     */
     fun submitAnswer(answer: String) {
         if (currentIdx >= questions.size) return
         val q         = questions[currentIdx]
-        val isCorrect = answer.trim() == q.english.trim()
-        if (isCorrect) correct++
+        val isCorrect = answer.trim().equals(q.english.trim(), ignoreCase = true)
 
         viewModelScope.launch {
             if (uid.isNotEmpty()) {
@@ -124,18 +137,49 @@ class PracticeViewModel(
             }
         }
 
+        if (isCorrect) {
+            correct++
+            val xp = 10
+            totalXpGained += xp
+            _state.value = PracticeUiState.CorrectAnswer(
+                flashcard = q,
+                xpGained  = xp,
+                index     = currentIdx + 1,
+                total     = questions.size
+            )
+        } else {
+            _state.value = PracticeUiState.WrongAnswer(
+                correctWord = q.english,
+                index       = currentIdx + 1,
+                total       = questions.size
+            )
+        }
+    }
+
+    /** Avanza a la siguiente pregunta después de ver el panel de resultado. */
+    fun advance() {
         currentIdx++
         showNextQuestion()
     }
 
-    private fun finishSession() {
+    /** Termina la sesión inmediatamente (botón "Finalizar" en panel correcto). */
+    fun finishNow() {
         viewModelScope.launch {
-            val xpGained = correct * 10
             if (uid.isNotEmpty()) {
-                userRepo.addXp(uid, xpGained)
+                userRepo.addXp(uid, totalXpGained)
                 userRepo.updateStreak(uid)
             }
-            _state.value = PracticeUiState.SessionResult(correct, questions.size, xpGained)
+            _state.value = PracticeUiState.SessionResult(correct, currentIdx, totalXpGained)
+        }
+    }
+
+    private fun finishSession() {
+        viewModelScope.launch {
+            if (uid.isNotEmpty()) {
+                userRepo.addXp(uid, totalXpGained)
+                userRepo.updateStreak(uid)
+            }
+            _state.value = PracticeUiState.SessionResult(correct, questions.size, totalXpGained)
         }
     }
 

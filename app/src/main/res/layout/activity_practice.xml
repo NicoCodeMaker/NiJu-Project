@@ -1,104 +1,425 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5"
-    android:padding="16dp">
+    android:background="@drawable/background_gradient"
+    tools:context=".PracticeActivity">
 
-    <!-- Header -->
-    <LinearLayout
+    <!-- ════════════════════════════════════
+         LOADING OVERLAY
+    ════════════════════════════════════ -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:background="@drawable/top_shape">
+        android:layout_height="match_parent"
+        android:background="#F5F2FF"
+        android:visibility="gone"
+        android:elevation="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="#7B61FF" />
+    </FrameLayout>
+
+    <!-- ════════════════════════════════════
+         PANEL DE RESPUESTA CORRECTA (overlay)
+         Aparece encima de todo cuando acierta
+    ════════════════════════════════════ -->
+    <FrameLayout
+        android:id="@+id/correctPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:visibility="gone"
+        android:elevation="30dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:text="Práctica: Etapa 1"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="22sp" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="16dp"
+            app:cardBackgroundColor="#FFFFFF">
 
-    <!-- Barra de progreso para carga -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="28dp">
 
-    <!-- Contenido principal -->
-    <ScrollView
+                <!-- Emoji grande de éxito -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎉"
+                    android:textSize="56sp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¡Correcto!"
+                    android:textColor="#1A2340"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvCorrectWord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Word"
+                    android:textColor="#7B61FF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tvCorrectXp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+10 XP"
+                    android:textColor="#2E7D32"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_xp_badge"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Botones: Continuar / Finalizar -->
+                <Button
+                    android:id="@+id/btnContinuePractice"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#7B61FF"
+                    android:text="Continuar"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnFinishPractice"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#F3F4F6"
+                    android:text="Finalizar sesión"
+                    android:textColor="#4B5563"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+    <!-- ════════════════════════════════════
+         PANEL DE RESPUESTA INCORRECTA (overlay)
+    ════════════════════════════════════ -->
+    <FrameLayout
+        android:id="@+id/wrongPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:visibility="gone"
+        android:elevation="30dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="16dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="28dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="😅"
+                    android:textSize="56sp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¡Casi!"
+                    android:textColor="#1A2340"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="La respuesta correcta era:"
+                    android:textColor="#6B7280"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tvCorrectAnswer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Word"
+                    android:textColor="#E65100"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="24dp" />
+
+                <Button
+                    android:id="@+id/btnContinueAfterWrong"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#7B61FF"
+                    android:text="Seguir intentando"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+    <!-- ════════════════════════════════════
+         CONTENIDO PRINCIPAL
+    ════════════════════════════════════ -->
+    <LinearLayout
         android:id="@+id/layoutContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingVertical="16dp">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation_include"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <!-- ── HEADER: barra de progreso de sesión ── -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="16dp">
+            android:background="@drawable/top_wave_shape"
+            android:paddingBottom="18dp">
 
+            <!-- Botón cerrar (X) -->
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_button_bg"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Cerrar" />
+
+            <!-- Índice de pregunta -->
             <TextView
-                android:id="@+id/txtQuestion"
+                android:id="@+id/tvQuestionIndex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pregunta"
-                android:textColor="#1A1A1A"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginBottom="24dp" />
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:text="1 / 10"
+                android:textColor="#1A2340"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnOption1"
+            <!-- Barra de progreso de sesión -->
+            <ProgressBar
+                android:id="@+id/progressSession"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_below="@id/tvQuestionIndex"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:progress="10"
+                android:progressTint="#7B61FF"
+                android:backgroundTint="#D8D4FF" />
+        </RelativeLayout>
+
+        <!-- ── SCROLL DEL CONTENIDO ── -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:overScrollMode="never">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Opción 1"
-                android:textAllCaps="false"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#000"
-                android:layout_marginBottom="12dp" />
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="24dp">
 
-            <Button
-                android:id="@+id/btnOption2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Opción 2"
-                android:textAllCaps="false"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#000"
-                android:layout_marginBottom="12dp" />
+                <!-- ── CARD PRINCIPAL: imagen + palabra japonesa ── -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="#FFFFFF">
 
-            <Button
-                android:id="@+id/btnOption3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Opción 3"
-                android:textAllCaps="false"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#000"
-                android:layout_marginBottom="24dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnNext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Siguiente"
-                android:textAllCaps="false"
-                android:backgroundTint="#4CAF50"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
-    </ScrollView>
+                        <!-- Imagen de la palabra -->
+                        <ImageView
+                            android:id="@+id/ivWordImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/beach_scene"
+                            android:contentDescription="Imagen de la palabra" />
 
-    <!-- Barra inferior de navegación -->
-    <include layout="@layout/bottom_navigation" />
+                        <!-- Badge de categoría (sobre imagen) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center">
 
-</LinearLayout>
+                            <!-- Pregunta en ingles (la palabra a adivinar) -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="¿Cómo se dice en inglés?"
+                                    android:textColor="#6B7280"
+                                    android:textSize="12sp"
+                                    android:layout_marginBottom="4dp" />
+
+                                <TextView
+                                    android:id="@+id/txtQuestion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="palabra"
+                                    android:textColor="#1A2340"
+                                    android:textSize="26sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="sans-serif-medium" />
+
+                                <TextView
+                                    android:id="@+id/tvWordCategory"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="restaurante"
+                                    android:textColor="#9CA3AF"
+                                    android:textSize="13sp"
+                                    android:layout_marginTop="2dp" />
+                            </LinearLayout>
+
+                            <!-- Dificultad -->
+                            <TextView
+                                android:id="@+id/tvDifficulty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="⭐ 1"
+                                android:textColor="#6B7280"
+                                android:textSize="13sp"
+                                android:background="@drawable/bg_contexto_default"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- ── OPCIONES DE RESPUESTA ── -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Elige la traducción correcta"
+                    android:textColor="#6B7280"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_gravity="center_horizontal" />
+
+                <Button
+                    android:id="@+id/btnOption1"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#1A2340"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:text="Opción 1"
+                    android:elevation="2dp"
+                    android:stateListAnimator="@null" />
+
+                <Button
+                    android:id="@+id/btnOption2"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#1A2340"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:text="Opción 2"
+                    android:elevation="2dp"
+                    android:stateListAnimator="@null" />
+
+                <Button
+                    android:id="@+id/btnOption3"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#1A2340"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:text="Opción 3"
+                    android:elevation="2dp"
+                    android:stateListAnimator="@null" />
+
+                <!-- ── BOTÓN CONFIRMAR ── -->
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:backgroundTint="#D1D5DB"
+                    android:text="Confirmar"
+                    android:textAllCaps="false"
+                    android:textColor="#9CA3AF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:enabled="false" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- BOTTOM NAV -->
+    <include
+        android:id="@+id/bottom_navigation_include"
+        layout="@layout/bottom_navigation"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
