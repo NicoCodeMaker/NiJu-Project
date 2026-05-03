@@ -42,12 +42,22 @@ android {
 }
 
 dependencies {
+    implementation("commons-codec:commons-codec:1.15")
+
+    implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.0")
+
+    implementation("com.google.zxing:core:3.5.3")
+
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
     // ── Firebase BoM ────────────────────────────────────────────────────────
     implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
 
     // Firebase Authentication (email, teléfono, Google)
     implementation("com.google.firebase:firebase-auth")
+
 
     // ── Google Sign-In ───────────────────────────────────────────────────────
     // Necesario para signInWithGoogle() en LoginActivity

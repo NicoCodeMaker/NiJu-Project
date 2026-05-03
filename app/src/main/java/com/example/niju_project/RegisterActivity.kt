@@ -1,5 +1,7 @@
 package com.example.niju_project
+import com.example.niju_project.utils.TOTPHelper
 
+import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -21,6 +23,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var btnRegister: Button
     private lateinit var tvSignIn: TextView
     private lateinit var progressBar: ProgressBar
+
 
     private lateinit var mAuth: FirebaseAuth
     private var isPasswordVisible = false
@@ -91,24 +94,61 @@ class RegisterActivity : AppCompatActivity() {
 
         showLoading(true)
 
+
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Actualizar display name
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(name)
-                        .build()
-                    mAuth.currentUser?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener {
+
+                    val secret = TOTPHelper.generateSecretKey()
+                    android.util.Log.d("TOTP", "Secret generado: $secret")
+
+                    val userId = mAuth.currentUser?.uid
+                    if (userId == null) {
+                        showLoading(false)
+                        Toast.makeText(this, "Error inesperado", Toast.LENGTH_SHORT).show()
+                        return@addOnCompleteListener
+                    }
+
+                    val db = FirebaseFirestore.getInstance()
+
+                    val userData = hashMapOf(
+                        "name" to name,
+                        "email" to email,
+                        "totpSecret" to secret
+                    )
+
+                    db.collection("users").document(userId)
+                        .set(userData)
+                        .addOnSuccessListener {
+
+                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                .setDisplayName(name)
+                                .build()
+
+                            mAuth.currentUser?.updateProfile(profileUpdates)
+                                ?.addOnCompleteListener {
+
+                                    showLoading(false)
+
+                                    mAuth.currentUser?.sendEmailVerification()
+
+                                    Toast.makeText(
+                                        this,
+                                        "¡Cuenta creada! Revisa tu correo para verificarla.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+
+                                    val intent = Intent(this, TwoFactorActivity::class.java)
+                                    intent.putExtra("user_email", email)
+                                    intent.putExtra("totp_secret", secret)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                        }
+                        .addOnFailureListener {
                             showLoading(false)
-                            // Enviar correo de verificación
-                            mAuth.currentUser?.sendEmailVerification()
-                            Toast.makeText(
-                                this,
-                                "¡Cuenta creada! Revisa tu correo para verificarla.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            navigateToHome()
+                            Toast.makeText(this, "Error guardando datos", Toast.LENGTH_SHORT).show()
                         }
                 } else {
                     showLoading(false)

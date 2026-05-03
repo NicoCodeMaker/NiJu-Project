@@ -1,29 +1,23 @@
 package com.example.niju_project
 
+import com.example.niju_project.utils.TOTPHelper
+
 import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.view.View
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.random.Random
+import android.widget.ImageView
+import android.widget.*
+import android.widget.Toast
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.BarcodeFormat
 
-/**
- * Pantalla de Autenticación de Dos Factores (2FA).
- *
- * Estrategia implementada:
- *  - Se genera un código OTP de 6 dígitos del lado del cliente (demo).
- *  - En producción, este código debe generarse y enviarse vía Firebase Cloud Functions
- *    + SendGrid / Twilio, o bien usar un TOTP (Google Authenticator) con HMAC-SHA1.
- *
- * Flujo:
- *  1. Al abrir esta Activity se "envía" el código al correo del usuario.
- *  2. El usuario ingresa el código en el campo OTP.
- *  3. Si coincide y no expiró (2 min), accede al Home.
- */
+
+
+
 class TwoFactorActivity : AppCompatActivity() {
 
+    private var secret: String = ""
     private lateinit var tvDescription: TextView
     private lateinit var etCode: EditText
     private lateinit var btnVerify: Button
@@ -33,23 +27,34 @@ class TwoFactorActivity : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
 
-    private var generatedCode: String = ""
-    private var codeExpiryTime: Long = 0L
-    private var countDownTimer: CountDownTimer? = null
-    private val CODE_VALIDITY_MS = 120_000L   // 2 minutos
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_two_factor)
 
+        val email = intent.getStringExtra("user_email") ?: ""
+        secret = intent.getStringExtra("totp_secret") ?: ""
+        if (secret.isEmpty()) {
+            Toast.makeText(this, "Secret inválido", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
         mAuth = FirebaseAuth.getInstance()
         bindViews()
 
-        val userEmail = intent.getStringExtra("user_email") ?: mAuth.currentUser?.email ?: ""
-        tvDescription.text = "Ingresa el código de 6 dígitos enviado a\n$userEmail"
+        val ivQr = findViewById<ImageView>(R.id.ivQr)
+
+        val otpUrl = getOtpAuthUrl(email, secret)
+        val qrBitmap = generateQRCode(otpUrl)
+
+        ivQr.setImageBitmap(qrBitmap)
+        tvDescription.text = "Escanea el código QR con Microsoft Authenticator\n$email"
 
         setupListeners()
-        generateAndSendCode()
+    }
+
+    fun getOtpAuthUrl(email: String, secret: String): String {
+        return "otpauth://totp/NiJu:$email?secret=$secret&issuer=NiJu"
     }
 
     private fun bindViews() {
@@ -64,64 +69,22 @@ class TwoFactorActivity : AppCompatActivity() {
     private fun setupListeners() {
         btnVerify.setOnClickListener {
             val input = etCode.text.toString().trim()
-            when {
-                input.length != 6         -> etCode.error = "El código debe tener 6 dígitos"
-                System.currentTimeMillis() > codeExpiryTime ->
-                    Toast.makeText(this, "Código expirado. Solicita uno nuevo.", Toast.LENGTH_SHORT).show()
-                input != generatedCode    ->
-                    Toast.makeText(this, "Código incorrecto", Toast.LENGTH_SHORT).show()
-                else                      -> onVerificationSuccess()
+
+            if (input.isEmpty()) {
+                etCode.error = "Ingresa el código"
+                return@setOnClickListener
+            }
+
+            if (TOTPHelper.validateCode(secret, input)) {
+                onVerificationSuccess()
+            } else {
+                Toast.makeText(this, "Código incorrecto", Toast.LENGTH_SHORT).show()
             }
         }
-
-        btnResend.setOnClickListener {
-            countDownTimer?.cancel()
-            generateAndSendCode()
-            Toast.makeText(this, "Nuevo código enviado", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // ─── Generar OTP ─────────────────────────────────────────────────────────
-    private fun generateAndSendCode() {
-        generatedCode   = String.format("%06d", Random.nextInt(0, 999999))
-        codeExpiryTime  = System.currentTimeMillis() + CODE_VALIDITY_MS
-
-        /* ── PRODUCCIÓN ────────────────────────────────────────────────────────
-         * Llama aquí a tu Cloud Function para enviar el código por correo/SMS.
-         * Ejemplo con Retrofit / OkHttp:
-         *
-         *   val body = mapOf("email" to userEmail, "code" to generatedCode)
-         *   apiService.sendOtpEmail(body).enqueue(...)
-         *
-         * O bien integra un TOTP (RFC 6238) con una librería como:
-         *   dev.turingcomplete:kotlin-onetimepassword
-         * ──────────────────────────────────────────────────────────────────── */
-
-        // DEMO: muestra el código en un Toast (remover en producción)
-        Toast.makeText(this, "Código de prueba: $generatedCode", Toast.LENGTH_LONG).show()
-
-        startCountdown()
-        btnResend.isEnabled = false
-    }
-
-    // ─── Countdown ───────────────────────────────────────────────────────────
-    private fun startCountdown() {
-        countDownTimer?.cancel()
-        countDownTimer = object : CountDownTimer(CODE_VALIDITY_MS, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val seconds = millisUntilFinished / 1000
-                tvTimer.text = "El código expira en ${seconds}s"
-            }
-            override fun onFinish() {
-                tvTimer.text = "Código expirado"
-                btnResend.isEnabled = true
-            }
-        }.start()
     }
 
     // ─── Éxito ───────────────────────────────────────────────────────────────
     private fun onVerificationSuccess() {
-        countDownTimer?.cancel()
         Toast.makeText(this, "Verificación exitosa ✓", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, HomeActivity::class.java))
         finishAffinity()
@@ -129,6 +92,26 @@ class TwoFactorActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        countDownTimer?.cancel()
+    }
+
+    fun generateQRCode(text: String): android.graphics.Bitmap {
+        val writer = com.google.zxing.qrcode.QRCodeWriter()
+        val bitMatrix = writer.encode(text, com.google.zxing.BarcodeFormat.QR_CODE, 512, 512)
+
+        val width = bitMatrix.width
+        val height = bitMatrix.height
+        val bmp = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.RGB_565)
+
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bmp.setPixel(
+                    x,
+                    y,
+                    if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+                )
+            }
+        }
+
+        return bmp
     }
 }
