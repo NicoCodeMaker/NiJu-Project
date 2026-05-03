@@ -255,51 +255,51 @@
                     android:gravity="center">
 
                     <!-- Google -->
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnGoogle"
                         android:layout_width="0dp"
                         android:layout_height="52dp"
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/button_social_background"
-                        android:drawableStart="@drawable/ic_google"
-                        android:drawablePadding="8dp"
-                        android:fontFamily="@font/roboto_medium"
                         android:text="Google"
                         android:textAllCaps="false"
-                        android:textColor="#374151"
-                        android:textSize="14sp" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_google"
+                        app:iconPadding="8dp"
+                        app:iconGravity="textStart"
+                        app:iconTint="@null"/>
 
                     <!-- Teléfono -->
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPhone"
                         android:layout_width="0dp"
                         android:layout_height="52dp"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:background="@drawable/button_social_background"
-                        android:drawableStart="@drawable/ic_phone"
-                        android:drawablePadding="8dp"
-                        android:fontFamily="@font/roboto_medium"
                         android:text="Teléfono"
                         android:textAllCaps="false"
-                        android:textColor="#374151"
-                        android:textSize="14sp" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_phone"
+                        app:iconPadding="8dp"
+                        app:iconGravity="textStart"
+                        app:iconTint="@null"/>
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/bottomShape"
+                    android:layout_width="0dp"
+                    android:layout_height="96dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bottom_shape" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Forma decorativa inferior -->
-        <ImageView
-            android:id="@+id/bottomShape"
-            android:layout_width="0dp"
-            android:layout_height="96dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/bottom_shape"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
