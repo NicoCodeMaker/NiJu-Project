@@ -206,7 +206,7 @@ class SettingsActivity : AppCompatActivity() {
             openUrl("https://niju.app/privacidad")
         }
         rowVersion.setOnClickListener {
-            toast("NiJu — Aprende japonés 🇯🇵")
+            toast("NiJu — NivelJump 🇯🇵")
         }
 
         // ── Sesión ────────────────────────────────────────────────────────
