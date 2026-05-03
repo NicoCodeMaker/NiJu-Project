@@ -273,7 +273,7 @@
 
                     <!-- Teléfono -->
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnphone"
+                        android:id="@+id/btnPhone"
                         android:layout_width="0dp"
                         android:layout_height="52dp"
                         android:layout_weight="1"
