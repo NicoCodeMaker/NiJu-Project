@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".TwoFactorActivity">
+
+    <ImageView
+        android:id="@+id/topShape"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/top_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="32dp">
+
+            <!-- Icono de escudo -->
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="2FA"
+                android:src="@drawable/ic_shield"
+                app:tint="#5865F2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Verificación en 2 pasos"
+                android:textColor="#1F2937"
+                android:textSize="20sp" />
+
+            <!-- Descripción dinámica (correo del usuario) -->
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="Ingresa el código de 6 dígitos enviado a tu correo"
+                android:textColor="#6B7280"
+                android:textSize="14sp" />
+
+            <!-- Campo OTP -->
+            <EditText
+                android:id="@+id/etCode"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/edittext_rounded_background"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:hint="• • • • • •"
+                android:inputType="numberDecimal"
+                android:maxLength="6"
+                android:textColorHint="#D1D5DB"
+                android:textSize="28sp"
+                android:letterSpacing="0.3" />
+
+            <!-- Contador de tiempo -->
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="El código expira en 120s"
+                android:textColor="#9CA3AF"
+                android:textSize="13sp" />
+
+            <!-- Botón verificar -->
+            <Button
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button_rounded_background"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Verificar código"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <!-- Reenviar código -->
+            <Button
+                android:id="@+id/btnResend"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/button_outline_background"
+                android:enabled="false"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Reenviar código"
+                android:textAllCaps="false"
+                android:textColor="#5865F2"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/bottomShape"
+        android:layout_width="0dp"
+        android:layout_height="96dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottom_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

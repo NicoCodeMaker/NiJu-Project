@@ -10,18 +10,18 @@
     <!-- SCROLL PRINCIPAL -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="821dp"
         android:layout_above="@id/bottom_navigation"
-        android:padding="6dp"
         android:fillViewport="true"
+        android:padding="6dp"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
             android:background="#F2F7FF"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:paddingStart="0dp"
             android:paddingBottom="0dp">
 
@@ -30,8 +30,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:background="@drawable/top_wave_shape"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/top_wave_shape">
 
                 <!-- Logo (arriba centrado) -->
                 <!-- Asegúrate de tener: @drawable/logo_niju -->
@@ -50,58 +50,58 @@
                     android:id="@+id/tvGreeting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/logo_niju"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
                     android:text="¡Hola!"
                     android:textColor="#0F1724"
                     android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:layout_below="@id/logo_niju"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bienvenido a tu espacio de aprendizaje"
-                    android:textColor="#6B6B6B"
-                    android:textSize="13sp"
                     android:layout_below="@id/tvGreeting"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp" />
+                    android:layout_marginTop="4dp"
+                    android:text="Bienvenido a tu espacio de aprendizaje"
+                    android:textColor="#6B6B6B"
+                    android:textSize="13sp" />
             </RelativeLayout>
 
             <!-- Título sección -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="12dp"
                 android:text="Actividad del día"
                 android:textColor="#1A1A1A"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="12dp" />
+                android:textStyle="bold" />
 
             <!-- Card principal -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 app:cardCornerRadius="18dp"
                 app:cardElevation="6dp"
-                app:cardUseCompatPadding="true"
-                android:layout_marginBottom="24dp">
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFFFFF">
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/ivBeachImage"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
-                        android:src="@drawable/beach_scene"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/beach_scene" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -121,10 +121,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="La playa"
                             android:textColor="#7C7C7C"
-                            android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -133,37 +133,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Progreso semanal"
                 android:textColor="#1A1A1A"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
-                android:progress="60"
-                android:progressTint="#7B61FF"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="#E1DFFF"
-                android:layout_marginBottom="8dp" />
+                android:progress="60"
+                android:progressTint="#7B61FF" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 android:text="3 de 5 sesiones completadas"
                 android:textColor="#777777"
-                android:textSize="14sp"
-                android:layout_marginBottom="24dp" />
+                android:textSize="14sp" />
 
             <!-- Sección de iconos -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="3"
-                android:layout_marginBottom="24dp">
+                android:weightSum="3">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -180,10 +180,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:text="Favoritos"
                         android:textColor="#333333"
-                        android:textSize="14sp"
-                        android:layout_marginTop="6dp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -201,10 +201,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:text="Trofeos"
                         android:textColor="#333333"
-                        android:textSize="14sp"
-                        android:layout_marginTop="6dp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -222,10 +222,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:text="Amigos"
                         android:textColor="#333333"
-                        android:textSize="14sp"
-                        android:layout_marginTop="6dp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -234,12 +234,12 @@
                 android:id="@+id/btnStartSession"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginBottom="32dp"
                 android:backgroundTint="#7B61FF"
                 android:text="Comenzar sesión de hoy"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="32dp" />
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

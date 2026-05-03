@@ -1,214 +1,306 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
+    android:fillViewport="true"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/topShape"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/top_shape"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:minHeight="match_parent">
 
-    <!-- HEADER -->
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="355dp"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="52dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <!-- Forma decorativa superior -->
+        <ImageView
+            android:id="@+id/topShape"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/top_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- ProgressBar central -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- HEADER: Logo + mascota -->
         <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="52dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/appName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="NiJu"
+                    android:textColor="#5865F2"
+                    android:textSize="96sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/appSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/subtitle"
+                    android:textColor="#6B7280"
+                    android:textSize="35sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/nino"
+                android:layout_width="120dp"
+                android:layout_height="176dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/nino" />
+        </LinearLayout>
+
+        <!-- TARJETA FORMULARIO -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/formContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:id="@+id/appName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:text="NiJu"
-                android:textColor="#5865F2"
-                android:textSize="96sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/appSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/subtitle"
-                android:textColor="#6B7280"
-                android:textSize="35sp" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/nino"
-            android:layout_width="120dp"
-            android:layout_height="176dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/nino" />
-    </LinearLayout>
-
-    <!-- FORM -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/formContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="40dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="32dp">
-
-            <!-- EMAIL -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/prompt_email"
-                android:textColor="#374151"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/etEmail"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="20dp"
-                android:autofillHints="emailAddress"
-                android:background="@drawable/edittext_rounded_background"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="ejemplo@correo.com"
-                android:inputType="textEmailAddress"
-                android:padding="16dp"
-                android:textColorHint="#9CA3AF"
-                android:textSize="16sp" />
-
-            <!-- PASSWORD -->
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/prompt_password"
-                android:textColor="#374151"
-                android:textSize="16sp" />
+                android:orientation="vertical"
+                android:padding="28dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="24dp">
+                <!-- Título sección -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Iniciar sesión"
+                    android:textColor="#1F2937"
+                    android:textSize="22sp" />
+
+                <!-- EMAIL -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/prompt_email"
+                    android:textColor="#374151"
+                    android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/etPassword"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:autofillHints="password"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="16dp"
+                    android:autofillHints="emailAddress"
                     android:background="@drawable/edittext_rounded_background"
                     android:fontFamily="@font/roboto_regular"
-                    android:hint="••••••••"
-                    android:inputType="textPassword"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="48dp"
+                    android:hint="ejemplo@correo.com"
+                    android:inputType="textEmailAddress"
+                    android:padding="14dp"
                     android:textColorHint="#9CA3AF"
+                    android:textSize="15sp" />
+
+                <!-- CONTRASEÑA -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/prompt_password"
+                    android:textColor="#374151"
+                    android:textSize="14sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:autofillHints="password"
+                        android:background="@drawable/edittext_rounded_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="••••••••"
+                        android:inputType="textPassword"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="48dp"
+                        android:textColorHint="#9CA3AF"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/ivTogglePassword"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="14dp"
+                        android:contentDescription="@string/show_password"
+                        android:src="@drawable/ic_eye_closed" />
+                </RelativeLayout>
+
+                <!-- ¿Olvidaste tu contraseña? -->
+                <TextView
+                    android:id="@+id/tvForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/forgot_password"
+                    android:textColor="#5865F2"
+                    android:textSize="13sp" />
+
+                <!-- BOTÓN INICIAR SESIÓN -->
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/button_rounded_background"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/btn_login"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
-                <ImageView
-                    android:id="@+id/ivTogglePassword"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="@string/show_password"
-                    android:src="@drawable/ic_eye_closed" />
-            </RelativeLayout>
+                <!-- BOTÓN REGISTRARSE -->
+                <Button
+                    android:id="@+id/btnRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_outline_background"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Crear cuenta"
+                    android:textAllCaps="false"
+                    android:textColor="#5865F2"
+                    android:textSize="16sp" />
 
+                <!-- DIVISOR: "o continúa con" -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            <!-- LOGIN -->
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/button_rounded_background"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/btn_login"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="#E5E7EB" />
 
-            <!-- REGISTER -->
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/button_rounded_background"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Registrarse"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="o continúa con"
+                        android:textColor="#9CA3AF"
+                        android:textSize="13sp" />
 
-            <!-- FORGOT PASSWORD -->
-            <TextView
-                android:id="@+id/tvForgotPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/forgot_password"
-                android:textColor="#6B7280"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="#E5E7EB" />
+                </LinearLayout>
 
-    <!-- BOTTOM DECOR -->
-    <ImageView
-        android:id="@+id/bottomShape"
-        android:layout_width="398dp"
-        android:layout_height="96dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/bottom_shape"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <!-- BOTONES SOCIALES -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <!-- Google -->
+                    <Button
+                        android:id="@+id/btnGoogle"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/button_social_background"
+                        android:drawableStart="@drawable/ic_google"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Google"
+                        android:textAllCaps="false"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+
+                    <!-- Teléfono -->
+                    <Button
+                        android:id="@+id/btnPhone"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/button_social_background"
+                        android:drawableStart="@drawable/ic_phone"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Teléfono"
+                        android:textAllCaps="false"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Forma decorativa inferior -->
+        <ImageView
+            android:id="@+id/bottomShape"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bottom_shape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.niju_project"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.niju_project"
@@ -14,7 +14,6 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -29,23 +28,29 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11    }
+        targetCompatibility = JavaVersion.VERSION_11
+    }
     kotlinOptions {
         jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
     }
-    
 }
 
 dependencies {
-    // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    // ── Firebase BoM ────────────────────────────────────────────────────────
+    implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
     implementation("com.google.firebase:firebase-analytics")
-    // Firebase Authentication
+
+    // Firebase Authentication (email, teléfono, Google)
     implementation("com.google.firebase:firebase-auth")
 
+    // ── Google Sign-In ───────────────────────────────────────────────────────
+    // Necesario para signInWithGoogle() en LoginActivity
+    implementation("com.google.android.gms:play-services-auth:21.5.1")
+
+    // ── AndroidX / UI ────────────────────────────────────────────────────────
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -55,8 +60,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment)
+
+    // CircleImageView para fotos de perfil
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // ── Tests ─────────────────────────────────────────────────────────────────
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
