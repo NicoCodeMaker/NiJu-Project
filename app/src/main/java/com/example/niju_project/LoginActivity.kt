@@ -101,35 +101,52 @@ class LoginActivity : AppCompatActivity() {
      * Si NO  → va directo al Home
      */
     private fun checkTwoFactorAndProceed() {
-        val uid = mAuth.currentUser?.uid ?: run { showLoading(false); return }
+        val user = mAuth.currentUser
+        val uid = user?.uid ?: run {
+            showLoading(false)
+            return
+        }
+
+        val db = FirebaseFirestore.getInstance()
+
         showLoading(true)
 
-        FirebaseFirestore.getInstance()
-            .collection("users").document(uid)
+        db.collection("users").document(uid)
             .get()
             .addOnSuccessListener { doc ->
-                showLoading(false)
-                val twoFaEnabled = doc.getBoolean("twoFactorEnabled") ?: false
-                val totpSecret   = doc.getString("totpSecret") ?: ""
 
-                if (twoFaEnabled && totpSecret.isNotEmpty()) {
-                    // Abre 2FA en modo VERIFY con el secret real
-                    val intent = Intent(this, TwoFactorActivity::class.java).apply {
-                        putExtra("mode",         "verify")
-                        putExtra("totp_secret",  totpSecret)
-                        putExtra("user_email",   mAuth.currentUser?.email ?: "")
-                    }
-                    startActivity(intent)
-                    finish()
+                if (!doc.exists()) {
+
+                    val newUser = hashMapOf(
+                        "email" to (user.email ?: ""),
+                        "name" to (user.displayName ?: ""),
+                        "twoFactorEnabled" to false,
+                        "totpSecret" to "",
+                        "createdAt" to System.currentTimeMillis()
+                    )
+
+                    db.collection("users")
+                        .document(uid)
+                        .set(newUser)
+                        .addOnSuccessListener {
+                            showLoading(false)
+                            goToMain()
+                        }
+                        .addOnFailureListener {
+                            showLoading(false)
+                            toast("Error creando usuario")
+                            mAuth.signOut()
+                        }
+
                 } else {
+                    showLoading(false)
                     goToMain()
                 }
             }
             .addOnFailureListener {
                 showLoading(false)
-                // Si Firestore falla, igual dejamos entrar (degradado)
-                Log.w(TAG, "No se pudo leer Firestore: ${it.message}")
-                goToMain()
+                toast("Error validando usuario")
+                mAuth.signOut()
             }
     }
 
@@ -159,8 +176,12 @@ class LoginActivity : AppCompatActivity() {
                 val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
                 mAuth.signInWithCredential(credential)
                     .addOnCompleteListener { task ->
-                        if (task.isSuccessful) checkTwoFactorAndProceed()
-                        else { showLoading(false); toast("Google Sign-In fallido") }
+                        if (task.isSuccessful) {
+                            checkTwoFactorAndProceed()
+                        } else {
+                            showLoading(false)
+                            toast("Error autenticando con Google")
+                        }
                     }
             } catch (e: ApiException) {
                 toast("Error Google: ${e.statusCode}")

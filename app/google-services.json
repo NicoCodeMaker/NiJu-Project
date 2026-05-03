@@ -14,34 +14,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBgH2vhpDn5RH0SQQGRCYtMjZVs2Q5_mLE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1073180074577:android:cddb0cec74bd4a50588e70",
-        "android_client_info": {
-          "package_name": "nijuapp.com"
-        }
-      },
-      "oauth_client": [
+          "client_id": "1073180074577-5fmnh87ko2dib6j7mdjpu7h935jcp8ju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.niju_project",
+            "certificate_hash": "9a35947372770b138672c2e8fce498b3b6e18a1b"
+          }
+        },
         {
           "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
           "client_type": 3
