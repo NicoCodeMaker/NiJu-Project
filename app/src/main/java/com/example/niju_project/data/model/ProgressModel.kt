@@ -1,7 +1,6 @@
 package com.example.niju_project.data.model
 
 import com.google.firebase.Timestamp
-import java.util.Date
 
 data class ProgressModel(
     val wordId: String = "",
@@ -10,6 +9,6 @@ data class ProgressModel(
     val repetitions: Int = 0,
     val incorrectCount: Int = 0,
     val mastery: Double = 0.0,
-    val lastReviewed: Timestamp = Timestamp.now(),
-    val nextReview: Timestamp = Timestamp.now()
+    val lastReviewed: Timestamp? = null,
+    val nextReview: Timestamp? = null
 )

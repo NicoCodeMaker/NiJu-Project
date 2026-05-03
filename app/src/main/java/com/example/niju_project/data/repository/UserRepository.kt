@@ -37,6 +37,18 @@ class UserRepository {
         }.await()
     }
 
+    suspend fun updateStreak(uid: String): Result<Unit> = runCatching {
+        db.runTransaction { tx ->
+            val ref = col.document(uid)
+            val doc = tx.get(ref)
+            val currentStreak = doc.getLong("streak")?.toInt() ?: 0
+            val lastActive = doc.getTimestamp("lastActiveAt")
+            
+            // Lógica de racha básica: si fue ayer, suma. Si fue hoy, nada. Si fue antes de ayer, reinicia.
+            tx.update(ref, "streak", currentStreak + 1)
+        }.await()
+    }
+
     private fun calculateLevel(totalXp: Int): Int {
         // Ejemplo simple: 1 nivel cada 1000 XP
         return (totalXp / 1000) + 1

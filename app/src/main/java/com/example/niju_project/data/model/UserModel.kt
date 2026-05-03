@@ -6,9 +6,12 @@ data class UserModel(
     val uid: String = "",
     val name: String = "",
     val email: String = "",
+    val photoUrl: String? = null,
     val totpSecret: String = "",
     val twoFactorEnabled: Boolean = false,
     val xp: Int = 0,
     val level: Int = 1,
-    val lastActiveAt: Timestamp = Timestamp.now()
+    val streak: Int = 0,
+    val dailyGoal: Int = 50, // XP diario objetivo
+    val lastActiveAt: Timestamp? = null
 )

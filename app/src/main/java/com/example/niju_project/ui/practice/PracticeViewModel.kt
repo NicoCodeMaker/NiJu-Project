@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-// Estado sellado - el compilador te avisa si olvidas manejar un caso
 sealed class PracticeUiState {
     object Loading : PracticeUiState()
     data class Question(
@@ -41,6 +40,7 @@ class PracticeViewModel(
     val uiState: StateFlow<PracticeUiState> = _state.asStateFlow()
 
     private val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    private var allFlashcards = listOf<FlashcardModel>()
     private var questions = listOf<FlashcardModel>()
     private var currentIdx = 0
     private var correct = 0
@@ -52,12 +52,14 @@ class PracticeViewModel(
     private fun loadQuestions() {
         viewModelScope.launch {
             _state.value = PracticeUiState.Loading
+            // Cargamos todas para poder sacar opciones falsas
             val result = flashcardRepo.getAllFlashcards()
             result.onSuccess { list ->
                 if (list.isEmpty()) {
                     _state.value = PracticeUiState.Error("No hay tarjetas disponibles")
                 } else {
-                    questions = list.shuffled().take(10) // Ejemplo: 10 al azar
+                    allFlashcards = list
+                    questions = list.shuffled().take(10)
                     showNextQuestion()
                 }
             }.onFailure {
@@ -69,8 +71,16 @@ class PracticeViewModel(
     private fun showNextQuestion() {
         if (currentIdx < questions.size) {
             val q = questions[currentIdx]
-            // Aquí generarías opciones falsas para un quiz
-            val options = listOf(q.back, "Opción B", "Opción C", "Opción D").shuffled()
+            
+            // Generar opciones falsas reales usando otras tarjetas
+            val falseOptions = allFlashcards
+                .filter { it.id != q.id }
+                .shuffled()
+                .take(2)
+                .map { it.english }
+
+            val options = (falseOptions + q.english).shuffled()
+            
             _state.value = PracticeUiState.Question(q, options, currentIdx + 1, questions.size)
         } else {
             finishSession()
@@ -79,21 +89,15 @@ class PracticeViewModel(
 
     fun submitAnswer(answer: String) {
         val q = questions[currentIdx]
-        val isCorrect = (answer == q.back)
+        val isCorrect = (answer == q.english)
         
         if (isCorrect) correct++
 
-        // Algoritmo SM-2 (Fase 5)
         viewModelScope.launch {
             if (uid.isNotEmpty()) {
-                // 1. Obtener progreso previo
                 val existingResult = progressRepo.getProgress(uid, q.id)
                 val existing = existingResult.getOrNull()
-                
-                // 2. Calcular nuevo estado con el motor SM-2
                 val updatedProgress = sm2.update(existing, q.id, isCorrect)
-                
-                // 3. Persistir en Firestore
                 progressRepo.saveProgress(uid, updatedProgress)
             }
         }
@@ -107,6 +111,7 @@ class PracticeViewModel(
             val xpGained = correct * 10
             if (uid.isNotEmpty()) {
                 userRepo.addXp(uid, xpGained)
+                userRepo.updateStreak(uid)
             }
             _state.value = PracticeUiState.SessionResult(correct, questions.size, xpGained)
         }

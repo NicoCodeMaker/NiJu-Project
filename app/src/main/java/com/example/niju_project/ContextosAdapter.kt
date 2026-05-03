@@ -6,26 +6,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
-// Modelo de datos para cada contexto
-data class Contexto(
-    val nombre: String,
-    val icono: Int,
-    val progreso: Int
-)
+import com.example.niju_project.data.model.ContextModel
 
 class ContextosAdapter(
-    private val listaContextos: List<Contexto>,
-    private val onContextoClick: (Contexto) -> Unit
+    private var listaContextos: List<ContextModel>,
+    private val onContextoClick: (ContextModel) -> Unit
 ) : RecyclerView.Adapter<ContextosAdapter.ContextoViewHolder>() {
 
-    // Para saber cuál está seleccionado
-    private var contextoSeleccionado: Int = RecyclerView.NO_POSITION
+    fun updateList(newList: List<ContextModel>) {
+        this.listaContextos = newList
+        notifyDataSetChanged()
+    }
 
-    // ViewHolder representa UNA tarjeta (un ítem del RecyclerView)
     class ContextoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icono: ImageView = itemView.findViewById(R.id.iv_contexto_icono)
         val nombre: TextView = itemView.findViewById(R.id.tv_contexto_nombre)
+        val desc: TextView? = itemView.findViewById(R.id.tv_contexto_desc)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContextoViewHolder {
@@ -36,24 +32,14 @@ class ContextosAdapter(
 
     override fun onBindViewHolder(holder: ContextoViewHolder, position: Int) {
         val contexto = listaContextos[position]
+        holder.nombre.text = contexto.name
+        holder.desc?.text = contexto.description
+        
+        // Aquí podrías usar Glide o Coil para cargar la iconoUrl
+        // Por ahora lo dejamos por defecto
+        holder.icono.setImageResource(R.drawable.beach_scene)
 
-        holder.nombre.text = contexto.nombre
-        holder.icono.setImageResource(contexto.icono)
-
-        // Fondo dependiendo de si está seleccionado o no
-        if (position == contextoSeleccionado) {
-            holder.itemView.setBackgroundResource(R.drawable.bg_contexto_selected)
-        } else {
-            holder.itemView.setBackgroundResource(R.drawable.bg_contexto_default)
-        }
-
-        // Evento de clic
         holder.itemView.setOnClickListener {
-            val anterior = contextoSeleccionado
-            contextoSeleccionado = position
-            notifyItemChanged(anterior)
-            notifyItemChanged(contextoSeleccionado)
-
             onContextoClick(contexto)
         }
     }

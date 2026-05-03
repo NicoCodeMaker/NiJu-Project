@@ -6,16 +6,18 @@ import kotlinx.coroutines.tasks.await
 
 class FlashcardRepository {
     private val db = FirebaseFirestore.getInstance()
-    private val col = db.collection("flashcards")
 
-    suspend fun getFlashcardsByCategory(category: String): Result<List<FlashcardModel>> = runCatching {
-        col.whereEqualTo("category", category)
+    suspend fun getFlashcardsByContext(contextId: String): Result<List<FlashcardModel>> = runCatching {
+        db.collection("contexts")
+            .document(contextId)
+            .collection("flashcards")
             .get()
             .await()
             .toObjects(FlashcardModel::class.java)
     }
 
+    // Si aún necesitas una colección global para pruebas
     suspend fun getAllFlashcards(): Result<List<FlashcardModel>> = runCatching {
-        col.get().await().toObjects(FlashcardModel::class.java)
+        db.collection("flashcards").get().await().toObjects(FlashcardModel::class.java)
     }
 }
