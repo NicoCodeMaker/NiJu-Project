@@ -1,5 +1,6 @@
 package com.example.niju_project
 
+import com.example.niju_project.utils.TOTPHelper
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -20,6 +21,8 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import java.util.concurrent.TimeUnit
 
+
+
 class LoginActivity : AppCompatActivity() {
 
     // ─── UI refs ────────────────────────────────────────────────────────────
@@ -38,6 +41,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private var isPasswordVisible = false
 
+
+
     companion object {
         private const val RC_SIGN_IN = 9001
         private const val TAG = "LoginActivity"
@@ -55,6 +60,12 @@ class LoginActivity : AppCompatActivity() {
         setupGoogleSignIn()
         bindViews()
         setupListeners()
+
+        val secret = TOTPHelper.generateSecretKey()
+        val code = TOTPHelper.generateCode(secret)
+
+        Log.d("TOTP_TEST", "Secret: $secret")
+        Log.d("TOTP_TEST", "Code: $code")
 
         // Auto-login si ya hay sesión activa
         if (mAuth.currentUser != null) goToMain()

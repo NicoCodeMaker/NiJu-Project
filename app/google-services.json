@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1073180074577:android:984123adb6da9997588e70",
+        "android_client_info": {
+          "package_name": "com.example.niju_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgH2vhpDn5RH0SQQGRCYtMjZVs2Q5_mLE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1073180074577:android:cddb0cec74bd4a50588e70",
         "android_client_info": {
           "package_name": "nijuapp.com"
