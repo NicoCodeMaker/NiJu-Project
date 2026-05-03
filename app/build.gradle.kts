@@ -77,6 +77,12 @@ dependencies {
     // CircleImageView para fotos de perfil
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // ── Corrutinas y Lifecycle (Fase 1) ──────────────────────────────────────
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("com.google.firebase:firebase-auth-ktx")
+
     // ── Tests ─────────────────────────────────────────────────────────────────
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
