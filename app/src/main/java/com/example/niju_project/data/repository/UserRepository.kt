@@ -2,55 +2,64 @@ package com.example.niju_project.data.repository
 
 import com.example.niju_project.data.model.UserModel
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
+import java.util.concurrent.TimeUnit
 
 class UserRepository {
-    private val db = FirebaseFirestore.getInstance()
+    private val db  = FirebaseFirestore.getInstance()
     private val col = db.collection("users")
 
-    // Crear o actualizar perfil (merge = no borra campos existentes)
     suspend fun upsertUser(user: UserModel): Result<Unit> = runCatching {
         col.document(user.uid).set(user, SetOptions.merge()).await()
     }
 
-    // Leer perfil actual
     suspend fun getCurrentUser(uid: String): Result<UserModel?> = runCatching {
         col.document(uid).get().await().toObject(UserModel::class.java)
     }
 
-    // Sumar XP tras completar sesion - usa transaction para evitar race conditions
     suspend fun addXp(uid: String, xpGained: Int): Result<Unit> = runCatching {
         db.runTransaction { tx ->
-            val ref = col.document(uid)
+            val ref     = col.document(uid)
             val current = tx.get(ref).getLong("xp")?.toInt() ?: 0
-            val newTotalXp = current + xpGained
-            val newLevel = calculateLevel(newTotalXp)
-            
+            val newXp   = current + xpGained
             tx.update(ref, mapOf(
-                "xp" to newTotalXp,
-                "level" to newLevel,
+                "xp"           to newXp,
+                "level"        to calculateLevel(newXp),
                 "lastActiveAt" to Timestamp.now()
             ))
         }.await()
     }
 
+    // 🟠 FIX IMPORTANTE: lógica real de racha por días
     suspend fun updateStreak(uid: String): Result<Unit> = runCatching {
         db.runTransaction { tx ->
-            val ref = col.document(uid)
-            val doc = tx.get(ref)
-            val currentStreak = doc.getLong("streak")?.toInt() ?: 0
+            val ref        = col.document(uid)
+            val doc        = tx.get(ref)
+            val streak     = doc.getLong("streak")?.toInt() ?: 0
             val lastActive = doc.getTimestamp("lastActiveAt")
-            
-            // Lógica de racha básica: si fue ayer, suma. Si fue hoy, nada. Si fue antes de ayer, reinicia.
-            tx.update(ref, "streak", currentStreak + 1)
+            val now        = Timestamp.now()
+
+            val newStreak = if (lastActive == null) {
+                // Primera sesión
+                1
+            } else {
+                val diffMs   = now.toDate().time - lastActive.toDate().time
+                val diffDays = TimeUnit.MILLISECONDS.toDays(diffMs)
+                when {
+                    diffDays == 0L -> streak           // ya practicó hoy, no modifica
+                    diffDays == 1L -> streak + 1       // ayer practicó → racha continúa
+                    else           -> 1                // pasaron más de 1 día → reiniciar
+                }
+            }
+
+            tx.update(ref, mapOf(
+                "streak"       to newStreak,
+                "lastActiveAt" to now
+            ))
         }.await()
     }
 
-    private fun calculateLevel(totalXp: Int): Int {
-        // Ejemplo simple: 1 nivel cada 1000 XP
-        return (totalXp / 1000) + 1
-    }
+    private fun calculateLevel(totalXp: Int): Int = (totalXp / 1000) + 1
 }

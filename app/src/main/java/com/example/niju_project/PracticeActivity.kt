@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class PracticeActivity : AppCompatActivity() {
 
-    private val viewModel: PracticeViewModel by viewModels()
+    // 🔴 FIX CRÍTICO: usar Factory para que SavedStateHandle reciba los extras del Intent
+    private val viewModel: PracticeViewModel by viewModels { PracticeViewModel.Factory }
 
     private lateinit var txtQuestion: TextView
     private lateinit var btnOption1: Button
@@ -38,12 +39,12 @@ class PracticeActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        txtQuestion = findViewById(R.id.txtQuestion)
-        btnOption1 = findViewById(R.id.btnOption1)
-        btnOption2 = findViewById(R.id.btnOption2)
-        btnOption3 = findViewById(R.id.btnOption3)
-        btnNext = findViewById(R.id.btnNext)
-        progressBar = findViewById(R.id.progressBar)
+        txtQuestion  = findViewById(R.id.txtQuestion)
+        btnOption1   = findViewById(R.id.btnOption1)
+        btnOption2   = findViewById(R.id.btnOption2)
+        btnOption3   = findViewById(R.id.btnOption3)
+        btnNext      = findViewById(R.id.btnNext)
+        progressBar  = findViewById(R.id.progressBar)
         layoutContent = findViewById(R.id.layoutContent)
 
         optionButtons = listOf(btnOption1, btnOption2, btnOption3)
@@ -90,46 +91,46 @@ class PracticeActivity : AppCompatActivity() {
 
     private fun displayQuestion(state: PracticeUiState.Question) {
         txtQuestion.text = state.flashcard.spanish
-        
-        // Asignar opciones a los botones (asumiendo que hay 3 opciones máximo en el layout)
+
         state.options.forEachIndexed { index, option ->
             if (index < optionButtons.size) {
                 optionButtons[index].visibility = View.VISIBLE
                 optionButtons[index].text = option
             }
         }
-        
-        // Ocultar botones sobrantes si los hubiera
         for (i in state.options.size until optionButtons.size) {
             optionButtons[i].visibility = View.GONE
         }
     }
 
     private fun showResult(result: PracticeUiState.SessionResult) {
-        // Podrías inflar un diálogo o cambiar el layout
         val message = "¡Sesión terminada!\nCorrectas: ${result.correct}/${result.total}\nXP Ganada: ${result.xpGained}"
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        
-        // Volver al Home tras un pequeño retraso o botón
+
         btnNext.text = "Finalizar"
-        btnNext.setOnClickListener { finish() }
+        btnNext.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            })
+            finish()
+        }
     }
 
     private fun showLoading(show: Boolean) {
-        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        progressBar.visibility  = if (show) View.VISIBLE else View.GONE
         layoutContent.visibility = if (show) View.GONE else View.VISIBLE
     }
 
     private fun updateButtonColors(selected: Button) {
-        optionButtons.forEach { 
-            it.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.darker_gray)) 
+        optionButtons.forEach {
+            it.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.darker_gray))
         }
         selected.backgroundTintList = ColorStateList.valueOf(getColor(R.color.teal_700))
     }
 
     private fun resetButtonColors() {
-        optionButtons.forEach { 
-            it.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.darker_gray)) 
+        optionButtons.forEach {
+            it.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.darker_gray))
         }
     }
 
@@ -142,6 +143,5 @@ class PracticeActivity : AppCompatActivity() {
             startActivity(Intent(this, ContextsActivity::class.java))
             finish()
         }
-        // ... otros botones de nav
     }
 }

@@ -1,7 +1,12 @@
 package com.example.niju_project.ui.practice
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.niju_project.data.model.FlashcardModel
 import com.example.niju_project.data.repository.FlashcardRepository
 import com.example.niju_project.data.repository.ProgressRepository
@@ -30,75 +35,92 @@ sealed class PracticeUiState {
 }
 
 class PracticeViewModel(
-    private val flashcardRepo : FlashcardRepository = FlashcardRepository(),
-    private val progressRepo  : ProgressRepository  = ProgressRepository(),
-    private val userRepo      : UserRepository      = UserRepository(),
-    private val sm2           : SpacedRepetitionService = SpacedRepetitionService()
+    private val savedStateHandle: SavedStateHandle,
+    private val flashcardRepo: FlashcardRepository = FlashcardRepository(),
+    private val progressRepo: ProgressRepository  = ProgressRepository(),
+    private val userRepo: UserRepository           = UserRepository(),
+    private val sm2: SpacedRepetitionService       = SpacedRepetitionService()
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<PracticeUiState>(PracticeUiState.Loading)
     val uiState: StateFlow<PracticeUiState> = _state.asStateFlow()
 
     private val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-    private var allFlashcards = listOf<FlashcardModel>()
-    private var questions = listOf<FlashcardModel>()
-    private var currentIdx = 0
-    private var correct = 0
 
-    init {
-        loadQuestions()
-    }
+    // 🔴 FIX CRÍTICO 1: leer contextId del SavedStateHandle (viene del Intent extra)
+    private val contextId: String? = savedStateHandle["context_id"]
+
+    private var allFlashcards = listOf<FlashcardModel>()
+    private var questions    = listOf<FlashcardModel>()
+    private var currentIdx   = 0
+    private var correct      = 0
+
+    init { loadQuestions() }
 
     private fun loadQuestions() {
         viewModelScope.launch {
             _state.value = PracticeUiState.Loading
-            // Cargamos todas para poder sacar opciones falsas
-            val result = flashcardRepo.getAllFlashcards()
+
+            // 🔴 FIX CRÍTICO 1: usar subcolección si hay contextId, global si no
+            val result = if (!contextId.isNullOrBlank()) {
+                flashcardRepo.getFlashcardsByContext(contextId)
+            } else {
+                flashcardRepo.getAllFlashcards()
+            }
+
             result.onSuccess { list ->
                 if (list.isEmpty()) {
-                    _state.value = PracticeUiState.Error("No hay tarjetas disponibles")
-                } else {
-                    allFlashcards = list
-                    questions = list.shuffled().take(10)
-                    showNextQuestion()
+                    _state.value = PracticeUiState.Error("No hay tarjetas disponibles para esta práctica")
+                    return@onSuccess
                 }
+                allFlashcards = list
+                questions     = list.shuffled().take(10)
+                currentIdx    = 0
+                correct       = 0
+                showNextQuestion()
             }.onFailure {
-                _state.value = PracticeUiState.Error(it.message ?: "Error desconocido")
+                _state.value = PracticeUiState.Error(it.message ?: "Error al cargar tarjetas")
             }
         }
     }
 
     private fun showNextQuestion() {
-        if (currentIdx < questions.size) {
-            val q = questions[currentIdx]
-            
-            // Generar opciones falsas reales usando otras tarjetas
-            val falseOptions = allFlashcards
-                .filter { it.id != q.id }
-                .shuffled()
-                .take(2)
-                .map { it.english }
+        if (currentIdx >= questions.size) { finishSession(); return }
 
-            val options = (falseOptions + q.english).shuffled()
-            
-            _state.value = PracticeUiState.Question(q, options, currentIdx + 1, questions.size)
-        } else {
-            finishSession()
-        }
+        val q = questions[currentIdx]
+
+        // 🔴 FIX CRÍTICO 2: opciones falsas REALES usando otras flashcards del contexto
+        val falseOptions = allFlashcards
+            .filter { it.id != q.id && it.english.isNotBlank() }
+            .shuffled()
+            .take(2)
+            .map { it.english }
+
+        // Rellenar si no hay suficientes distractores
+        val distractors = falseOptions.toMutableList()
+        while (distractors.size < 2) distractors.add("…")
+
+        val options = (distractors + q.english).shuffled()
+
+        _state.value = PracticeUiState.Question(
+            flashcard = q,
+            options   = options,
+            index     = currentIdx + 1,
+            total     = questions.size
+        )
     }
 
     fun submitAnswer(answer: String) {
-        val q = questions[currentIdx]
-        val isCorrect = (answer == q.english)
-        
+        if (currentIdx >= questions.size) return
+        val q         = questions[currentIdx]
+        val isCorrect = answer.trim() == q.english.trim()
         if (isCorrect) correct++
 
         viewModelScope.launch {
             if (uid.isNotEmpty()) {
-                val existingResult = progressRepo.getProgress(uid, q.id)
-                val existing = existingResult.getOrNull()
-                val updatedProgress = sm2.update(existing, q.id, isCorrect)
-                progressRepo.saveProgress(uid, updatedProgress)
+                val existing = progressRepo.getProgress(uid, q.id).getOrNull()
+                val updated  = sm2.update(existing, q.id, isCorrect)
+                progressRepo.saveProgress(uid, updated)
             }
         }
 
@@ -114,6 +136,14 @@ class PracticeViewModel(
                 userRepo.updateStreak(uid)
             }
             _state.value = PracticeUiState.SessionResult(correct, questions.size, xpGained)
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                PracticeViewModel(savedStateHandle = createSavedStateHandle())
+            }
         }
     }
 }
