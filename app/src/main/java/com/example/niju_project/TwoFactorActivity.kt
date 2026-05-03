@@ -31,30 +31,43 @@ import com.google.zxing.qrcode.QRCodeWriter
 class TwoFactorActivity : AppCompatActivity() {
 
     // ── Vistas compartidas ───────────────────────────────────────────────────
-    private lateinit var progressBar:    ProgressBar
-    private lateinit var tvTitle:        TextView
-    private lateinit var tvDescription:  TextView
-    private lateinit var etCode:         EditText
-    private lateinit var btnVerify:      Button
-    private lateinit var tvTimer:        TextView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var tvTitle: TextView
+    private lateinit var tvDescription: TextView
+    private lateinit var etCode: EditText
+    private lateinit var btnVerify: Button
+    private lateinit var tvTimer: TextView
 
     // ── Solo modo SETUP ──────────────────────────────────────────────────────
-    private lateinit var layoutSetup:    LinearLayout
-    private lateinit var ivQr:           ImageView
-    private lateinit var tvSecret:       TextView
-    private lateinit var btnCopySecret:  Button
+    private lateinit var layoutSetup: LinearLayout
+    private lateinit var ivQr: ImageView
+    private lateinit var tvSecret: TextView
+    private lateinit var btnCopySecret: Button
 
     // ── Solo modo VERIFY ─────────────────────────────────────────────────────
-    private lateinit var layoutVerify:   LinearLayout
+    private lateinit var layoutVerify: LinearLayout
 
     // ── Estado ───────────────────────────────────────────────────────────────
     private lateinit var mAuth: FirebaseAuth
-    private var secret:    String = ""
+    private var secret: String = ""
     private var userEmail: String = ""
-    private var mode:      String = "verify"    // "setup" | "verify"
+    private var mode: String = "verify"    // "setup" | "verify"
     private var countdown: CountDownTimer? = null
 
     // ────────────────────────────────────────────────────────────────────────
+    private fun bindViews() {
+        progressBar   = findViewById(R.id.progressBar)
+        tvTitle       = findViewById(R.id.tvTitle)
+        tvDescription = findViewById(R.id.tvDescription)
+        etCode        = findViewById(R.id.etCode)
+        btnVerify     = findViewById(R.id.btnVerify)
+        tvTimer       = findViewById(R.id.tvTimer)
+        layoutSetup   = findViewById(R.id.layoutSetup)
+        ivQr          = findViewById(R.id.ivQr)
+        tvSecret      = findViewById(R.id.tvSecret)
+        btnCopySecret = findViewById(R.id.btnCopySecret)
+        layoutVerify  = findViewById(R.id.layoutVerify)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_two_factor)
@@ -64,11 +77,13 @@ class TwoFactorActivity : AppCompatActivity() {
         secret    = intent.getStringExtra("totp_secret") ?: ""
         userEmail = intent.getStringExtra("user_email")  ?: mAuth.currentUser?.email ?: ""
 
+        // PRIMERO inicializas vistas SIEMPRE
+        bindViews()
+
         if (secret.isEmpty()) {
-            // Si no llega el secret (login con 2FA), lo buscamos en Firestore
             fetchSecretAndContinue()
         } else {
-            bindAndSetup()
+            setupAfterBind()
         }
     }
 
@@ -87,7 +102,7 @@ class TwoFactorActivity : AppCompatActivity() {
                     toast("Error: no se encontró el secret 2FA")
                     goToLogin()
                 } else {
-                    bindAndSetup()
+                    setupAfterBind()
                 }
             }
             .addOnFailureListener {
@@ -98,7 +113,7 @@ class TwoFactorActivity : AppCompatActivity() {
     }
 
     // ── Bind vistas y configurar pantalla según modo ─────────────────────────
-    private fun bindAndSetup() {
+    private fun setupAfterBind() {
         progressBar   = findViewById(R.id.progressBar)
         tvTitle       = findViewById(R.id.tvTitle)
         tvDescription = findViewById(R.id.tvDescription)
