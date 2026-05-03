@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.niju_project">
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permiso para acceder a la galería de fotos -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,7 @@
         android:theme="@style/Theme.NiJu_Project"
         tools:targetApi="31">
 
-        <!-- 🔹 Pantalla inicial (Splash) -->
+        <!-- Splash -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -25,56 +27,80 @@
             </intent-filter>
         </activity>
 
-        <!-- 🔹 Login -->
+        <!-- Login -->
         <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login" />
 
-        <!-- 🔹 Pantalla principal -->
+        <!-- Home -->
         <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"
             android:label="Inicio" />
 
-        <!-- 🔹 Contextos -->
+        <!-- Contextos -->
         <activity
             android:name=".ContextsActivity"
             android:exported="true"
             android:label="Contextos" />
 
-        <!-- 🔹 Ruta de aprendizaje -->
+        <!-- Ruta -->
         <activity
             android:name=".RutaActivity"
             android:exported="true"
             android:label="Tu Ruta" />
 
-        <!-- 🔹 Lecciones -->
+        <!-- Lecciones -->
         <activity
             android:name=".LessonActivity"
             android:exported="true"
             android:label="Lecciones" />
 
-        <!-- 🔹 Prácticas -->
+        <!-- Prácticas -->
         <activity
             android:name=".PracticeActivity"
             android:exported="true"
             android:label="Práctica" />
 
-        <!-- 🔹 Perfil -->
+        <!-- Perfil -->
         <activity
             android:name=".ProfileActivity"
             android:exported="true"
             android:label="Perfil" />
 
+        <!-- Favoritos -->
         <activity
             android:name=".FavoritesActivity"
             android:exported="true"
             android:label="Favoritos" />
+
+        <!-- Registro -->
         <activity android:name=".RegisterActivity" />
+
+        <!-- Autenticación por teléfono -->
         <activity android:name=".PhoneAuthActivity" />
+
+        <!-- 2FA TOTP -->
         <activity android:name=".TwoFactorActivity" />
+
+        <!-- ── NUEVAS ACTIVITIES ────────────────────────────────────────── -->
+
+        <!-- Configuración general -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Configuración"
+            android:parentActivityName=".ProfileActivity" />
+
+        <!-- Editar perfil -->
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:label="Editar perfil"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".SettingsActivity" />
 
     </application>
 

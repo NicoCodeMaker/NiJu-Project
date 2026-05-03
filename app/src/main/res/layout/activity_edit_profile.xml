@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6">
+
+    <!-- HEADER -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rounded_button_bg"
+            android:contentDescription="Atrás"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="Editar perfil"
+            android:textColor="#1F2937"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <!-- ProgressBar global -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- SCROLL -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- ── FOTO DE PERFIL ──────────────────────────────────────── -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivProfilePic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_profile_user"
+                    app:civ_border_color="#5865F2"
+                    app:civ_border_width="3dp" />
+
+                <!-- Badge de cámara -->
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_icon_blue"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_edit"
+                        app:tint="#FFFFFF" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/btnChangePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="8dp"
+                android:text="Cambiar foto"
+                android:textColor="#5865F2"
+                android:textSize="14sp" />
+
+            <!-- ── TARJETA FORMULARIO ─────────────────────────────────── -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- SECCIÓN LABEL -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:letterSpacing="0.08"
+                        android:text="INFORMACIÓN PERSONAL"
+                        android:textAllCaps="true"
+                        android:textColor="#6B7280"
+                        android:textSize="11sp" />
+
+                    <!-- Nombre -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Nombre"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginBottom="16dp"
+                        android:autofillHints="name"
+                        android:background="@drawable/edittext_rounded_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="Tu nombre"
+                        android:inputType="textPersonName|textCapWords"
+                        android:padding="14dp"
+                        android:textColorHint="#9CA3AF"
+                        android:textSize="15sp" />
+
+                    <!-- Correo (solo lectura) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Correo electrónico"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/edittext_rounded_background"
+                        android:enabled="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:inputType="textEmailAddress"
+                        android:padding="14dp"
+                        android:textColor="#9CA3AF"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="El correo se modifica desde Configuración → Cambiar contraseña"
+                        android:textColor="#9CA3AF"
+                        android:textSize="11sp" />
+
+                    <!-- Bio -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Biografía"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etBio"
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/edittext_rounded_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="top|start"
+                        android:hint="Cuéntanos algo sobre ti…"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:maxLines="4"
+                        android:padding="14dp"
+                        android:textColorHint="#9CA3AF"
+                        android:textSize="15sp" />
+
+                    <!-- País -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="País"
+                        android:textColor="#374151"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="@drawable/edittext_rounded_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="Colombia, México, Argentina…"
+                        android:inputType="textCapWords"
+                        android:padding="14dp"
+                        android:textColorHint="#9CA3AF"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Botón guardar -->
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_rounded_background"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Guardar cambios"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
