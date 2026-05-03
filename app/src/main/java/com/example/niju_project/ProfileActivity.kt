@@ -11,6 +11,7 @@ import com.example.niju_project.ui.profile.ProfileUiState
 import com.example.niju_project.ui.profile.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.core.content.ContextCompat
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -65,7 +66,7 @@ class ProfileActivity : AppCompatActivity() {
             if (state is ProfileUiState.Success) {
                 startActivity(Intent(this, TwoFactorActivity::class.java).apply {
                     putExtra("mode", "setup")
-                    putExtra("totp_secret", state.user.totpSecret)
+                    putExtra("totp_secret", state.user.totpSecret ?: "")
                     putExtra("user_email", state.user.email)
                 })
             }
@@ -80,8 +81,8 @@ class ProfileActivity : AppCompatActivity() {
                     is ProfileUiState.Success -> {
                         progressBar.visibility = View.GONE
                         val user = state.user
-                        userNameTextView.text  = user.name
-                        userEmailTextView.text = user.email
+                        userNameTextView.text  = user.name ?: "Usuario"
+                        userEmailTextView.text = user.email ?: "Sin email"
 
                         // 🟡 FIX: mostrar datos de gamificación
                         tvStreak.text = "🔥 ${user.streak} días"
@@ -90,8 +91,10 @@ class ProfileActivity : AppCompatActivity() {
 
                         tv2FAStatus.text = if (user.twoFactorEnabled) "2FA: Activo ✓" else "2FA: Inactivo"
                         tv2FAStatus.setTextColor(
-                            if (user.twoFactorEnabled) getColor(android.R.color.holo_green_dark)
-                            else getColor(android.R.color.holo_orange_dark)
+                            if (user.twoFactorEnabled)
+                                ContextCompat.getColor(this@ProfileActivity, android.R.color.holo_green_dark)
+                            else
+                                ContextCompat.getColor(this@ProfileActivity, android.R.color.holo_orange_dark)
                         )
                     }
                     is ProfileUiState.Error -> {

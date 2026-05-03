@@ -1,13 +1,14 @@
-<!-- CERRAR SESIÓN -->
-<LinearLayout android:id="@+id/btnLogout"
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btnLogout"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:background="@drawable/option_item_bg"
-    android:paddingHorizontal="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingHorizontal="10dp">
 
     <ImageView
         android:layout_width="40dp"
@@ -25,4 +26,5 @@
         android:textColor="#333333"
         android:textSize="16sp"
         android:layout_marginStart="10dp" />
+
 </LinearLayout>

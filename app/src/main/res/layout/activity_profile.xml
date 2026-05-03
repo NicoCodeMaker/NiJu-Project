@@ -238,9 +238,8 @@
                 <!-- CONFIGURACIÓN -->
                 <!-- Configuración general -->
                 <include
-                    android:id="@+id/option_config"
                     layout="@layout/item_option_config" />
-                |           <!-- Configurar / ver estado 2FA -->
+
                 <LinearLayout
                     android:id="@+id/option_setup_2fa"
                     android:layout_width="match_parent"
