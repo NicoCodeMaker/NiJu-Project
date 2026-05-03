@@ -3,6 +3,7 @@
     <string name="app_name">Niju</string>
     <string name="subtitle">English</string>
 
+    <string name="default_web_client_id">1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com</string>
     <string name="loading_text">Loading...</string>
     <string name="desc_top_decoration">Top decoration</string>
     <string name="desc_bottom_decoration">Bottom decoration</string>
