@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inicio"
-            android:textColor="#6B7280"
+            android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Contextos"
-            android:textColor="#6B7280"
+            android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ruta"
-            android:textColor="#6B7280"
+            android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Perfil"
-            android:textColor="#6B7280"
+            android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

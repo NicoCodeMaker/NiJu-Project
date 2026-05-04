@@ -47,7 +47,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="6dp"
                     android:text="¡Hola!"
-                    android:textColor="#1A2340"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium" />
@@ -60,7 +60,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp"
                     android:text="Sigue practicando Ingles hoy"
-                    android:textColor="#4A5568"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="13sp" />
             </RelativeLayout>
 
@@ -81,7 +81,7 @@
                     android:layout_marginEnd="6dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#FFF8EC">
+                    app:cardBackgroundColor="@color/color_card_warm">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -121,7 +121,7 @@
                     android:layout_marginHorizontal="6dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#F0FFF4">
+                    app:cardBackgroundColor="@color/color_card_green">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                     android:layout_marginStart="6dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#EEF2FF">
+                    app:cardBackgroundColor="@color/color_card_blue">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -202,7 +202,7 @@
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -222,7 +222,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Meta diaria"
-                            android:textColor="#1A2340"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -243,7 +243,7 @@
                         android:layout_height="10dp"
                         android:progress="0"
                         android:progressTint="#7B61FF"
-                        android:backgroundTint="#EDE9FE" />
+                        android:backgroundTint="@color/color_card_purple_light" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -255,7 +255,7 @@
                 android:layout_marginTop="22dp"
                 android:layout_marginBottom="10dp"
                 android:text="Lección del día"
-                android:textColor="#1A2340"
+                android:textColor="@color/color_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -322,7 +322,7 @@
                 android:layout_marginTop="22dp"
                 android:layout_marginBottom="10dp"
                 android:text="Accesos rápidos"
-                android:textColor="#1A2340"
+                android:textColor="@color/color_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

@@ -23,12 +23,12 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var switchDarkMode: Switch
 
     // ── Notificaciones ────────────────────────────────────────────────────
-    private lateinit var switchReminders:   Switch
+    private lateinit var switchReminders:    Switch
     private lateinit var switchLessonAlerts: Switch
 
     // ── Privacidad ────────────────────────────────────────────────────────
-    private lateinit var switch2FA:         Switch
-    private lateinit var rowClearHistory:   LinearLayout
+    private lateinit var switch2FA:       Switch
+    private lateinit var rowClearHistory: LinearLayout
 
     // ── App ───────────────────────────────────────────────────────────────
     private lateinit var rowLanguage:       LinearLayout
@@ -39,8 +39,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var tvVersion:         TextView
 
     // ── Sesión ────────────────────────────────────────────────────────────
-    private lateinit var btnLogout:         LinearLayout
-    private lateinit var btnDeleteAccount:  LinearLayout
+    private lateinit var btnLogout:        LinearLayout
+    private lateinit var btnDeleteAccount: LinearLayout
 
     // ── Header ────────────────────────────────────────────────────────────
     private lateinit var btnBack: ImageButton
@@ -87,13 +87,19 @@ class SettingsActivity : AppCompatActivity() {
     private fun loadPreferences() {
         val uid = mAuth.currentUser?.uid ?: ""
 
-        // Tema
-        switchDarkMode.isChecked     = prefs.getBoolean("dark_mode", false)
+        // ── Tema: reflejar el modo actual del sistema ──────────────────────
+        val isDark = prefs.getBoolean("dark_mode", false)
+        // Setear sin listener para no disparar lógica de cambio
+        switchDarkMode.setOnCheckedChangeListener(null)
+        switchDarkMode.isChecked = isDark
+
         // Notificaciones
         switchReminders.isChecked    = prefs.getBoolean("notif_reminders", true)
         switchLessonAlerts.isChecked = prefs.getBoolean("notif_lessons", true)
+
         // Idioma
-        tvCurrentLanguage.text       = prefs.getString("app_language", "Español")
+        tvCurrentLanguage.text = prefs.getString("app_language", "Español")
+
         // Versión
         tvVersion.text = try {
             "v${packageManager.getPackageInfo(packageName, 0).versionName}"
@@ -109,12 +115,11 @@ class SettingsActivity : AppCompatActivity() {
             tvVerifyBadge.setTextColor(getColor(android.R.color.holo_orange_dark))
         }
 
-        // Estado 2FA desde Firestore (fuente de verdad)
+        // Estado 2FA desde Firestore
         if (uid.isNotEmpty()) {
             db.collection("users").document(uid).get()
                 .addOnSuccessListener { doc ->
                     val enabled = doc.getBoolean("twoFactorEnabled") ?: false
-                    // Evitar disparar el listener al setear programáticamente
                     switch2FA.setOnCheckedChangeListener(null)
                     switch2FA.isChecked = enabled
                     setup2FAListener()
@@ -162,13 +167,18 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // ── Apariencia ────────────────────────────────────────────────────
+        // ── Apariencia: Modo Oscuro ────────────────────────────────────────
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            // 1. Guardar preferencia
             prefs.edit().putBoolean("dark_mode", isChecked).apply()
+
+            // 2. Aplicar el modo globalmente (todas las Activities se recrean)
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
                 else AppCompatDelegate.MODE_NIGHT_NO
             )
+            // La Activity se recrea automáticamente por el cambio de configuración.
+            // No es necesario llamar recreate() manualmente.
         }
 
         // ── Notificaciones ────────────────────────────────────────────────
@@ -229,16 +239,11 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Listener del switch 2FA separado para poder reasignarlo sin dispararse
-     * durante la carga inicial del estado desde Firestore.
-     */
     private fun setup2FAListener() {
         switch2FA.setOnCheckedChangeListener { _, isChecked ->
             val uid = mAuth.currentUser?.uid ?: return@setOnCheckedChangeListener
 
             if (isChecked) {
-                // Activar → abrir pantalla de setup con QR
                 db.collection("users").document(uid).get()
                     .addOnSuccessListener { doc ->
                         val secret = doc.getString("totpSecret") ?: ""
@@ -260,7 +265,6 @@ class SettingsActivity : AppCompatActivity() {
                         switch2FA.isChecked = false
                     }
             } else {
-                // Desactivar → confirmar y actualizar Firestore
                 AlertDialog.Builder(this)
                     .setTitle("Desactivar 2FA")
                     .setMessage("Tu cuenta será menos segura. ¿Confirmas que quieres desactivar la verificación en 2 pasos?")
@@ -272,12 +276,11 @@ class SettingsActivity : AppCompatActivity() {
                                 toast("2FA desactivado")
                             }
                             .addOnFailureListener {
-                                switch2FA.isChecked = true   // revertir
+                                switch2FA.isChecked = true
                                 toast("Error al desactivar 2FA")
                             }
                     }
                     .setNegativeButton("Cancelar") { _, _ ->
-                        // El usuario canceló: revertir el switch sin disparar el listener
                         switch2FA.setOnCheckedChangeListener(null)
                         switch2FA.isChecked = true
                         setup2FAListener()
@@ -321,7 +324,6 @@ class SettingsActivity : AppCompatActivity() {
         mAuth.currentUser?.delete()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Borrar documento de Firestore también
                     if (uid != null) {
                         db.collection("users").document(uid).delete()
                     }

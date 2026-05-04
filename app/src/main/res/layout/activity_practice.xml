@@ -14,7 +14,7 @@
         android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F5F2FF"
+        android:background="@color/color_screen_bg_purple"
         android:visibility="gone"
         android:elevation="20dp">
 
@@ -46,7 +46,7 @@
             android:layout_gravity="center"
             app:cardCornerRadius="24dp"
             app:cardElevation="16dp"
-            app:cardBackgroundColor="#FFFFFF">
+            app:cardBackgroundColor="@color/color_surface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="¡Correcto!"
-                    android:textColor="#1A2340"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"
@@ -112,7 +112,7 @@
                     android:id="@+id/btnFinishPractice"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:backgroundTint="#F3F4F6"
+                    android:backgroundTint="@color/color_background"
                     android:text="Finalizar sesión"
                     android:textColor="#4B5563"
                     android:textSize="15sp" />
@@ -139,7 +139,7 @@
             android:layout_gravity="center"
             app:cardCornerRadius="24dp"
             app:cardElevation="16dp"
-            app:cardBackgroundColor="#FFFFFF">
+            app:cardBackgroundColor="@color/color_surface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="¡Casi!"
-                    android:textColor="#1A2340"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="6dp" />
@@ -168,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="La respuesta correcta era:"
-                    android:textColor="#6B7280"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
 
@@ -235,7 +235,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="20dp"
                 android:text="1 / 10"
-                android:textColor="#1A2340"
+                android:textColor="@color/color_text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -276,7 +276,7 @@
                     android:layout_marginBottom="20dp"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="6dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/color_surface">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -311,7 +311,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="¿Cómo se dice en inglés?"
-                                    android:textColor="#6B7280"
+                                    android:textColor="@color/color_text_secondary"
                                     android:textSize="12sp"
                                     android:layout_marginBottom="4dp" />
 
@@ -320,7 +320,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="palabra"
-                                    android:textColor="#1A2340"
+                                    android:textColor="@color/color_text_primary"
                                     android:textSize="26sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium" />
@@ -330,7 +330,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="restaurante"
-                                    android:textColor="#9CA3AF"
+                                    android:textColor="@color/color_text_hint"
                                     android:textSize="13sp"
                                     android:layout_marginTop="2dp" />
                             </LinearLayout>
@@ -341,7 +341,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="⭐ 1"
-                                android:textColor="#6B7280"
+                                android:textColor="@color/color_text_secondary"
                                 android:textSize="13sp"
                                 android:background="@drawable/bg_contexto_default"
                                 android:paddingHorizontal="10dp"
@@ -355,7 +355,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Elige la traducción correcta"
-                    android:textColor="#6B7280"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="13sp"
                     android:layout_marginBottom="12dp"
                     android:layout_gravity="center_horizontal" />
@@ -365,8 +365,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginBottom="10dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:textColor="#1A2340"
+                    android:backgroundTint="@color/color_surface"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="15sp"
                     android:textAllCaps="false"
                     android:text="Opción 1"
@@ -378,8 +378,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginBottom="10dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:textColor="#1A2340"
+                    android:backgroundTint="@color/color_surface"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="15sp"
                     android:textAllCaps="false"
                     android:text="Opción 2"
@@ -391,8 +391,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginBottom="16dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:textColor="#1A2340"
+                    android:backgroundTint="@color/color_surface"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="15sp"
                     android:textAllCaps="false"
                     android:text="Opción 3"
@@ -407,7 +407,7 @@
                     android:backgroundTint="#D1D5DB"
                     android:text="Confirmar"
                     android:textAllCaps="false"
-                    android:textColor="#9CA3AF"
+                    android:textColor="@color/color_text_hint"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:enabled="false" />

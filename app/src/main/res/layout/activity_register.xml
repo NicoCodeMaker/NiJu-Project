@@ -71,7 +71,7 @@
             android:layout_marginBottom="32dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="8dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/color_surface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pageHeader">
@@ -103,7 +103,7 @@
                     android:hint="Tu nombre"
                     android:inputType="textPersonName|textCapWords"
                     android:padding="14dp"
-                    android:textColorHint="#9CA3AF"
+                    android:textColorHint="@color/color_text_hint"
                     android:textSize="15sp" />
 
                 <!-- EMAIL -->
@@ -127,7 +127,7 @@
                     android:hint="ejemplo@correo.com"
                     android:inputType="textEmailAddress"
                     android:padding="14dp"
-                    android:textColorHint="#9CA3AF"
+                    android:textColorHint="@color/color_text_hint"
                     android:textSize="15sp" />
 
                 <!-- CONTRASEÑA -->
@@ -156,7 +156,7 @@
                         android:inputType="textPassword"
                         android:paddingStart="14dp"
                         android:paddingEnd="48dp"
-                        android:textColorHint="#9CA3AF"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="15sp" />
 
                     <ImageView
@@ -177,7 +177,7 @@
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="• Mínimo 8 caracteres  • Al menos 1 número  • Al menos 1 mayúscula"
-                    android:textColor="#9CA3AF"
+                    android:textColor="@color/color_text_hint"
                     android:textSize="11sp" />
 
                 <!-- CONFIRMAR CONTRASEÑA -->
@@ -206,7 +206,7 @@
                         android:inputType="textPassword"
                         android:paddingStart="14dp"
                         android:paddingEnd="48dp"
-                        android:textColorHint="#9CA3AF"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="15sp" />
 
                     <ImageView
@@ -228,7 +228,7 @@
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="Acepto los Términos y Condiciones y la Política de Privacidad"
-                    android:textColor="#6B7280"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="13sp" />
 
                 <!-- BOTÓN REGISTRARSE -->

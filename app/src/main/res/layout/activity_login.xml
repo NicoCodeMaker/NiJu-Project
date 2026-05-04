@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/subtitle"
-                    android:textColor="#6B7280"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="35sp" />
             </LinearLayout>
 
@@ -93,7 +93,7 @@
             android:layout_marginBottom="32dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="8dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/color_surface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header"
@@ -112,7 +112,7 @@
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/roboto_bold"
                     android:text="Iniciar sesión"
-                    android:textColor="#1F2937"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="22sp" />
 
                 <!-- EMAIL -->
@@ -136,7 +136,7 @@
                     android:hint="ejemplo@correo.com"
                     android:inputType="textEmailAddress"
                     android:padding="14dp"
-                    android:textColorHint="#9CA3AF"
+                    android:textColorHint="@color/color_text_hint"
                     android:textSize="15sp" />
 
                 <!-- CONTRASEÑA -->
@@ -165,7 +165,7 @@
                         android:inputType="textPassword"
                         android:paddingStart="14dp"
                         android:paddingEnd="48dp"
-                        android:textColorHint="#9CA3AF"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="15sp" />
 
                     <ImageView
@@ -229,7 +229,7 @@
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_weight="1"
-                        android:background="#E5E7EB" />
+                        android:background="@color/color_border" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -237,14 +237,14 @@
                         android:layout_marginHorizontal="12dp"
                         android:fontFamily="@font/roboto_regular"
                         android:text="o continúa con"
-                        android:textColor="#9CA3AF"
+                        android:textColor="@color/color_text_hint"
                         android:textSize="13sp" />
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_weight="1"
-                        android:background="#E5E7EB" />
+                        android:background="@color/color_border" />
                 </LinearLayout>
 
                 <!-- BOTONES SOCIALES -->

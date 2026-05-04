@@ -52,7 +52,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
                     android:text="Elige un contexto"
-                    android:textColor="#1A2340"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium" />
@@ -64,7 +64,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
                     android:text="¿Dónde quieres practicar hoy?"
-                    android:textColor="#4A5568"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="13sp" />
             </RelativeLayout>
 
@@ -77,7 +77,7 @@
                 android:layout_marginBottom="4dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#EEF2FF">
+                app:cardBackgroundColor="@color/color_card_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"

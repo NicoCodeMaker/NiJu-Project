@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6">
+    android:background="@color/color_background">
 
     <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="#FFFFFF"
+        android:background="@color/color_header_bg"
         android:elevation="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -32,7 +32,7 @@
             android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:text="Configuración"
-            android:textColor="#1F2937"
+            android:textColor="@color/color_text_primary"
             android:textSize="18sp" />
 
         <!-- Espaciador para centrar el título -->
@@ -64,7 +64,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Cuenta"
-                android:textColor="#6B7280"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1" />
@@ -75,7 +75,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -112,7 +112,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Editar perfil"
-                                android:textColor="#1F2937"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -120,7 +120,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
                                 android:text="Nombre, foto y bio"
-                                android:textColor="#9CA3AF"
+                                android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -132,7 +132,7 @@
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Cambiar contraseña -->
                     <LinearLayout
@@ -159,7 +159,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Cambiar contraseña"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
@@ -170,7 +170,7 @@
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Verificar correo -->
                     <LinearLayout
@@ -197,7 +197,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Verificar correo"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <TextView
@@ -223,7 +223,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Apariencia"
-                android:textColor="#6B7280"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1" />
@@ -234,7 +234,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -258,15 +258,15 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
                         android:text="Modo oscuro"
-                        android:textColor="#1F2937"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="15sp" />
 
                     <Switch
                         android:id="@+id/switchDarkMode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:thumbTint="#5865F2"
-                        android:trackTint="#C7D2FE" />
+                        android:thumbTint="@color/color_switch_thumb"
+                        android:trackTint="@color/color_switch_track" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -280,7 +280,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Notificaciones"
-                android:textColor="#6B7280"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1" />
@@ -291,7 +291,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -326,7 +326,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Recordatorio diario"
-                                android:textColor="#1F2937"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -334,7 +334,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
                                 android:text="Practicar cada día"
-                                android:textColor="#9CA3AF"
+                                android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -342,12 +342,12 @@
                             android:id="@+id/switchReminders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumbTint="#5865F2"
-                            android:trackTint="#C7D2FE" />
+                            android:thumbTint="@color/color_switch_thumb"
+                            android:trackTint="@color/color_switch_track" />
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Alertas de lección -->
                     <LinearLayout
@@ -377,7 +377,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Alertas de lección"
-                                android:textColor="#1F2937"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -385,7 +385,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
                                 android:text="Nueva lección disponible"
-                                android:textColor="#9CA3AF"
+                                android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -393,8 +393,8 @@
                             android:id="@+id/switchLessonAlerts"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumbTint="#5865F2"
-                            android:trackTint="#C7D2FE" />
+                            android:thumbTint="@color/color_switch_thumb"
+                            android:trackTint="@color/color_switch_track" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -410,7 +410,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Privacidad y seguridad"
-                android:textColor="#6B7280"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1" />
@@ -421,7 +421,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -456,7 +456,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Verificación en 2 pasos"
-                                android:textColor="#1F2937"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -464,7 +464,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
                                 android:text="Capa extra de seguridad"
-                                android:textColor="#9CA3AF"
+                                android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -472,12 +472,12 @@
                             android:id="@+id/switch2FA"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumbTint="#5865F2"
-                            android:trackTint="#C7D2FE" />
+                            android:thumbTint="@color/color_switch_thumb"
+                            android:trackTint="@color/color_switch_track" />
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Borrar historial -->
                     <LinearLayout
@@ -504,7 +504,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Borrar historial de lecciones"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
@@ -527,7 +527,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Acerca de la app"
-                android:textColor="#6B7280"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1" />
@@ -538,7 +538,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -570,7 +570,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Idioma"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <TextView
@@ -579,7 +579,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
                             android:text="Español"
-                            android:textColor="#9CA3AF"
+                            android:textColor="@color/color_text_hint"
                             android:textSize="14sp"
                             android:layout_marginEnd="8dp" />
 
@@ -591,7 +591,7 @@
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Términos y condiciones -->
                     <LinearLayout
@@ -618,7 +618,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Términos y condiciones"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
@@ -629,7 +629,7 @@
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Política de privacidad -->
                     <LinearLayout
@@ -656,7 +656,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Política de privacidad"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
@@ -667,7 +667,7 @@
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
 
                     <!-- Versión -->
                     <LinearLayout
@@ -694,7 +694,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Versión"
-                            android:textColor="#1F2937"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <TextView
@@ -703,7 +703,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
                             android:text="v1.0"
-                            android:textColor="#9CA3AF"
+                            android:textColor="@color/color_text_hint"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -720,7 +720,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Sesión"
-                android:textColor="#6B7280"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.1" />
@@ -731,7 +731,7 @@
                 android:layout_marginBottom="8dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <!-- Cerrar sesión -->
                 <LinearLayout
@@ -776,7 +776,7 @@
                 android:layout_marginBottom="32dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFF5F5">
+                app:cardBackgroundColor="@color/color_danger_surface">
 
                 <LinearLayout
                     android:id="@+id/btnDeleteAccount"

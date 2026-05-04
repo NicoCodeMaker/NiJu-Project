@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Descripción"
         android:textSize="11sp"
-        android:textColor="#6B7280"
+        android:textColor="@color/color_text_secondary"
         android:ellipsize="end"
         android:maxLines="1"/>
 </LinearLayout>

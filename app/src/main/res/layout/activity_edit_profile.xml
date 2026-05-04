@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6">
+    android:background="@color/color_background">
 
     <!-- HEADER -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="#FFFFFF"
+        android:background="@color/color_surface"
         android:elevation="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -32,7 +32,7 @@
             android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:text="Editar perfil"
-            android:textColor="#1F2937"
+            android:textColor="@color/color_text_primary"
             android:textSize="18sp" />
 
         <View
@@ -110,7 +110,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                         android:letterSpacing="0.08"
                         android:text="INFORMACIÓN PERSONAL"
                         android:textAllCaps="true"
-                        android:textColor="#6B7280"
+                        android:textColor="@color/color_text_secondary"
                         android:textSize="11sp" />
 
                     <!-- Nombre -->
@@ -151,7 +151,7 @@
                         android:hint="Tu nombre"
                         android:inputType="textPersonName|textCapWords"
                         android:padding="14dp"
-                        android:textColorHint="#9CA3AF"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="15sp" />
 
                     <!-- Correo (solo lectura) -->
@@ -174,7 +174,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:inputType="textEmailAddress"
                         android:padding="14dp"
-                        android:textColor="#9CA3AF"
+                        android:textColor="@color/color_text_hint"
                         android:textSize="15sp" />
 
                     <TextView
@@ -183,7 +183,7 @@
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/roboto_regular"
                         android:text="El correo se modifica desde Configuración → Cambiar contraseña"
-                        android:textColor="#9CA3AF"
+                        android:textColor="@color/color_text_hint"
                         android:textSize="11sp" />
 
                     <!-- Bio -->
@@ -208,7 +208,7 @@
                         android:inputType="textMultiLine|textCapSentences"
                         android:maxLines="4"
                         android:padding="14dp"
-                        android:textColorHint="#9CA3AF"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="15sp" />
 
                     <!-- País -->
@@ -230,7 +230,7 @@
                         android:hint="Colombia, México, Argentina…"
                         android:inputType="textCapWords"
                         android:padding="14dp"
-                        android:textColorHint="#9CA3AF"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="15sp" />
 
                 </LinearLayout>

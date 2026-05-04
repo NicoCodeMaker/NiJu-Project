@@ -46,7 +46,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
                     android:text="Mi Ruta"
-                    android:textColor="#1A2340"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium" />
@@ -58,7 +58,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
                     android:text="Tu camino de aprendizaje"
-                    android:textColor="#4A5568"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="13sp" />
             </RelativeLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_marginBottom="4dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Progreso general"
-                            android:textColor="#1A2340"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
                 android:layout_marginTop="22dp"
                 android:layout_marginBottom="10dp"
                 android:text="Contextos"
-                android:textColor="#1A2340"
+                android:textColor="@color/color_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -154,7 +154,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="12dp"
                 android:text="Etapas"
-                android:textColor="#1A2340"
+                android:textColor="@color/color_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -166,7 +166,7 @@
                 android:layout_marginBottom="14dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:id="@+id/points_container"
@@ -203,7 +203,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#EEF2FF"
+                            android:background="@color/color_ruta_completed"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
                             android:text="Etapa 1"
@@ -216,7 +216,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Restaurant"
-                            android:textColor="#1A2340"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -225,7 +225,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Restaurante"
-                            android:textColor="#6B7280"
+                            android:textColor="@color/color_text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
 
@@ -248,7 +248,7 @@
                 android:layout_marginBottom="14dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:id="@+id/points_container2"
@@ -283,7 +283,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#F0FFF4"
+                            android:background="@color/color_ruta_active"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
                             android:text="Etapa 2"
@@ -296,7 +296,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Airport"
-                            android:textColor="#1A2340"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -305,7 +305,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Aeropuerto"
-                            android:textColor="#6B7280"
+                            android:textColor="@color/color_text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
 
@@ -327,7 +327,7 @@
                 android:layout_marginBottom="36dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/color_surface">
 
                 <LinearLayout
                     android:id="@+id/points_container3"
@@ -362,7 +362,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#FFF8EC"
+                            android:background="@color/color_ruta_locked"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
                             android:text="Etapa 3"
@@ -375,7 +375,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Supermarket"
-                            android:textColor="#1A2340"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -384,7 +384,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Supermercado"
-                            android:textColor="#6B7280"
+                            android:textColor="@color/color_text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D1F3FF"
+    android:background="@color/color_screen_bg_splash"
     tools:context=".SplashActivity">
 
     <!-- Form superior -->
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/loading_text"
-        android:textColor="#6B7280"
+        android:textColor="@color/color_text_secondary"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/progressBar"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/subtitle"
-            android:textColor="#6B7280"
+            android:textColor="@color/color_text_secondary"
             android:textSize="35sp" />
     </LinearLayout>
 

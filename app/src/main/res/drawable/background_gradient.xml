@@ -1,7 +1,7 @@
-<!-- res/drawable/background_gradient.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="#F5F2FF"
-        android:endColor="#FFFFFF"
+        android:startColor="@color/color_gradient_start"
+        android:endColor="@color/color_gradient_end"
         android:angle="270"/>
 </shape>
