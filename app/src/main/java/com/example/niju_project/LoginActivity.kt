@@ -16,9 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.auth.FirebaseAuth
+import androidx.activity.viewModels
+import com.example.niju_project.ui.LoginState
+import com.example.niju_project.ui.LoginViewModel
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnPhone:         Button
     private lateinit var tvForgotPassword: TextView
 
-    private lateinit var mAuth:             FirebaseAuth
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var credentialManager: CredentialManager
     private var isPasswordVisible = false
 
@@ -45,13 +46,38 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mAuth             = FirebaseAuth.getInstance()
         credentialManager = CredentialManager.create(this)
 
         bindViews()
         setupListeners()
+        setupObservers()
 
-        if (mAuth.currentUser != null) checkTwoFactorAndProceed()
+        viewModel.checkCurrentSession()
+    }
+
+    private fun setupObservers() {
+        viewModel.loginState.observe(this) { state ->
+            when (state) {
+                is LoginState.Loading -> showLoading(true)
+                is LoginState.Success -> {
+                    showLoading(false)
+                    goToMain()
+                }
+                is LoginState.Require2FA -> {
+                    showLoading(false)
+                    startActivity(Intent(this, TwoFactorActivity::class.java).apply {
+                        putExtra("mode", "verify")
+                        putExtra("totp_secret", state.secret)
+                        putExtra("user_email", state.email)
+                    })
+                }
+                is LoginState.Error -> {
+                    showLoading(false)
+                    toast(state.message)
+                }
+                else -> showLoading(false)
+            }
+        }
     }
 
     private fun bindViews() {
@@ -87,31 +113,20 @@ class LoginActivity : AppCompatActivity() {
 
     // ── Email / Password ─────────────────────────────────────────────────────
     private fun loginWithEmail() {
-        val email    = etEmail.text.toString().trim()
-        val password = etPassword.text.toString().trim()
-        if (!validate(email, password)) return
-        showLoading(true)
-
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    checkTwoFactorAndProceed()
-                } else {
-                    showLoading(false)
-                    toast("Error: ${task.exception?.message}")
-                }
-            }
+        viewModel.loginWithEmail(
+            etEmail.text.toString().trim(),
+            etPassword.text.toString().trim()
+        )
     }
 
     // ── Google Sign-In con Credential Manager (API moderna) ──────────────────
     private fun signInWithGoogle() {
         showLoading(true)
 
-        // Construir la opción de Google ID con el web client ID (type 3 en google-services.json)
         val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)   // false = mostrar TODAS las cuentas Google
+            .setFilterByAuthorizedAccounts(false)
             .setServerClientId(getString(R.string.default_web_client_id))
-            .setAutoSelectEnabled(false)            // false = siempre mostrar el picker
+            .setAutoSelectEnabled(false)
             .build()
 
         val request = GetCredentialRequest.Builder()
@@ -143,15 +158,7 @@ class LoginActivity : AppCompatActivity() {
                             .idToken
 
                         val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
-                        mAuth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    checkTwoFactorAndProceed()
-                                } else {
-                                    showLoading(false)
-                                    toast("Error autenticando con Google")
-                                }
-                            }
+                        viewModel.loginWithCredential(firebaseCredential)
                     } catch (e: GoogleIdTokenParsingException) {
                         showLoading(false)
                         Log.e(TAG, "Invalid Google ID token", e)
@@ -171,81 +178,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // ── Verificar 2FA y crear doc en Firestore si no existe ─────────────────
-    private fun checkTwoFactorAndProceed() {
-        val user = mAuth.currentUser
-        val uid  = user?.uid ?: run { showLoading(false); return }
-        val db   = FirebaseFirestore.getInstance()
-        showLoading(true)
-
-        db.collection("users").document(uid)
-            .get()
-            .addOnSuccessListener { doc ->
-                if (!doc.exists()) {
-                    // Primer login con Google: crear documento en Firestore
-                    val newUser = hashMapOf(
-                        "uid"              to uid,
-                        "email"            to (user.email ?: ""),
-                        "name"             to (user.displayName ?: ""),
-                        "photoUrl"         to (user.photoUrl?.toString() ?: ""),
-                        "twoFactorEnabled" to false,
-                        "totpSecret"       to "",
-                        "xp"               to 0,
-                        "level"            to 1,
-                        "streak"           to 0,
-                        "dailyGoal"        to 50,
-                        "lastActiveAt"     to null
-                    )
-                    db.collection("users").document(uid)
-                        .set(newUser)
-                        .addOnSuccessListener { showLoading(false); goToMain() }
-                        .addOnFailureListener {
-                            showLoading(false)
-                            toast("Error creando usuario")
-                            mAuth.signOut()
-                        }
-                } else {
-                    val twoFAEnabled = doc.getBoolean("twoFactorEnabled") ?: false
-                    val totpSecret   = doc.getString("totpSecret") ?: ""
-                    showLoading(false)
-
-                    if (twoFAEnabled && totpSecret.isNotEmpty()) {
-                        startActivity(Intent(this, TwoFactorActivity::class.java).apply {
-                            putExtra("mode", "verify")
-                            putExtra("totp_secret", totpSecret)
-                            putExtra("user_email", user.email ?: "")
-                        })
-                    } else {
-                        goToMain()
-                    }
-                }
-            }
-            .addOnFailureListener {
-                showLoading(false)
-                toast("Error validando usuario")
-                mAuth.signOut()
-            }
-    }
-
     // ── Recuperar contraseña ─────────────────────────────────────────────────
     private fun sendPasswordReset() {
         val email = etEmail.text.toString().trim()
         if (email.isEmpty()) { etEmail.error = "Ingresa tu correo primero"; return }
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
-            if (task.isSuccessful) toast("Correo de recuperación enviado")
-            else toast("Error: ${task.exception?.message}")
-        }
-    }
-
-    // ── Validación ───────────────────────────────────────────────────────────
-    private fun validate(email: String, password: String): Boolean {
-        if (email.isEmpty()) { etEmail.error = "Ingresa un correo"; return false }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.error = "Correo inválido"; return false
-        }
-        if (password.isEmpty()) { etPassword.error = "Ingresa una contraseña"; return false }
-        if (password.length < 6) { etPassword.error = "Mínimo 6 caracteres"; return false }
-        return true
+        viewModel.sendPasswordReset(email)
+        toast("Si el correo existe, se enviarán instrucciones")
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────

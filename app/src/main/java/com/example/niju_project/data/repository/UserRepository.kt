@@ -1,6 +1,7 @@
 package com.example.niju_project.data.repository
 
 import com.example.niju_project.data.model.UserModel
+import com.example.niju_project.utils.EncryptionUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -11,12 +12,26 @@ class UserRepository {
     private val db  = FirebaseFirestore.getInstance()
     private val col = db.collection("users")
 
+    // Crear o actualizar perfil con cifrado del secreto TOTP (Fase 6)
     suspend fun upsertUser(user: UserModel): Result<Unit> = runCatching {
-        col.document(user.uid).set(user, SetOptions.merge()).await()
+        val userToSave = user.copy(totpSecret = EncryptionUtils.encrypt(user.totpSecret))
+        col.document(user.uid).set(userToSave, SetOptions.merge()).await()
     }
 
+    // Leer perfil y descifrar el secreto TOTP automáticamente
     suspend fun getCurrentUser(uid: String): Result<UserModel?> = runCatching {
-        col.document(uid).get().await().toObject(UserModel::class.java)
+        val doc = col.document(uid).get().await()
+        if (!doc.exists()) return@runCatching null
+
+        val user = doc.toObject(UserModel::class.java) ?: return@runCatching null
+
+        val decryptedSecret = try {
+            EncryptionUtils.decrypt(user.totpSecret)
+        } catch (e: Exception) {
+            user.totpSecret
+        }
+
+        user.copy(totpSecret = decryptedSecret)
     }
 
     suspend fun addXp(uid: String, xpGained: Int): Result<Unit> = runCatching {
@@ -61,5 +76,39 @@ class UserRepository {
         }.await()
     }
 
+    suspend fun updateTwoFactorEnabled(uid: String, enabled: Boolean): Result<Unit> = runCatching {
+        col.document(uid).update("twoFactorEnabled", enabled).await()
+    }
+
+    suspend fun checkOrCreateUser(firebaseUser: com.google.firebase.auth.FirebaseUser): Result<UserModel> = runCatching {
+        val doc = col.document(firebaseUser.uid).get().await()
+
+        if (doc.exists()) {
+            val user = doc.toObject(UserModel::class.java) ?: UserModel(uid = firebaseUser.uid)
+
+            val decryptedSecret = try {
+                EncryptionUtils.decrypt(user.totpSecret)
+            } catch (e: Exception) {
+                ""
+            }
+
+            user.copy(totpSecret = decryptedSecret)
+        } else {
+            val newUser = UserModel(
+                uid = firebaseUser.uid,
+                email = firebaseUser.email ?: "",
+                name = firebaseUser.displayName ?: ""
+            )
+            col.document(firebaseUser.uid).set(newUser).await()
+            newUser
+        }
+    }
+
     private fun calculateLevel(totalXp: Int): Int = (totalXp / 1000) + 1
+
+    suspend fun saveTotpSecret(uid: String, secret: String): Result<Unit> = runCatching {
+        col.document(uid)
+            .set(mapOf("totpSecret" to EncryptionUtils.encrypt(secret)), SetOptions.merge())
+            .await()
+    }
 }

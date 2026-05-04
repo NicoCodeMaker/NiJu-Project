@@ -79,6 +79,10 @@ class ContextsActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfileActivity::class.java))
             finish()
         }
+        findViewById<LinearLayout>(R.id.navRuta).setOnClickListener {
+            startActivity(Intent(this, RutaActivity::class.java))
+            finish()
+        }
 
         btnStartSession.setOnClickListener {
             startActivity(Intent(this, PracticeActivity::class.java))

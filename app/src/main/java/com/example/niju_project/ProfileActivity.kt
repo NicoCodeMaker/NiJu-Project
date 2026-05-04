@@ -187,8 +187,6 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModel.uiState.value is ProfileUiState.Error) {
-            viewModel.loadUserProfile()
-        }
+        viewModel.loadUserProfile() // 🔥 SIEMPRE recarga
     }
 }

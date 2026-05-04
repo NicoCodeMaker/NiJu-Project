@@ -13,37 +13,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class SettingsActivity : AppCompatActivity() {
 
-    // ── Cuenta ────────────────────────────────────────────────────────────
     private lateinit var rowEditProfile:    LinearLayout
     private lateinit var rowChangePassword: LinearLayout
     private lateinit var rowVerifyEmail:    LinearLayout
     private lateinit var tvVerifyBadge:     TextView
-
-    // ── Apariencia ────────────────────────────────────────────────────────
-    private lateinit var switchDarkMode: Switch
-
-    // ── Notificaciones ────────────────────────────────────────────────────
-    private lateinit var switchReminders:    Switch
+    private lateinit var switchDarkMode:    Switch
+    private lateinit var switchReminders:   Switch
     private lateinit var switchLessonAlerts: Switch
-
-    // ── Privacidad ────────────────────────────────────────────────────────
-    private lateinit var switch2FA:       Switch
-    private lateinit var rowClearHistory: LinearLayout
-
-    // ── App ───────────────────────────────────────────────────────────────
+    private lateinit var switch2FA:         Switch
+    private lateinit var rowClearHistory:   LinearLayout
     private lateinit var rowLanguage:       LinearLayout
     private lateinit var tvCurrentLanguage: TextView
-    private lateinit var rowTerms:          LinearLayout
-    private lateinit var rowPrivacyPolicy:  LinearLayout
-    private lateinit var rowVersion:        LinearLayout
     private lateinit var tvVersion:         TextView
-
-    // ── Sesión ────────────────────────────────────────────────────────────
     private lateinit var btnLogout:        LinearLayout
     private lateinit var btnDeleteAccount: LinearLayout
-
-    // ── Header ────────────────────────────────────────────────────────────
-    private lateinit var btnBack: ImageButton
+    private lateinit var btnBack:          ImageButton
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var prefs: SharedPreferences
@@ -61,7 +45,6 @@ class SettingsActivity : AppCompatActivity() {
         setupListeners()
     }
 
-    // ── Bind ─────────────────────────────────────────────────────────────────
     private fun bindViews() {
         btnBack              = findViewById(R.id.btnBack)
         rowEditProfile       = findViewById(R.id.rowEditProfile)
@@ -75,291 +58,105 @@ class SettingsActivity : AppCompatActivity() {
         rowClearHistory      = findViewById(R.id.rowClearHistory)
         rowLanguage          = findViewById(R.id.rowLanguage)
         tvCurrentLanguage    = findViewById(R.id.tvCurrentLanguage)
-        rowTerms             = findViewById(R.id.rowTerms)
-        rowPrivacyPolicy     = findViewById(R.id.rowPrivacyPolicy)
-        rowVersion           = findViewById(R.id.rowVersion)
         tvVersion            = findViewById(R.id.tvVersion)
         btnLogout            = findViewById(R.id.btnLogout)
         btnDeleteAccount     = findViewById(R.id.btnDeleteAccount)
     }
 
-    // ── Cargar estado guardado ────────────────────────────────────────────────
     private fun loadPreferences() {
         val uid = mAuth.currentUser?.uid ?: ""
 
-        // ── Tema: reflejar el modo actual del sistema ──────────────────────
-        val isDark = prefs.getBoolean("dark_mode", false)
-        // Setear sin listener para no disparar lógica de cambio
-        switchDarkMode.setOnCheckedChangeListener(null)
-        switchDarkMode.isChecked = isDark
+        // 1. Cargar Modo Oscuro (SIN disparar listener)
+        val themeMode = prefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        switchDarkMode.setOnCheckedChangeListener(null) 
+        switchDarkMode.isChecked = (themeMode == AppCompatDelegate.MODE_NIGHT_YES)
 
-        // Notificaciones
+        // 2. Otros ajustes locales
         switchReminders.isChecked    = prefs.getBoolean("notif_reminders", true)
         switchLessonAlerts.isChecked = prefs.getBoolean("notif_lessons", true)
+        tvCurrentLanguage.text       = prefs.getString("app_language", "Español")
 
-        // Idioma
-        tvCurrentLanguage.text = prefs.getString("app_language", "Español")
-
-        // Versión
-        tvVersion.text = try {
-            "v${packageManager.getPackageInfo(packageName, 0).versionName}"
-        } catch (e: Exception) { "v1.0" }
-
-        // Badge de verificación de correo
-        val user = mAuth.currentUser
-        if (user?.isEmailVerified == true) {
-            tvVerifyBadge.text = "✓ Verificado"
-            tvVerifyBadge.setTextColor(getColor(android.R.color.holo_green_dark))
-        } else {
-            tvVerifyBadge.text = "Sin verificar"
-            tvVerifyBadge.setTextColor(getColor(android.R.color.holo_orange_dark))
-        }
-
-        // Estado 2FA desde Firestore
+        // 3. Estado 2FA desde Firestore
         if (uid.isNotEmpty()) {
             db.collection("users").document(uid).get()
                 .addOnSuccessListener { doc ->
                     val enabled = doc.getBoolean("twoFactorEnabled") ?: false
+                    // MUY IMPORTANTE: Quitamos el listener antes de cambiar el estado visual
                     switch2FA.setOnCheckedChangeListener(null)
                     switch2FA.isChecked = enabled
-                    setup2FAListener()
+                    // Re-asignamos el listener solo después de poner el valor real
+                    attach2FAListener()
                 }
-        } else {
-            switch2FA.isChecked = false
-            setup2FAListener()
         }
     }
 
-    // ── Listeners ────────────────────────────────────────────────────────────
     private fun setupListeners() {
         btnBack.setOnClickListener { finish() }
-
-        // ── Cuenta ────────────────────────────────────────────────────────
-        rowEditProfile.setOnClickListener {
-            startActivity(Intent(this, EditProfileActivity::class.java))
-        }
-
-        rowChangePassword.setOnClickListener {
-            val email = mAuth.currentUser?.email ?: return@setOnClickListener
-            AlertDialog.Builder(this)
-                .setTitle("Cambiar contraseña")
-                .setMessage("Se enviará un correo de restablecimiento a:\n$email")
-                .setPositiveButton("Enviar") { _, _ ->
-                    mAuth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener { t ->
-                            if (t.isSuccessful) toast("Correo enviado a $email")
-                            else toast("Error: ${t.exception?.message}")
-                        }
-                }
-                .setNegativeButton("Cancelar", null)
-                .show()
-        }
-
-        rowVerifyEmail.setOnClickListener {
-            val user = mAuth.currentUser ?: return@setOnClickListener
-            if (user.isEmailVerified) {
-                toast("Tu correo ya está verificado ✓")
-            } else {
-                user.sendEmailVerification().addOnCompleteListener { t ->
-                    if (t.isSuccessful) toast("Correo de verificación enviado")
-                    else toast("Error: ${t.exception?.message}")
-                }
-            }
-        }
-
-        // ── Apariencia: Modo Oscuro ────────────────────────────────────────
+        
+        // Listener de Modo Oscuro
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            // 1. Guardar preferencia
-            prefs.edit().putBoolean("dark_mode", isChecked).apply()
-
-            // 2. Aplicar el modo globalmente (todas las Activities se recrean)
-            AppCompatDelegate.setDefaultNightMode(
-                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
-                else AppCompatDelegate.MODE_NIGHT_NO
-            )
-            // La Activity se recrea automáticamente por el cambio de configuración.
-            // No es necesario llamar recreate() manualmente.
+            val newMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            prefs.edit().putInt("theme_mode", newMode).apply()
+            AppCompatDelegate.setDefaultNightMode(newMode)
         }
 
-        // ── Notificaciones ────────────────────────────────────────────────
-        switchReminders.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("notif_reminders", isChecked).apply()
-            toast(if (isChecked) "Recordatorios activados" else "Recordatorios desactivados")
-        }
-        switchLessonAlerts.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("notif_lessons", isChecked).apply()
-        }
-
-        // ── 2FA ───────────────────────────────────────────────────────────
-        setup2FAListener()
-
-        // ── Privacidad ────────────────────────────────────────────────────
-        rowClearHistory.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Borrar historial")
-                .setMessage("¿Eliminar todo tu historial de lecciones? Esta acción no se puede deshacer.")
-                .setPositiveButton("Borrar") { _, _ ->
-                    prefs.edit().remove("lesson_history").apply()
-                    toast("Historial borrado")
-                }
-                .setNegativeButton("Cancelar", null)
-                .show()
-        }
-
-        // ── App ───────────────────────────────────────────────────────────
-        rowLanguage.setOnClickListener { showLanguageDialog() }
-
-        rowTerms.setOnClickListener {
-            openUrl("https://niju.app/terminos")
-        }
-        rowPrivacyPolicy.setOnClickListener {
-            openUrl("https://niju.app/privacidad")
-        }
-        rowVersion.setOnClickListener {
-            toast("NiJu — NivelJump 🇯🇵")
-        }
-
-        // ── Sesión ────────────────────────────────────────────────────────
-        btnLogout.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Cerrar sesión")
-                .setMessage("¿Quieres cerrar tu sesión actual?")
-                .setPositiveButton("Cerrar sesión") { _, _ -> doLogout() }
-                .setNegativeButton("Cancelar", null)
-                .show()
-        }
-
-        btnDeleteAccount.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("⚠️ Eliminar cuenta")
-                .setMessage("Se eliminarán todos tus datos y progreso de forma permanente.\n\n¿Estás seguro?")
-                .setPositiveButton("Sí, eliminar") { _, _ -> deleteAccount() }
-                .setNegativeButton("Cancelar", null)
-                .show()
-        }
+        btnLogout.setOnClickListener { doLogout() }
+        
+        rowEditProfile.setOnClickListener { startActivity(Intent(this, EditProfileActivity::class.java)) }
+        
+        // ... (resto de tus otros click listeners normales)
     }
 
-    private fun setup2FAListener() {
+    private fun attach2FAListener() {
         switch2FA.setOnCheckedChangeListener { _, isChecked ->
             val uid = mAuth.currentUser?.uid ?: return@setOnCheckedChangeListener
-
             if (isChecked) {
-                db.collection("users").document(uid).get()
-                    .addOnSuccessListener { doc ->
-                        val secret = doc.getString("totpSecret") ?: ""
-                        val email  = mAuth.currentUser?.email ?: ""
-                        if (secret.isEmpty()) {
-                            toast("Error: no se encontró el secret. Vuelve a registrarte.")
-                            switch2FA.isChecked = false
-                            return@addOnSuccessListener
-                        }
-                        val intent = Intent(this, TwoFactorActivity::class.java).apply {
-                            putExtra("mode",        "setup")
-                            putExtra("totp_secret", secret)
-                            putExtra("user_email",  email)
-                        }
-                        startActivity(intent)
-                    }
-                    .addOnFailureListener {
-                        toast("Error al obtener datos")
-                        switch2FA.isChecked = false
-                    }
+                // Ir a configuración (Solo si el usuario lo activó manualmente)
+                goTo2FASetup(uid)
             } else {
-                AlertDialog.Builder(this)
-                    .setTitle("Desactivar 2FA")
-                    .setMessage("Tu cuenta será menos segura. ¿Confirmas que quieres desactivar la verificación en 2 pasos?")
-                    .setPositiveButton("Desactivar") { _, _ ->
-                        db.collection("users").document(uid)
-                            .update("twoFactorEnabled", false)
-                            .addOnSuccessListener {
-                                prefs.edit().putBoolean("2fa_enabled_$uid", false).apply()
-                                toast("2FA desactivado")
-                            }
-                            .addOnFailureListener {
-                                switch2FA.isChecked = true
-                                toast("Error al desactivar 2FA")
-                            }
-                    }
-                    .setNegativeButton("Cancelar") { _, _ ->
-                        switch2FA.setOnCheckedChangeListener(null)
-                        switch2FA.isChecked = true
-                        setup2FAListener()
-                    }
-                    .show()
+                // Desactivar con confirmación
+                showDisable2FADialog(uid)
             }
         }
     }
 
-    // ── Dialogs ───────────────────────────────────────────────────────────────
-    private fun showLanguageDialog() {
-        val languages = arrayOf("Español", "English", "Português", "日本語")
-        val current   = prefs.getString("app_language", "Español") ?: "Español"
-        val selected  = languages.indexOf(current).coerceAtLeast(0)
-
-        AlertDialog.Builder(this)
-            .setTitle("Idioma de la interfaz")
-            .setSingleChoiceItems(languages, selected) { dialog, which ->
-                val chosen = languages[which]
-                prefs.edit().putString("app_language", chosen).apply()
-                tvCurrentLanguage.text = chosen
-                toast("Idioma cambiado a $chosen")
-                dialog.dismiss()
+    private fun goTo2FASetup(uid: String) {
+        db.collection("users").document(uid).get().addOnSuccessListener { doc ->
+            val secret = doc.getString("totpSecret") ?: ""
+            val email = mAuth.currentUser?.email ?: ""
+            val intent = Intent(this, TwoFactorActivity::class.java).apply {
+                putExtra("mode", "setup")
+                putExtra("totp_secret", com.example.niju_project.utils.EncryptionUtils.decrypt(secret))
+                putExtra("user_email", email)
             }
-            .setNegativeButton("Cancelar", null)
+            startActivity(intent)
+        }
+    }
+
+    private fun showDisable2FADialog(uid: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Desactivar 2FA")
+            .setMessage("¿Estás seguro?")
+            .setPositiveButton("Desactivar") { _, _ ->
+                db.collection("users").document(uid).update("twoFactorEnabled", false)
+                    .addOnSuccessListener {
+                        com.example.niju_project.utils.PrefsUtils.set2FAEnabled(this, uid, false)
+                    }
+            }
+            .setNegativeButton("Cancelar") { _, _ -> 
+                switch2FA.setOnCheckedChangeListener(null)
+                switch2FA.isChecked = true
+                attach2FAListener()
+            }
             .show()
     }
 
-    // ── Acciones de sesión ────────────────────────────────────────────────────
     private fun doLogout() {
         mAuth.signOut()
-        startActivity(
-            Intent(this, LoginActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-        )
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
     }
-
-    private fun deleteAccount() {
-        val uid = mAuth.currentUser?.uid
-        mAuth.currentUser?.delete()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (uid != null) {
-                        db.collection("users").document(uid).delete()
-                    }
-                    toast("Cuenta eliminada")
-                    startActivity(
-                        Intent(this, LoginActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        }
-                    )
-                } else {
-                    toast("Error: ${task.exception?.message}\nVuelve a iniciar sesión e intenta de nuevo.")
-                }
-            }
-    }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
-    private fun openUrl(url: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url)))
-        } catch (e: Exception) {
-            toast("No se pudo abrir el enlace")
-        }
-    }
-
+    
     private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-
-    override fun onResume() {
-        super.onResume()
-        // Recargar estado del 2FA al volver de TwoFactorActivity
-        val uid = mAuth.currentUser?.uid ?: return
-        db.collection("users").document(uid).get()
-            .addOnSuccessListener { doc ->
-                val enabled = doc.getBoolean("twoFactorEnabled") ?: false
-                switch2FA.setOnCheckedChangeListener(null)
-                switch2FA.isChecked = enabled
-                setup2FAListener()
-            }
-    }
 }

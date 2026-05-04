@@ -72,6 +72,9 @@ dependencies {
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // ── Seguridad y Almacenamiento ────────────────────────────────────────────
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
     // ── Corrutinas y Lifecycle ────────────────────────────────────────────────
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")

@@ -38,19 +38,19 @@ object TOTPHelper {
 
     /**
      * Valida el código ingresado contra el secret.
-     * Acepta ±1 ventana de 30 s para compensar desfase de reloj.
+     * Acepta ±1 ventana de 30 s para compensar desfase de reloj (RFC 6238).
      */
     fun validateCode(secret: String, code: String): Boolean {
         return try {
             val secretBytes = Base32().decode(padBase32(secret))
             val generator   = TimeBasedOneTimePasswordGenerator(secretBytes, config)
 
-            val now      = System.currentTimeMillis()
-            val stepMs   = TimeUnit.SECONDS.toMillis(30)
+            val now = System.currentTimeMillis()
+            val stepMs = TimeUnit.SECONDS.toMillis(30)
 
-            // Ventana: período anterior, actual y siguiente
-            listOf(now - stepMs, now, now + stepMs).any { ts ->
-                generator.isValid(code, timestamp = ts)
+            // Probamos ventana anterior, actual y siguiente (i = -1, 0, 1)
+            (-1..1).any { i ->
+                generator.isValid(code, timestamp = now + (i * stepMs))
             }
         } catch (e: Exception) {
             false

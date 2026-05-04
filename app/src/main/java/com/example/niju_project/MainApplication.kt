@@ -12,22 +12,28 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        
+        // 1. Aplicar el tema inmediatamente al iniciar
+        applySavedTheme()
 
-        // ── Aplicar tema guardado ANTES de que se cree cualquier Activity ──
-        val prefs = getSharedPreferences("niju_prefs", Context.MODE_PRIVATE)
-        val darkMode = prefs.getBoolean("dark_mode", false)
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkMode) AppCompatDelegate.MODE_NIGHT_YES
-            else AppCompatDelegate.MODE_NIGHT_NO
-        )
-
-        // ── Firebase ─────────────────────────────────────────────────────────
+        // 2. Inicializar Firebase y otros servicios
         FirebaseApp.initializeApp(this)
-
         val settings = FirebaseFirestoreSettings.Builder()
             .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
             .build()
-
         FirebaseFirestore.getInstance().firestoreSettings = settings
+    }
+
+    private fun applySavedTheme() {
+        val prefs = getSharedPreferences("niju_prefs", Context.MODE_PRIVATE)
+        
+        /**
+         * Recuperamos el modo guardado.
+         *  -1: MODE_NIGHT_FOLLOW_SYSTEM (Default)
+         *   1: MODE_NIGHT_NO (Modo Claro)
+         *   2: MODE_NIGHT_YES (Modo Oscuro)
+         */
+        val themeMode = prefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(themeMode)
     }
 }

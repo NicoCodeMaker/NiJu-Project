@@ -368,7 +368,9 @@
                     android:paddingHorizontal="16dp" />
 
                 <!-- CONFIGURACIÓN -->
-                <include layout="@layout/item_option_config" />
+                <include
+                    android:id="@+id/option_config"
+                    layout="@layout/item_option_config" />
 
                 <!-- 2FA -->
                 <LinearLayout
@@ -394,7 +396,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Verificación en 2 pasos"
-                        android:textColor="#333333"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="15sp"
                         android:layout_marginStart="10dp" />
 

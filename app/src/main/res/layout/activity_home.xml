@@ -356,7 +356,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="Favoritos"
-                        android:textColor="#333333"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -382,7 +382,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="Trofeos"
-                        android:textColor="#333333"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -408,7 +408,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="Amigos"
-                        android:textColor="#333333"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>

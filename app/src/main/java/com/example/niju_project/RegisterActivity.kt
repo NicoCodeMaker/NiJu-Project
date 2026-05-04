@@ -6,14 +6,9 @@ import android.text.InputType
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.niju_project.utils.TOTPHelper
-import com.example.niju_project.data.model.UserModel
-import com.example.niju_project.data.repository.UserRepository
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.activity.viewModels
+import com.example.niju_project.ui.RegisterState
+import com.example.niju_project.ui.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -28,17 +23,16 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var tvSignIn:          TextView
     private lateinit var progressBar:       ProgressBar
 
-    private lateinit var mAuth: FirebaseAuth
-    private val userRepository = UserRepository()
+    private val viewModel: RegisterViewModel by viewModels()
     private var isPasswordVisible = false
     private var isConfirmVisible  = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        mAuth = FirebaseAuth.getInstance()
         bindViews()
         setupListeners()
+        setupObservers()
     }
 
     private fun bindViews() {
@@ -77,82 +71,42 @@ class RegisterActivity : AppCompatActivity() {
         tvSignIn.setOnClickListener    { finish() }
     }
 
-    private fun registerUser() {
-        val name     = etName.text.toString().trim()
-        val email    = etEmail.text.toString().trim()
-        val password = etPassword.text.toString().trim()
-        val confirm  = etConfirmPassword.text.toString().trim()
+    private fun setupObservers() {
+        viewModel.registerState.observe(this) { state ->
+            when (state) {
+                is RegisterState.Loading -> showLoading(true)
+                is RegisterState.Success -> {
+                    showLoading(false)
+                    Toast.makeText(this, "¡Cuenta creada! Configura tu 2FA.", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, TwoFactorActivity::class.java).apply {
+                        putExtra("mode", "setup")
+                        putExtra("totp_secret", state.secret)
+                        putExtra("user_email", state.email)
+                    }
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                is RegisterState.Error -> {
+                    showLoading(false)
+                    Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
+                }
+                else -> showLoading(false)
+            }
+        }
+    }
 
-        if (!validateInputs(name, email, password, confirm)) return
+    private fun registerUser() {
         if (!cbTerms.isChecked) {
             Toast.makeText(this, "Debes aceptar los Términos y Condiciones", Toast.LENGTH_SHORT).show()
             return
         }
 
-        showLoading(true)
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    showLoading(false)
-                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                    return@addOnCompleteListener
-                }
-
-                val uid = mAuth.currentUser?.uid ?: return@addOnCompleteListener
-                val secret = TOTPHelper.generateSecretKey()
-
-                // Usamos el modelo y el repositorio (Fase 2)
-                val user = UserModel(
-                    uid = uid,
-                    name = name,
-                    email = email,
-                    totpSecret = secret,
-                    twoFactorEnabled = false
-                )
-
-                lifecycleScope.launch {
-                    val result = userRepository.upsertUser(user)
-                    
-                    if (result.isSuccess) {
-                        // Actualizar displayName en Firebase Auth
-                        val profileUpdate = UserProfileChangeRequest.Builder()
-                            .setDisplayName(name).build()
-                        
-                        mAuth.currentUser?.updateProfile(profileUpdate)
-                            ?.addOnCompleteListener {
-                                mAuth.currentUser?.sendEmailVerification()
-                                showLoading(false)
-                                Toast.makeText(this@RegisterActivity, "¡Cuenta creada! Configura tu 2FA.", Toast.LENGTH_LONG).show()
-                                
-                                val intent = Intent(this@RegisterActivity, TwoFactorActivity::class.java).apply {
-                                    putExtra("mode", "setup")
-                                    putExtra("totp_secret", secret)
-                                    putExtra("user_email", email)
-                                }
-                                startActivity(intent)
-                                finishAffinity()
-                            }
-                    } else {
-                        showLoading(false)
-                        Toast.makeText(this@RegisterActivity, "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-    }
-
-    private fun validateInputs(
-        name: String, email: String, password: String, confirm: String
-    ): Boolean {
-        if (name.length < 2)       { etName.error = "Nombre muy corto"; return false }
-        if (email.isEmpty())       { etEmail.error = "Ingresa un correo"; return false }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.error = "Correo inválido"; return false }
-        if (password.length < 8)   { etPassword.error = "Mínimo 8 caracteres"; return false }
-        if (!password.any { it.isDigit() })     { etPassword.error = "Debe tener al menos un número"; return false }
-        if (!password.any { it.isUpperCase() }) { etPassword.error = "Debe tener al menos una mayúscula"; return false }
-        if (confirm != password)   { etConfirmPassword.error = "Las contraseñas no coinciden"; return false }
-        return true
+        viewModel.register(
+            etName.text.toString().trim(),
+            etEmail.text.toString().trim(),
+            etPassword.text.toString().trim(),
+            etConfirmPassword.text.toString().trim()
+        )
     }
 
     private fun showLoading(show: Boolean) {
