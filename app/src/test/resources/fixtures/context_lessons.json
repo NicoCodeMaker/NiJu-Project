@@ -1,0 +1,26 @@
+[
+  {
+    "lesson_id": 2,
+    "slug": "restaurant_table",
+    "title": "Pedir una mesa",
+    "description": "Llegar al restaurante y ordenar.",
+    "level": "A1",
+    "sort_order": 1,
+    "word_count": 6,
+    "best_score": 16.67,
+    "completed": false,
+    "unlocked": true
+  },
+  {
+    "lesson_id": 1,
+    "slug": "restaurant_pay",
+    "title": "Comer y pagar",
+    "description": "Hablar de la comida y pedir la cuenta.",
+    "level": "A1",
+    "sort_order": 2,
+    "word_count": 6,
+    "best_score": 0,
+    "completed": false,
+    "unlocked": false
+  }
+]

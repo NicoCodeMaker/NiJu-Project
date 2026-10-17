@@ -1,0 +1,74 @@
+[
+  {
+    "word_id": 1,
+    "position": 1,
+    "english": "menu",
+    "spanish": "menú",
+    "pronunciation": "/ˈmenjuː/",
+    "part_of_speech": "noun",
+    "sentence_en": "Can I see the menu, please?",
+    "sentence_es": "¿Puedo ver el menú, por favor?",
+    "is_favorite": true,
+    "status": "learning"
+  },
+  {
+    "word_id": 2,
+    "position": 2,
+    "english": "waiter",
+    "spanish": "mesero",
+    "pronunciation": "/ˈweɪtər/",
+    "part_of_speech": "noun",
+    "sentence_en": "The waiter brings us two glasses.",
+    "sentence_es": "El mesero nos trae dos vasos.",
+    "is_favorite": false,
+    "status": "learning"
+  },
+  {
+    "word_id": 3,
+    "position": 3,
+    "english": "table",
+    "spanish": "mesa",
+    "pronunciation": "/ˈteɪbəl/",
+    "part_of_speech": "noun",
+    "sentence_en": "We need a table for two.",
+    "sentence_es": "Necesitamos una mesa para dos.",
+    "is_favorite": false,
+    "status": "new"
+  },
+  {
+    "word_id": 4,
+    "position": 4,
+    "english": "reservation",
+    "spanish": "reserva",
+    "pronunciation": "/ˌrezərˈveɪʃən/",
+    "part_of_speech": "noun",
+    "sentence_en": "I have a reservation at eight.",
+    "sentence_es": "Tengo una reserva a las ocho.",
+    "is_favorite": false,
+    "status": "new"
+  },
+  {
+    "word_id": 5,
+    "position": 5,
+    "english": "order",
+    "spanish": "pedir",
+    "pronunciation": "/ˈɔːrdər/",
+    "part_of_speech": "verb",
+    "sentence_en": "Are you ready to order?",
+    "sentence_es": "¿Están listos para pedir?",
+    "is_favorite": false,
+    "status": "new"
+  },
+  {
+    "word_id": 6,
+    "position": 6,
+    "english": "water",
+    "spanish": "agua",
+    "pronunciation": "/ˈwɔːtər/",
+    "part_of_speech": "noun",
+    "sentence_en": "A glass of water, please.",
+    "sentence_es": "Un vaso de agua, por favor.",
+    "is_favorite": false,
+    "status": "new"
+  }
+]

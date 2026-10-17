@@ -1,29 +1,44 @@
 package com.example.niju_project
 
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
 import android.view.View
 import android.view.animation.OvershootInterpolator
-import android.widget.*
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.niju_project.ui.practice.PracticeUiState
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.niju_project.data.model.ExerciseType
+import com.example.niju_project.data.model.SessionMode
+import com.example.niju_project.data.model.SessionSummary
+import com.example.niju_project.reminders.StudyReminders
 import com.example.niju_project.ui.practice.PracticeViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
+import com.example.niju_project.ui.practice.RetryAction
+import com.example.niju_project.ui.practice.SessionUiState
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
+/**
+ * Pantalla de una sesión de estudio (lección, repaso o práctica).
+ * Extras: mode, lesson_id, context_id, context_slug, title.
+ */
 class PracticeActivity : AppCompatActivity() {
 
     private val viewModel: PracticeViewModel by viewModels { PracticeViewModel.Factory }
 
-    // ── Vistas principales ──────────────────────────────────────────────────
-    private lateinit var layoutContent: LinearLayout
     private lateinit var loadingOverlay: FrameLayout
     private lateinit var ivWordImage: ImageView
     private lateinit var txtQuestion: TextView
@@ -31,14 +46,9 @@ class PracticeActivity : AppCompatActivity() {
     private lateinit var tvDifficulty: TextView
     private lateinit var tvQuestionIndex: TextView
     private lateinit var progressSession: ProgressBar
-    private lateinit var btnOption1: Button
-    private lateinit var btnOption2: Button
-    private lateinit var btnOption3: Button
     private lateinit var btnNext: Button
-    private lateinit var btnClose: ImageButton
     private lateinit var optionButtons: List<Button>
 
-    // ── Panels de feedback ──────────────────────────────────────────────────
     private lateinit var correctPanel: FrameLayout
     private lateinit var wrongPanel: FrameLayout
     private lateinit var tvCorrectWord: TextView
@@ -48,22 +58,14 @@ class PracticeActivity : AppCompatActivity() {
     private lateinit var btnFinishPractice: Button
     private lateinit var btnContinueAfterWrong: Button
 
-    // ── SoundPool ───────────────────────────────────────────────────────────
-    private lateinit var soundPool: SoundPool
-    private var soundCorrectId: Int = 0
-    private var soundWrongId: Int = 0
+    private var soundPool: SoundPool? = null
+    private var soundCorrectId = 0
+    private var soundWrongId = 0
     private var soundsLoaded = false
 
-    private var selectedAnswer = ""
-
-    // Mapeo contexto → drawable de imagen
-    private val contextImageMap = mapOf(
-        "restaurant"  to R.drawable.restaurant,
-        "airport"     to R.drawable.airport,
-        "supermarket" to R.drawable.supermarket,
-        "beach"       to R.drawable.beach_scene,
-        "playa"       to R.drawable.beach_scene
-    )
+    private var selectedAnswer: String? = null
+    private var shownDialog: AlertDialog? = null
+    private var lastFeedbackItem: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,303 +73,248 @@ class PracticeActivity : AppCompatActivity() {
 
         initSounds()
         bindViews()
-        setupNavigation()
-        observeViewModel()
+        ivWordImage.setImageResource(contextImage(intent.getStringExtra(PracticeViewModel.EXTRA_CONTEXT_SLUG)))
+        setupBottomNav(null)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = confirmExit()
+        })
+        observe()
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // SONIDOS
-    // ────────────────────────────────────────────────────────────────────────
+    // ── Sonidos ──────────────────────────────────────────────────────────────
     private fun initSounds() {
         val attrs = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_GAME)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-
-        soundPool = SoundPool.Builder()
-            .setMaxStreams(2)
-            .setAudioAttributes(attrs)
-            .build()
-
-        soundPool.setOnLoadCompleteListener { _, _, _ -> soundsLoaded = true }
-
-        // Usamos tonos del sistema como sonidos (no requieren archivos .mp3 propios)
-        // Si quieres archivos propios, coloca correct.mp3 y wrong.mp3 en res/raw/
-        try {
-            soundCorrectId = soundPool.load(this, R.raw.correct, 1)
-            soundWrongId   = soundPool.load(this, R.raw.wrong,   1)
-        } catch (e: Exception) {
-            // Si no existen los archivos raw, generamos el sonido con ToneGenerator
-            soundsLoaded = false
+        soundPool = SoundPool.Builder().setMaxStreams(2).setAudioAttributes(attrs).build().apply {
+            setOnLoadCompleteListener { _, _, _ -> soundsLoaded = true }
+            soundCorrectId = load(this@PracticeActivity, R.raw.correct, 1)
+            soundWrongId = load(this@PracticeActivity, R.raw.wrong, 1)
         }
     }
 
-    private fun playCorrectSound() {
-        if (soundsLoaded && soundCorrectId != 0) {
-            soundPool.play(soundCorrectId, 1f, 1f, 0, 0, 1f)
-        } else {
-            // Fallback: vibración corta y tono del sistema
-            try {
-                val tg = android.media.ToneGenerator(
-                    android.media.AudioManager.STREAM_MUSIC, 90
-                )
-                tg.startTone(android.media.ToneGenerator.TONE_PROP_ACK, 200)
-                lifecycleScope.launch {
-                    delay(250)
-                    tg.release()
-                }
-            } catch (_: Exception) {}
-        }
+    private fun play(id: Int) {
+        if (soundsLoaded && id != 0) soundPool?.play(id, 1f, 1f, 0, 0, 1f)
     }
 
-    private fun playWrongSound() {
-        if (soundsLoaded && soundWrongId != 0) {
-            soundPool.play(soundWrongId, 1f, 1f, 0, 0, 1f)
-        } else {
-            try {
-                val tg = android.media.ToneGenerator(
-                    android.media.AudioManager.STREAM_MUSIC, 70
-                )
-                tg.startTone(android.media.ToneGenerator.TONE_PROP_NACK, 300)
-                lifecycleScope.launch {
-                    delay(350)
-                    tg.release()
-                }
-            } catch (_: Exception) {}
-        }
-    }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // BIND VISTAS
-    // ────────────────────────────────────────────────────────────────────────
+    // ── Vistas ───────────────────────────────────────────────────────────────
     private fun bindViews() {
-        layoutContent   = findViewById(R.id.layoutContent)
-        loadingOverlay  = findViewById(R.id.loadingOverlay)
-        ivWordImage     = findViewById(R.id.ivWordImage)
-        txtQuestion     = findViewById(R.id.txtQuestion)
-        tvWordCategory  = findViewById(R.id.tvWordCategory)
-        tvDifficulty    = findViewById(R.id.tvDifficulty)
+        loadingOverlay = findViewById(R.id.loadingOverlay)
+        ivWordImage = findViewById(R.id.ivWordImage)
+        txtQuestion = findViewById(R.id.txtQuestion)
+        tvWordCategory = findViewById(R.id.tvWordCategory)
+        tvDifficulty = findViewById(R.id.tvDifficulty)
         tvQuestionIndex = findViewById(R.id.tvQuestionIndex)
         progressSession = findViewById(R.id.progressSession)
-        btnOption1      = findViewById(R.id.btnOption1)
-        btnOption2      = findViewById(R.id.btnOption2)
-        btnOption3      = findViewById(R.id.btnOption3)
-        btnNext         = findViewById(R.id.btnNext)
-        btnClose        = findViewById(R.id.btnClose)
-        optionButtons   = listOf(btnOption1, btnOption2, btnOption3)
+        btnNext = findViewById(R.id.btnNext)
+        optionButtons = listOf(
+            findViewById(R.id.btnOption1), findViewById(R.id.btnOption2), findViewById(R.id.btnOption3)
+        )
 
-        correctPanel          = findViewById(R.id.correctPanel)
-        wrongPanel            = findViewById(R.id.wrongPanel)
-        tvCorrectWord         = findViewById(R.id.tvCorrectWord)
-        tvCorrectXp           = findViewById(R.id.tvCorrectXp)
-        tvCorrectAnswer       = findViewById(R.id.tvCorrectAnswer)
-        btnContinuePractice   = findViewById(R.id.btnContinuePractice)
-        btnFinishPractice     = findViewById(R.id.btnFinishPractice)
+        correctPanel = findViewById(R.id.correctPanel)
+        wrongPanel = findViewById(R.id.wrongPanel)
+        tvCorrectWord = findViewById(R.id.tvCorrectWord)
+        tvCorrectXp = findViewById(R.id.tvCorrectXp)
+        tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer)
+        btnContinuePractice = findViewById(R.id.btnContinuePractice)
+        btnFinishPractice = findViewById(R.id.btnFinishPractice)
         btnContinueAfterWrong = findViewById(R.id.btnContinueAfterWrong)
 
-        // Opciones
         optionButtons.forEach { btn ->
             btn.setOnClickListener {
                 selectedAnswer = btn.text.toString()
                 highlightSelected(btn)
-                // Habilita el botón confirmar
-                btnNext.isEnabled = true
-                btnNext.backgroundTintList = ColorStateList.valueOf(getColor(R.color.nav_selected))
-                btnNext.setTextColor(getColor(android.R.color.white))
+                setConfirmEnabled(true)
             }
         }
-
-        // Confirmar respuesta
         btnNext.setOnClickListener {
-            if (selectedAnswer.isEmpty()) {
-                Toast.makeText(this, "Selecciona una respuesta", Toast.LENGTH_SHORT).show()
+            val answer = selectedAnswer
+            if (answer == null) {
+                Toast.makeText(this, R.string.session_select_answer, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // Deshabilitar botones mientras procesamos
             optionButtons.forEach { it.isEnabled = false }
-            btnNext.isEnabled = false
-            viewModel.submitAnswer(selectedAnswer)
-            selectedAnswer = ""
+            setConfirmEnabled(false)
+            viewModel.submitAnswer(answer)
         }
+        findViewById<ImageButton>(R.id.btnClose).setOnClickListener { confirmExit() }
 
-        // Botón cerrar
-        btnClose.setOnClickListener { finish() }
-
-        // Panel correcto: Continuar
-        btnContinuePractice.setOnClickListener {
-            hideCorrectPanel()
-            viewModel.advance()
-        }
-
-        // Panel correcto: Finalizar
-        btnFinishPractice.setOnClickListener {
-            hideCorrectPanel()
-            viewModel.finishNow()
-        }
-
-        // Panel incorrecto: Continuar
-        btnContinueAfterWrong.setOnClickListener {
-            hideWrongPanel()
-            viewModel.advance()
-        }
+        btnContinuePractice.setOnClickListener { hidePanel(correctPanel); viewModel.next() }
+        btnFinishPractice.setOnClickListener { hidePanel(correctPanel); viewModel.finish() }
+        btnContinueAfterWrong.setOnClickListener { hidePanel(wrongPanel); viewModel.next() }
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // OBSERVAR VIEWMODEL
-    // ────────────────────────────────────────────────────────────────────────
-    private fun observeViewModel() {
+    // ── Estado ───────────────────────────────────────────────────────────────
+    private fun observe() {
         lifecycleScope.launch {
-            viewModel.uiState.collectLatest { state ->
-                when (state) {
-                    is PracticeUiState.Loading -> showLoading(true)
-
-                    is PracticeUiState.Question -> {
-                        showLoading(false)
-                        displayQuestion(state)
-                    }
-
-                    is PracticeUiState.CorrectAnswer -> {
-                        showLoading(false)
-                        playCorrectSound()
-                        showCorrectPanel(state)
-                    }
-
-                    is PracticeUiState.WrongAnswer -> {
-                        showLoading(false)
-                        playWrongSound()
-                        showWrongPanel(state)
-                    }
-
-                    is PracticeUiState.SessionResult -> {
-                        showLoading(false)
-                        showFinalResult(state)
-                    }
-
-                    is PracticeUiState.Error -> {
-                        showLoading(false)
-                        Toast.makeText(this@PracticeActivity, state.message, Toast.LENGTH_LONG).show()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    loadingOverlay.visibility = if (state is SessionUiState.Loading) View.VISIBLE else View.GONE
+                    when (state) {
+                        SessionUiState.Loading -> Unit
+                        is SessionUiState.Question -> showQuestion(state)
+                        is SessionUiState.Feedback -> showFeedback(state)
+                        is SessionUiState.Finished -> showSummary(state.summary)
+                        is SessionUiState.Empty -> showMessageAndExit(state.message)
+                        is SessionUiState.Error -> showError(state)
                     }
                 }
             }
         }
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // MOSTRAR PREGUNTA
-    // ────────────────────────────────────────────────────────────────────────
-    private fun displayQuestion(state: PracticeUiState.Question) {
-        val card = state.flashcard
+    private fun showQuestion(state: SessionUiState.Question) {
+        val item = state.item
+        correctPanel.visibility = View.GONE
+        wrongPanel.visibility = View.GONE
 
-        // Imagen según categoría / context
-        val imageRes = contextImageMap[card.category.lowercase()]
-            ?: contextImageMap[state.flashcard.category.lowercase()]
-            ?: R.drawable.beach_scene
-        ivWordImage.setImageResource(imageRes)
+        tvWordCategory.text = item.exerciseType.instruction
+        txtQuestion.text = item.prompt
+        val hint = item.hint
+        tvDifficulty.visibility = if (hint.isNullOrBlank()) View.GONE else View.VISIBLE
+        tvDifficulty.text = when (item.exerciseType) {
+            ExerciseType.FILL_BLANK -> "💬 $hint"
+            ExerciseType.EN_TO_ES -> "🔊 $hint"
+            ExerciseType.ES_TO_EN -> hint
+        }
 
-        // Animación de entrada en la imagen
+        tvQuestionIndex.text = "${state.number} / ${state.total}"
+        animateProgress(state.percent)
+
+        selectedAnswer = null
+        optionButtons.forEachIndexed { i, btn ->
+            val option = item.options.getOrNull(i)
+            btn.visibility = if (option == null) View.GONE else View.VISIBLE
+            btn.text = option.orEmpty()
+            btn.isEnabled = true
+            btn.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.white))
+            btn.setTextColor(getColor(android.R.color.black))
+        }
+        setConfirmEnabled(false)
+
         ivWordImage.alpha = 0f
-        ivWordImage.animate().alpha(1f).setDuration(300).start()
+        ivWordImage.animate().alpha(1f).setDuration(250).start()
+    }
 
-        txtQuestion.text    = card.spanish
-        tvWordCategory.text = card.category.ifBlank { "japonés" }
-        tvDifficulty.text   = "⭐ ${card.difficulty}"
+    private fun showFeedback(state: SessionUiState.Feedback) {
+        animateProgress(state.percent)
+        // Evita repetir sonido/animación si la pantalla se recrea (rotación).
+        val firstTime = lastFeedbackItem != state.item.itemId
+        lastFeedbackItem = state.item.itemId
 
-        // Progreso de sesión
-        val pct = ((state.index.toFloat() / state.total) * 100).toInt()
-        tvQuestionIndex.text = "${state.index} / ${state.total}"
-        ObjectAnimator.ofInt(progressSession, "progress", progressSession.progress, pct)
-            .setDuration(400)
-            .start()
+        if (state.result.isCorrect) {
+            tvCorrectWord.text = state.result.correctAnswer
+            tvCorrectXp.text = if (state.result.xpAwarded > 0) "+${state.result.xpAwarded} XP" else "¡Bien!"
+            btnContinuePractice.text = if (state.isLast) "Ver resultado" else getString(R.string.session_continue)
+            btnFinishPractice.visibility = if (state.isLast) View.GONE else View.VISIBLE
+            if (firstTime) play(soundCorrectId)
+            showPanel(correctPanel, animate = firstTime)
+        } else {
+            tvCorrectAnswer.text = state.result.correctAnswer
+            btnContinueAfterWrong.text = if (state.isLast) "Ver resultado" else getString(R.string.session_continue)
+            if (firstTime) play(soundWrongId)
+            showPanel(wrongPanel, animate = firstTime)
+        }
+    }
 
-        // Opciones
-        state.options.forEachIndexed { i, opt ->
-            if (i < optionButtons.size) {
-                optionButtons[i].visibility = View.VISIBLE
-                optionButtons[i].text = opt
-                optionButtons[i].isEnabled = true
-                optionButtons[i].backgroundTintList =
-                    ColorStateList.valueOf(getColor(android.R.color.white))
-                optionButtons[i].setTextColor(getColor(android.R.color.black))
+    private fun showSummary(s: SessionSummary) {
+        val lines = buildList {
+            add("Aciertos: ${s.correct} de ${s.total} (${s.score.roundToInt()} %)")
+            add("XP ganado: +${s.xpEarned}  ·  Nivel ${s.level}")
+            if (s.mode == SessionMode.LESSON) {
+                add(if (s.lessonCompleted) "✅ ¡Lección superada!" else "Necesitas 70 % para superar la lección.")
             }
+            s.newAchievements.forEach { add("🏆 Logro: ${it.title} (+${it.xpReward} XP)") }
         }
-        for (i in state.options.size until optionButtons.size) {
-            optionButtons[i].visibility = View.GONE
+        val builder = AlertDialog.Builder(this)
+            .setTitle(R.string.session_finish_title)
+            .setMessage(lines.joinToString("\n"))
+            .setCancelable(false)
+            .setPositiveButton(R.string.ok) { _, _ -> finish() }
+        if (s.mode == SessionMode.LESSON && !s.lessonCompleted) {
+            builder.setNegativeButton(R.string.session_repeat_lesson) { _, _ -> viewModel.start() }
         }
+        StudyReminders.markStudiedToday(this)
+        showDialog(builder)
+    }
 
-        // Reset confirmar
-        btnNext.isEnabled = false
-        btnNext.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.darker_gray))
+    private fun showError(state: SessionUiState.Error) {
+        if (state.sessionExpired) {
+            Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
+            goToLogin()
+            return
+        }
+        val builder = AlertDialog.Builder(this).setMessage(state.message).setCancelable(false)
+        when (state.retry) {
+            RetryAction.START -> builder
+                .setPositiveButton(R.string.session_retry) { _, _ -> viewModel.start() }
+                .setNegativeButton(R.string.session_exit) { _, _ -> finish() }
+            RetryAction.QUESTION -> builder
+                .setPositiveButton(R.string.session_continue) { _, _ -> viewModel.resumeQuestion() }
+            RetryAction.FINISH -> builder
+                .setPositiveButton(R.string.session_retry) { _, _ -> viewModel.finish() }
+                .setNegativeButton(R.string.session_exit) { _, _ -> finish() }
+            RetryAction.NONE -> builder.setPositiveButton(R.string.ok) { _, _ -> finish() }
+        }
+        showDialog(builder)
+    }
+
+    private fun showMessageAndExit(message: String) = showDialog(
+        AlertDialog.Builder(this).setMessage(message).setCancelable(false)
+            .setPositiveButton(R.string.ok) { _, _ -> finish() }
+    )
+
+    /** Salir a mitad de sesión: lo respondido ya quedó guardado en el servidor. */
+    private fun confirmExit() {
+        val state = viewModel.uiState.value
+        if (state is SessionUiState.Finished || state is SessionUiState.Empty) { finish(); return }
+        showDialog(
+            AlertDialog.Builder(this)
+                .setTitle("¿Salir de la sesión?")
+                .setMessage("Tus respuestas ya están guardadas. Las que falten no contarán.")
+                .setPositiveButton("Terminar ahora") { _, _ -> viewModel.finish() }
+                .setNeutralButton(R.string.session_exit) { _, _ -> finish() }
+                .setNegativeButton(R.string.cancel, null)
+        )
+    }
+
+    // ── Utilidades de vista ──────────────────────────────────────────────────
+    private fun showDialog(builder: AlertDialog.Builder) {
+        shownDialog?.dismiss()
+        shownDialog = builder.show()
+    }
+
+    private fun showPanel(panel: FrameLayout, animate: Boolean) {
+        panel.visibility = View.VISIBLE
+        if (!animate) { panel.alpha = 1f; return }
+        panel.alpha = 0f
+        panel.animate().alpha(1f).setDuration(200).start()
+        panel.getChildAt(0)?.apply {
+            scaleX = 0.7f; scaleY = 0.7f
+            animate().scaleX(1f).scaleY(1f).setDuration(350)
+                .setInterpolator(OvershootInterpolator(1.5f)).start()
+        }
+    }
+
+    private fun hidePanel(panel: FrameLayout) {
+        panel.animate().alpha(0f).setDuration(150).withEndAction { panel.visibility = View.GONE }.start()
+    }
+
+    private fun animateProgress(pct: Int) {
+        ObjectAnimator.ofInt(progressSession, "progress", progressSession.progress, pct)
+            .setDuration(400).start()
+    }
+
+    private fun setConfirmEnabled(enabled: Boolean) {
+        btnNext.isEnabled = enabled
+        btnNext.backgroundTintList = ColorStateList.valueOf(
+            getColor(if (enabled) R.color.nav_selected else android.R.color.darker_gray)
+        )
         btnNext.setTextColor(getColor(android.R.color.white))
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // PANELES CORRECTO / INCORRECTO
-    // ────────────────────────────────────────────────────────────────────────
-    private fun showCorrectPanel(state: PracticeUiState.CorrectAnswer) {
-        tvCorrectWord.text = state.flashcard.english
-        tvCorrectXp.text   = "+${state.xpGained} XP"
-
-        correctPanel.visibility = View.VISIBLE
-        correctPanel.alpha = 0f
-        correctPanel.animate().alpha(1f).setDuration(200).start()
-
-        // Animación bounce del card interior
-        val card = correctPanel.getChildAt(0)
-        card.scaleX = 0.7f
-        card.scaleY = 0.7f
-        card.animate()
-            .scaleX(1f).scaleY(1f)
-            .setDuration(350)
-            .setInterpolator(OvershootInterpolator(1.5f))
-            .start()
-    }
-
-    private fun hideCorrectPanel() {
-        correctPanel.animate().alpha(0f).setDuration(150)
-            .withEndAction { correctPanel.visibility = View.GONE }
-            .start()
-    }
-
-    private fun showWrongPanel(state: PracticeUiState.WrongAnswer) {
-        tvCorrectAnswer.text = state.correctWord
-
-        wrongPanel.visibility = View.VISIBLE
-        wrongPanel.alpha = 0f
-        wrongPanel.animate().alpha(1f).setDuration(200).start()
-
-        val card = wrongPanel.getChildAt(0)
-        card.scaleX = 0.7f
-        card.scaleY = 0.7f
-        card.animate()
-            .scaleX(1f).scaleY(1f)
-            .setDuration(350)
-            .setInterpolator(OvershootInterpolator(1.5f))
-            .start()
-    }
-
-    private fun hideWrongPanel() {
-        wrongPanel.animate().alpha(0f).setDuration(150)
-            .withEndAction { wrongPanel.visibility = View.GONE }
-            .start()
-    }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // RESULTADO FINAL
-    // ────────────────────────────────────────────────────────────────────────
-    private fun showFinalResult(result: PracticeUiState.SessionResult) {
-        val intent = Intent(this, HomeActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra("session_correct", result.correct)
-            putExtra("session_total",   result.total)
-            putExtra("session_xp",      result.xpGained)
-        }
-        startActivity(intent)
-        finish()
-    }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // HELPERS
-    // ────────────────────────────────────────────────────────────────────────
     private fun highlightSelected(selected: Button) {
         optionButtons.forEach {
             it.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.white))
@@ -377,23 +324,10 @@ class PracticeActivity : AppCompatActivity() {
         selected.setTextColor(getColor(android.R.color.white))
     }
 
-    private fun showLoading(show: Boolean) {
-        loadingOverlay.visibility = if (show) View.VISIBLE else View.GONE
-    }
-
-    private fun setupNavigation() {
-        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navContexts).setOnClickListener {
-            startActivity(Intent(this, ContextsActivity::class.java))
-            finish()
-        }
-    }
-
     override fun onDestroy() {
+        shownDialog?.dismiss()
+        soundPool?.release()
+        soundPool = null
         super.onDestroy()
-        soundPool.release()
     }
 }

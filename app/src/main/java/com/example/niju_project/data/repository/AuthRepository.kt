@@ -1,57 +1,49 @@
 package com.example.niju_project.data.repository
 
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import android.content.Intent
+import com.example.niju_project.data.remote.SupabaseProvider
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.handleDeeplinks
+import io.github.jan.supabase.auth.providers.Azure
+import io.github.jan.supabase.auth.providers.Google
+import io.github.jan.supabase.auth.status.SessionStatus
+import kotlinx.coroutines.flow.StateFlow
 
-class AuthRepository {
-    private val auth = FirebaseAuth.getInstance()
+/**
+ * Inicio de sesión con proveedores OAuth de Supabase Auth.
+ *
+ * Microsoft (Azure) es el proveedor activo. Google queda listo: basta con
+ * habilitarlo en Supabase y poner AUTH_GOOGLE_ENABLED=true en local.properties.
+ *
+ * El flujo abre el navegador, el usuario se identifica con Microsoft y
+ * Supabase devuelve la sesión a la app mediante niju://login-callback.
+ */
+class AuthRepository(private val client: SupabaseClient = SupabaseProvider.client) {
 
-    fun signInWithEmail(email: String, pass: String, callback: (Result<FirebaseUser>) -> Unit) {
-        auth.signInWithEmailAndPassword(email, pass)
-            .addOnSuccessListener { result ->
-                result.user?.let { callback(Result.success(it)) } ?: callback(Result.failure(Exception("User is null")))
-            }
-            .addOnFailureListener { callback(Result.failure(it)) }
+    val sessionStatus: StateFlow<SessionStatus> get() = client.auth.sessionStatus
+
+    suspend fun awaitInitialization() = client.auth.awaitInitialization()
+
+    fun isLoggedIn(): Boolean = client.auth.currentSessionOrNull() != null
+
+    fun currentUserId(): String? = client.auth.currentUserOrNull()?.id
+
+    fun currentEmail(): String? = client.auth.currentUserOrNull()?.email
+
+    /** Procesa el enlace niju://login-callback con el que vuelve el navegador. */
+    fun handleRedirect(intent: Intent) = client.handleDeeplinks(intent)
+
+    suspend fun signInWithMicrosoft(): Result<Unit> = runCatching {
+        client.auth.signInWith(Azure) {
+            // Supabase necesita el alcance "email" para Microsoft.
+            scopes.add("email")
+        }
     }
 
-    fun signUpWithEmail(email: String, pass: String, callback: (Result<FirebaseUser>) -> Unit) {
-        auth.createUserWithEmailAndPassword(email, pass)
-            .addOnSuccessListener { result ->
-                result.user?.let { callback(Result.success(it)) } ?: callback(Result.failure(Exception("User is null")))
-            }
-            .addOnFailureListener { callback(Result.failure(it)) }
+    suspend fun signInWithGoogle(): Result<Unit> = runCatching {
+        client.auth.signInWith(Google)
     }
 
-    fun updateProfileAndVerify(user: FirebaseUser, name: String, callback: (Result<Unit>) -> Unit) {
-        val profileUpdate = com.google.firebase.auth.UserProfileChangeRequest.Builder()
-            .setDisplayName(name).build()
-        
-        user.updateProfile(profileUpdate)
-            .addOnSuccessListener {
-                user.sendEmailVerification()
-                callback(Result.success(Unit))
-            }
-            .addOnFailureListener { callback(Result.failure(it)) }
-    }
-
-    fun signInWithCredential(credential: AuthCredential, callback: (Result<FirebaseUser>) -> Unit) {
-        auth.signInWithCredential(credential)
-            .addOnSuccessListener { result ->
-                result.user?.let { callback(Result.success(it)) } ?: callback(Result.failure(Exception("User is null")))
-            }
-            .addOnFailureListener { callback(Result.failure(it)) }
-    }
-
-    fun sendPasswordReset(email: String, callback: (Result<Unit>) -> Unit) {
-        auth.sendPasswordResetEmail(email)
-            .addOnSuccessListener { callback(Result.success(Unit)) }
-            .addOnFailureListener { callback(Result.failure(it)) }
-    }
-
-    fun signOut() {
-        auth.signOut()
-    }
-
-    fun getCurrentUser(): FirebaseUser? = auth.currentUser
+    suspend fun signOut(): Result<Unit> = runCatching { client.auth.signOut() }
 }

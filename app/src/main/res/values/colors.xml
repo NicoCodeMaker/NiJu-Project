@@ -3,13 +3,6 @@
     <!-- ── Colores base ─────────────────────────────────────────────────── -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="teal_700">#018786</color>
-    <color name="green_500">#4CAF50</color>
-    <color name="grey_200">#EEEEEE</color>
-    <color name="blue_800">#1565C0</color>
-    <color name="background_light">#C8A2C8</color>
-    <color name="light_blue">#8dcce4</color>
-    <color name="icons_color">#2196F3</color>
 
     <color name="nav_selected">#3D85C6</color>
     <color name="nav_unselected">#6B7280</color>
@@ -41,8 +34,6 @@
     <color name="color_card_green">#F0FFF4</color>
     <color name="color_card_blue">#EEF2FF</color>
     <color name="color_card_purple_light">#EDE9FE</color>
-    <color name="color_screen_bg_blue">#F2F8FC</color>
-    <color name="color_screen_bg_grey">#F5F5F5</color>
     <color name="color_screen_bg_purple">#F5F2FF</color>
     <color name="color_screen_bg_splash">#D1F3FF</color>
     <color name="color_ruta_completed">#EEF2FF</color>

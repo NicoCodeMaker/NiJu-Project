@@ -7,187 +7,177 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.niju_project.data.model.FlashcardModel
-import com.example.niju_project.data.repository.FlashcardRepository
-import com.example.niju_project.data.repository.ProgressRepository
-import com.example.niju_project.data.repository.UserRepository
-import com.example.niju_project.domain.service.SpacedRepetitionService
-import com.google.firebase.auth.FirebaseAuth
+import com.example.niju_project.data.model.AnswerResult
+import com.example.niju_project.data.model.SessionItem
+import com.example.niju_project.data.model.SessionMode
+import com.example.niju_project.data.model.SessionSummary
+import com.example.niju_project.data.remote.NijuErrors
+import com.example.niju_project.data.repository.LearningRepository
+import com.example.niju_project.data.repository.SessionRepository
+import com.example.niju_project.domain.session.SessionProgress
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-sealed class PracticeUiState {
-    object Loading : PracticeUiState()
+/** Qué hacer después de un error. */
+enum class RetryAction { START, QUESTION, FINISH, NONE }
+
+sealed interface SessionUiState {
+    data object Loading : SessionUiState
 
     data class Question(
-        val flashcard: FlashcardModel,
-        val options: List<String>,
-        val index: Int,
-        val total: Int
-    ) : PracticeUiState()
-
-    /** Se emite cuando el usuario acierta — muestra el panel ¡Correcto! */
-    data class CorrectAnswer(
-        val flashcard: FlashcardModel,
-        val xpGained: Int,
-        val index: Int,
-        val total: Int
-    ) : PracticeUiState()
-
-    /** Se emite cuando el usuario falla — muestra el panel ¡Casi! */
-    data class WrongAnswer(
-        val correctWord: String,
-        val index: Int,
-        val total: Int
-    ) : PracticeUiState()
-
-    data class SessionResult(
-        val correct: Int,
+        val item: SessionItem,
+        val number: Int,
         val total: Int,
-        val xpGained: Int
-    ) : PracticeUiState()
+        val percent: Int
+    ) : SessionUiState
 
-    data class Error(val message: String) : PracticeUiState()
+    data class Feedback(
+        val item: SessionItem,
+        val result: AnswerResult,
+        val number: Int,
+        val total: Int,
+        val percent: Int,
+        val isLast: Boolean
+    ) : SessionUiState
+
+    data class Finished(val summary: SessionSummary) : SessionUiState
+
+    /** No hay nada que estudiar (p. ej. sin repasos pendientes). No es un fallo. */
+    data class Empty(val message: String) : SessionUiState
+
+    data class Error(
+        val message: String,
+        val retry: RetryAction,
+        val sessionExpired: Boolean = false
+    ) : SessionUiState
 }
 
+/**
+ * Orquesta una sesión: start_session → submit_answer por ejercicio → finish_session.
+ * La corrección, el XP y la programación de repasos los decide el servidor.
+ * Parámetros (extras del Intent): mode, lesson_id, context_id.
+ */
 class PracticeViewModel(
-    private val savedStateHandle: SavedStateHandle,
-    private val flashcardRepo: FlashcardRepository = FlashcardRepository(),
-    private val progressRepo: ProgressRepository   = ProgressRepository(),
-    private val userRepo: UserRepository           = UserRepository(),
-    private val sm2: SpacedRepetitionService       = SpacedRepetitionService()
+    savedStateHandle: SavedStateHandle,
+    private val repo: SessionRepository = LearningRepository(),
+    private val clock: () -> Long = System::currentTimeMillis
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<PracticeUiState>(PracticeUiState.Loading)
-    val uiState: StateFlow<PracticeUiState> = _state.asStateFlow()
+    private val mode = SessionMode.fromApi(savedStateHandle.get<String>(EXTRA_MODE))
+    private val lessonId: Int? = savedStateHandle.get<Int>(EXTRA_LESSON_ID)?.takeIf { it > 0 }
+    private val contextId: Int? = savedStateHandle.get<Int>(EXTRA_CONTEXT_ID)?.takeIf { it > 0 }
 
-    private val uid: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-    private val contextId: String? = savedStateHandle["context_id"]
+    private val _state = MutableStateFlow<SessionUiState>(SessionUiState.Loading)
+    val uiState: StateFlow<SessionUiState> = _state.asStateFlow()
 
-    private var allFlashcards = listOf<FlashcardModel>()
-    private var questions     = listOf<FlashcardModel>()
-    private var currentIdx    = 0
-    private var correct       = 0
-    private var totalXpGained = 0
+    private var sessionId: String? = null
+    private var progress: SessionProgress? = null
+    private var questionShownAt = 0L
+    private var busy = false
 
-    init { loadQuestions() }
+    init { start() }
 
-    private fun loadQuestions() {
-        viewModelScope.launch {
-            _state.value = PracticeUiState.Loading
-            val result = if (!contextId.isNullOrBlank())
-                flashcardRepo.getFlashcardsByContext(contextId)
-            else
-                flashcardRepo.getAllFlashcards()
-
-            result.onSuccess { list ->
-                if (list.isEmpty()) {
-                    _state.value = PracticeUiState.Error("No hay tarjetas disponibles")
-                    return@onSuccess
+    /** Inicia (o reintenta iniciar) la sesión. */
+    fun start() = runBusy {
+        repo.startSession(mode, lessonId, contextId)
+            .onSuccess { session ->
+                sessionId = session.sessionId
+                if (session.items.isEmpty()) {
+                    _state.value = SessionUiState.Empty(NijuErrors.messageFor("no_words"))
+                } else {
+                    progress = SessionProgress(session.items)
+                    showQuestion()
                 }
-                allFlashcards = list
-                questions     = list.shuffled().take(10)
-                currentIdx    = 0
-                correct       = 0
-                totalXpGained = 0
-                showNextQuestion()
-            }.onFailure {
-                _state.value = PracticeUiState.Error(it.message ?: "Error al cargar tarjetas")
             }
-        }
+            .onFailure { e ->
+                _state.value =
+                    if (NijuErrors.hasCode(e, NijuErrors.NO_DUE_REVIEWS) || NijuErrors.hasCode(e, "no_words"))
+                        SessionUiState.Empty(NijuErrors.messageFor(e))
+                    else error(e, RetryAction.START)
+            }
     }
 
-    private fun showNextQuestion() {
-        if (currentIdx >= questions.size) { finishSession(); return }
-        val q = questions[currentIdx]
-
-        val distractors = allFlashcards
-            .filter { it.id != q.id && it.english.isNotBlank() }
-            .shuffled()
-            .take(2)
-            .map { it.english }
-            .toMutableList()
-        while (distractors.size < 2) distractors.add("…")
-
-        _state.value = PracticeUiState.Question(
-            flashcard = q,
-            options   = (distractors + q.english).shuffled(),
-            index     = currentIdx + 1,
-            total     = questions.size
-        )
-    }
-
-    /**
-     * Llamado cuando el usuario selecciona una respuesta y pulsa Confirmar.
-     * Emite [PracticeUiState.CorrectAnswer] o [PracticeUiState.WrongAnswer]
-     * según si acertó. El avance real al siguiente ítem ocurre en [advance].
-     */
     fun submitAnswer(answer: String) {
-        if (currentIdx >= questions.size) return
-        val q         = questions[currentIdx]
-        val isCorrect = answer.trim().equals(q.english.trim(), ignoreCase = true)
-
-        viewModelScope.launch {
-            if (uid.isNotEmpty()) {
-                val existing = progressRepo.getProgress(uid, q.id).getOrNull()
-                val updated  = sm2.update(existing, q.id, isCorrect)
-                progressRepo.saveProgress(uid, updated)
-            }
-        }
-
-        if (isCorrect) {
-            correct++
-            val xp = 10
-            totalXpGained += xp
-            _state.value = PracticeUiState.CorrectAnswer(
-                flashcard = q,
-                xpGained  = xp,
-                index     = currentIdx + 1,
-                total     = questions.size
-            )
-        } else {
-            _state.value = PracticeUiState.WrongAnswer(
-                correctWord = q.english,
-                index       = currentIdx + 1,
-                total       = questions.size
-            )
+        val p = progress ?: return
+        if (p.isCurrentAnswered || answer.isBlank()) return
+        val item = p.current
+        val elapsed = (clock() - questionShownAt).takeIf { questionShownAt > 0 && it >= 0 }
+        runBusy {
+            repo.submitAnswer(item.itemId, answer, elapsed)
+                .onSuccess { result ->
+                    p.record(result)
+                    _state.value = SessionUiState.Feedback(
+                        item, result, p.number, p.total, p.percent, p.isLast
+                    )
+                }
+                .onFailure { e ->
+                    if (NijuErrors.hasCode(e, "item_already_answered")) {
+                        // Un envío anterior sí llegó al servidor: se cuenta y se continúa.
+                        p.markAnsweredWithoutResult()
+                        _state.value = error(e, RetryAction.QUESTION)
+                    } else {
+                        _state.value = error(e, RetryAction.QUESTION)
+                    }
+                }
         }
     }
 
-    /** Avanza a la siguiente pregunta después de ver el panel de resultado. */
-    fun advance() {
-        currentIdx++
-        showNextQuestion()
+    /** Vuelve a mostrar el ejercicio actual (tras un error al responder). */
+    fun resumeQuestion() {
+        val p = progress ?: return
+        if (p.isCurrentAnswered) next() else showQuestion()
     }
 
-    /** Termina la sesión inmediatamente (botón "Finalizar" en panel correcto). */
-    fun finishNow() {
-        viewModelScope.launch {
-            if (uid.isNotEmpty()) {
-                userRepo.addXp(uid, totalXpGained)
-                userRepo.updateStreak(uid)
-            }
-            _state.value = PracticeUiState.SessionResult(correct, currentIdx, totalXpGained)
+    /** Avanza al siguiente ejercicio o cierra la sesión si era el último. */
+    fun next() {
+        val p = progress ?: return
+        if (busy) return
+        if (p.advance()) showQuestion() else finish()
+    }
+
+    /** Termina la sesión ahora. Los ejercicios sin responder cuentan como no acertados. */
+    fun finish() {
+        val id = sessionId ?: return
+        runBusy {
+            repo.finishSession(id)
+                .onSuccess { _state.value = SessionUiState.Finished(it) }
+                .onFailure { e -> _state.value = error(e, RetryAction.FINISH) }
         }
     }
 
-    private fun finishSession() {
+    private fun showQuestion() {
+        val p = progress ?: return
+        questionShownAt = clock()
+        _state.value = SessionUiState.Question(p.current, p.number, p.total, p.percent)
+    }
+
+    private fun error(e: Throwable, retry: RetryAction) = SessionUiState.Error(
+        message = NijuErrors.messageFor(e),
+        retry = if (NijuErrors.isSessionExpired(e)) RetryAction.NONE else retry,
+        sessionExpired = NijuErrors.isSessionExpired(e)
+    )
+
+    /** Evita envíos dobles: ignora la acción si ya hay una en curso. */
+    private fun runBusy(block: suspend () -> Unit) {
+        if (busy) return
+        busy = true
+        _state.value = SessionUiState.Loading
         viewModelScope.launch {
-            if (uid.isNotEmpty()) {
-                userRepo.addXp(uid, totalXpGained)
-                userRepo.updateStreak(uid)
-            }
-            _state.value = PracticeUiState.SessionResult(correct, questions.size, totalXpGained)
+            try { block() } finally { busy = false }
         }
     }
 
     companion object {
+        const val EXTRA_MODE = "mode"
+        const val EXTRA_LESSON_ID = "lesson_id"
+        const val EXTRA_CONTEXT_ID = "context_id"
+        const val EXTRA_CONTEXT_SLUG = "context_slug"
+        const val EXTRA_TITLE = "title"
+
         val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PracticeViewModel(savedStateHandle = createSavedStateHandle())
-            }
+            initializer { PracticeViewModel(createSavedStateHandle()) }
         }
     }
 }

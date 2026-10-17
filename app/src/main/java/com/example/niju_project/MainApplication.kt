@@ -3,37 +3,30 @@ package com.example.niju_project
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.PersistentCacheSettings
+import com.example.niju_project.reminders.StudyReminders
 
 class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        
-        // 1. Aplicar el tema inmediatamente al iniciar
         applySavedTheme()
-
-        // 2. Inicializar Firebase y otros servicios
-        FirebaseApp.initializeApp(this)
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
-            .build()
-        FirebaseFirestore.getInstance().firestoreSettings = settings
+        StudyReminders.createChannel(this)
+        StudyReminders.reschedule(this)
     }
 
+    /**
+     * Tema guardado en Configuración:
+     *  -1 = seguir al sistema (por defecto), 1 = claro, 2 = oscuro.
+     */
     private fun applySavedTheme() {
-        val prefs = getSharedPreferences("niju_prefs", Context.MODE_PRIVATE)
-        
-        /**
-         * Recuperamos el modo guardado.
-         *  -1: MODE_NIGHT_FOLLOW_SYSTEM (Default)
-         *   1: MODE_NIGHT_NO (Modo Claro)
-         *   2: MODE_NIGHT_YES (Modo Oscuro)
-         */
-        val themeMode = prefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        AppCompatDelegate.setDefaultNightMode(themeMode)
+        val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        AppCompatDelegate.setDefaultNightMode(
+            prefs.getInt(KEY_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        )
+    }
+
+    companion object {
+        const val PREFS = "niju_prefs"
+        const val KEY_THEME = "theme_mode"
     }
 }

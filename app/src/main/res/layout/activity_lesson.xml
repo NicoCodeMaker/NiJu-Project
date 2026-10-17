@@ -1,93 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!-- Lecciones de un contexto -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_screen_bg_grey"
-    android:padding="16dp">
+    android:background="@color/color_background">
 
-    <!-- Header -->
-    <LinearLayout
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/view_screen_header"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:background="@drawable/top_shape">
+        android:layout_height="64dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lección del Día"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="22sp" />
-    </LinearLayout>
-
-    <!-- Contenido principal -->
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@id/headerInclude">
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/ivContextImage"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/card_bg"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tvContextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp"
-                android:gravity="center_horizontal">
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/txtLessonTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Etapa 1: Contextos Básicos"
-                    android:textColor="#1A1A1A"
-                    android:textStyle="bold"
-                    android:textSize="18sp" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/txtProgress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0% completado"
-                    android:textColor="#666"
-                    android:paddingTop="8dp"
-                    android:textSize="14sp" />
+            <include layout="@layout/view_empty_state" />
 
-                <ProgressBar
-                    android:id="@+id/lessonProgress"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:progress="40"
-                    android:progressTint="#4CAF50"
-                    android:indeterminate="false"
-                    android:paddingTop="12dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLessons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
 
-                <Button
-                    android:id="@+id/btnContinue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Continuar lección"
-                    android:textAllCaps="false"
-                    android:backgroundTint="#4CAF50"
-                    android:textColor="#FFF"
-                    android:layout_marginTop="20dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnPracticeContext"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_outline_background"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/lessons_practice_context"
+                android:textAllCaps="false"
+                android:textColor="#5865F2"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    <!-- Barra inferior de navegación -->
-    <include layout="@layout/bottom_navigation" />
-
-</LinearLayout>
+    <include
+        android:id="@+id/bottom_navigation"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

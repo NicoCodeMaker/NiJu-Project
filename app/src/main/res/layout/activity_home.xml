@@ -35,7 +35,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
-                    android:contentDescription="Logo NiJu"
+                    android:contentDescription="@string/ui_logo_niju"
                     android:src="@drawable/logo_niju" />
 
                 <!-- Saludo dinámico -->
@@ -46,7 +46,7 @@
                     android:layout_below="@id/logo_niju"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="6dp"
-                    android:text="¡Hola!"
+                    android:text="@string/ui_hola"
                     android:textColor="@color/color_text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -59,7 +59,7 @@
                     android:layout_below="@id/tvGreeting"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp"
-                    android:text="Sigue practicando Ingles hoy"
+                    android:text="@string/ui_sigue_practicando_ingles_hoy"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="13sp" />
             </RelativeLayout>
@@ -92,14 +92,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔥"
+                            android:text="@string/ui_texto_2"
                             android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/tvStreak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/ui_0"
                             android:textColor="#E65100"
                             android:textSize="17sp"
                             android:textStyle="bold" />
@@ -107,7 +107,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Racha"
+                            android:text="@string/ui_racha"
                             android:textColor="#9E9E9E"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -132,14 +132,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⭐"
+                            android:text="@string/ui_texto_3"
                             android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/tvXP"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/ui_0"
                             android:textColor="#2E7D32"
                             android:textSize="17sp"
                             android:textStyle="bold" />
@@ -147,7 +147,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="XP Total"
+                            android:text="@string/ui_xp_total"
                             android:textColor="#9E9E9E"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -172,14 +172,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🏅"
+                            android:text="@string/ui_texto_4"
                             android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/tvLevel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text="@string/ui_1"
                             android:textColor="#3949AB"
                             android:textSize="17sp"
                             android:textStyle="bold" />
@@ -187,7 +187,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nivel"
+                            android:text="@string/ui_nivel"
                             android:textColor="#9E9E9E"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -221,7 +221,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Meta diaria"
+                            android:text="@string/ui_meta_diaria"
                             android:textColor="@color/color_text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -230,7 +230,7 @@
                             android:id="@+id/tvDailyProgress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0 / 50 XP"
+                            android:text="@string/ui_0_50_xp"
                             android:textColor="#7B61FF"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -254,7 +254,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="22dp"
                 android:layout_marginBottom="10dp"
-                android:text="Lección del día"
+                android:text="@string/ui_leccion_del_dia"
                 android:textColor="@color/color_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -271,6 +271,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/ivBeachImage"
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
@@ -297,7 +298,7 @@
                             android:background="#CC7B61FF"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
-                            android:text="Contexto activo"
+                            android:text="@string/ui_contexto_activo"
                             android:textColor="#FFFFFF"
                             android:textSize="11sp"
                             android:textStyle="bold" />
@@ -306,7 +307,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Beach · Playa"
+                            android:text="@string/ui_beach_playa"
                             android:textColor="#FFFFFF"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -321,7 +322,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="22dp"
                 android:layout_marginBottom="10dp"
-                android:text="Accesos rápidos"
+                android:text="@string/ui_accesos_rapidos"
                 android:textColor="@color/color_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -347,6 +348,7 @@
                     android:layout_marginEnd="6dp">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:src="@drawable/ic_star_filled" />
@@ -355,7 +357,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="Favoritos"
+                        android:text="@string/ui_favoritos"
                         android:textColor="@color/color_text_primary"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -373,6 +375,7 @@
                     android:layout_marginHorizontal="6dp">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:src="@drawable/ic_trofeo" />
@@ -381,7 +384,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="Trofeos"
+                        android:text="@string/ui_trofeos"
                         android:textColor="@color/color_text_primary"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -399,15 +402,16 @@
                     android:layout_marginStart="6dp">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/ic_friends" />
+                        android:src="@drawable/ic_contexts" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="Amigos"
+                        android:text="@string/ui_contextos"
                         android:textColor="@color/color_text_primary"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -421,7 +425,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="36dp"
-                android:text="🎯  Comenzar sesión de hoy"
+                android:text="@string/ui_comenzar_sesion_de_hoy"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"

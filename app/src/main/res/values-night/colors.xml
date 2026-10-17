@@ -31,9 +31,6 @@
     <color name="color_card_green">#1B2D1B</color>
     <color name="color_card_blue">#1B1B2D</color>
     <color name="color_card_purple_light">#2D1B3D</color>
-
-    <color name="color_screen_bg_blue">#121826</color>
-    <color name="color_screen_bg_grey">#1A1A1A</color>
     <color name="color_screen_bg_purple">#1D1B2D</color>
     <color name="color_screen_bg_splash">#0F172A</color>
 

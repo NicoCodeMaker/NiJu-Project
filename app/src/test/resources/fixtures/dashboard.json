@@ -1,0 +1,19 @@
+{
+  "level": 1,
+  "accuracy": 50.0,
+  "xp_today": 10,
+  "xp_total": 10,
+  "avatar_url": null,
+  "words_seen": 6,
+  "due_reviews": 0,
+  "display_name": "Laura Gómez",
+  "daily_goal_xp": 50,
+  "next_level_xp": 100,
+  "studied_today": true,
+  "current_streak": 1,
+  "level_start_xp": 0,
+  "longest_streak": 1,
+  "words_mastered": 0,
+  "words_practiced": 2,
+  "lessons_completed": 0
+}

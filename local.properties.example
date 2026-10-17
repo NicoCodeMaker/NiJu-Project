@@ -1,0 +1,10 @@
+# Copia este archivo como local.properties (no se sube a git) y completa los valores.
+# Android Studio agrega sdk.dir automáticamente.
+
+# Supabase → Project Settings → API
+SUPABASE_URL=https://TU-PROYECTO.supabase.co
+SUPABASE_ANON_KEY=tu-clave-anon-public
+
+# Google queda listo pero desactivado. Para activarlo: habilita Google en
+# Supabase → Authentication → Providers y cambia esto a true.
+AUTH_GOOGLE_ENABLED=false

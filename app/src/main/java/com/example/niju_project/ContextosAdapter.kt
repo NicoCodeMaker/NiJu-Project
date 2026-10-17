@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.niju_project.data.model.ContextModel
+import com.example.niju_project.data.model.ContextRow
 
 class ContextosAdapter(
-    private var listaContextos: List<ContextModel>,
-    private val onContextoClick: (ContextModel) -> Unit
+    private var contexts: List<ContextRow>,
+    private val onClick: (ContextRow) -> Unit
 ) : RecyclerView.Adapter<ContextosAdapter.ContextoViewHolder>() {
 
-    fun updateList(newList: List<ContextModel>) {
-        this.listaContextos = newList
+    fun updateList(newList: List<ContextRow>) {
+        contexts = newList
         notifyDataSetChanged()
     }
 
@@ -24,25 +24,19 @@ class ContextosAdapter(
         val desc: TextView? = itemView.findViewById(R.id.tv_contexto_desc)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContextoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_contexto, parent, false)
-        return ContextoViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContextoViewHolder =
+        ContextoViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_contexto, parent, false)
+        )
 
     override fun onBindViewHolder(holder: ContextoViewHolder, position: Int) {
-        val contexto = listaContextos[position]
+        val contexto = contexts[position]
         holder.nombre.text = contexto.name
         holder.desc?.text = contexto.description
-        
-        // Aquí podrías usar Glide o Coil para cargar la iconoUrl
-        // Por ahora lo dejamos por defecto
-        holder.icono.setImageResource(R.drawable.beach_scene)
-
-        holder.itemView.setOnClickListener {
-            onContextoClick(contexto)
-        }
+        holder.icono.setImageResource(contextImage(contexto.slug))
+        holder.icono.contentDescription = contexto.name
+        holder.itemView.setOnClickListener { onClick(contexto) }
     }
 
-    override fun getItemCount(): Int = listaContextos.size
+    override fun getItemCount(): Int = contexts.size
 }

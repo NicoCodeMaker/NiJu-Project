@@ -1,0 +1,9 @@
+{
+  "status": "learning",
+  "was_due": true,
+  "is_correct": false,
+  "xp_awarded": 0,
+  "next_due_at": "2026-10-17T22:17:01.653674-05:00",
+  "interval_days": 1,
+  "correct_answer": "waiter"
+}

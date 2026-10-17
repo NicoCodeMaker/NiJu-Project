@@ -19,6 +19,7 @@
         android:orientation="vertical">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginBottom="4dp"
@@ -27,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Inicio"
+            android:text="@string/ui_inicio"
             android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
@@ -42,6 +43,7 @@
         android:orientation="vertical">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginBottom="4dp"
@@ -50,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contextos"
+            android:text="@string/ui_contextos"
             android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
@@ -65,6 +67,7 @@
         android:orientation="vertical">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginBottom="4dp"
@@ -73,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ruta"
+            android:text="@string/ui_ruta"
             android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
@@ -88,6 +91,7 @@
         android:orientation="vertical">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginBottom="4dp"
@@ -96,7 +100,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Perfil"
+            android:text="@string/ui_perfil"
             android:textColor="@color/color_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>

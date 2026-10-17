@@ -1,258 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<!-- Palabras favoritas del estudiante -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_screen_bg_blue">
+    android:background="@color/color_background">
 
-    <!-- HEADER -->
-    <RelativeLayout
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/view_screen_header"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="6dp"
-        android:background="@color/color_surface">
+        android:layout_height="64dp" />
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/rounded_button_bg"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Atrás"
-            android:padding="8dp"
-            android:elevation="4dp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvFavoritos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="Favoritos"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#0B2540" />
-
-
-    </RelativeLayout>
-
-    <!-- CONTENT -->
-    <ScrollView
+    <include
+        layout="@layout/view_empty_state"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="14dp"
-        android:paddingBottom="10dp">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headerInclude" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@id/headerInclude"
+        android:clipToPadding="false"
+        android:padding="16dp" />
 
-            <!-- CARD 1 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="8dp"
-                app:cardUseCompatPadding="true"
-                app:cardPreventCornerOverlap="false"
-                app:cardBackgroundColor="@color/color_surface">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:gravity="center_vertical">
-
-                    <!-- Icono con fondo redondeado -->
-                    <ImageView
-                        android:id="@+id/icon_beach"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/beach_scene"
-                        android:contentDescription="Beach icon"
-                        android:scaleType="centerCrop" />
-
-                    <!-- Textos -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:id="@+id/title_beach"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Beach"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="#0B2540" />
-
-                        <TextView
-                            android:id="@+id/sub_beach"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="La playa"
-                            android:textSize="14sp"
-                            android:textColor="#7A8B99"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-
-                    <!-- Estrella -->
-                    <ImageView
-                        android:id="@+id/star_beach"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_star_filled"
-                        android:contentDescription="Favorito"
-                        android:tint="#FFD056" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- CARD 2 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="8dp"
-                app:cardUseCompatPadding="true"
-                app:cardPreventCornerOverlap="false"
-                app:cardBackgroundColor="@color/color_surface">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/icon_restaurant"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/restaurant"
-                        android:contentDescription="Restaurant icon"
-                        android:scaleType="centerCrop" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:id="@+id/title_restaurant"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Restaurant"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="#0B2540" />
-
-                        <TextView
-                            android:id="@+id/sub_restaurant"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Restaurante"
-                            android:textSize="14sp"
-                            android:textColor="#7A8B99"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/star_restaurant"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_star_filled"
-                        android:contentDescription="Favorito"
-                        android:tint="#FFD056" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- CARD 3 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="8dp"
-                app:cardUseCompatPadding="true"
-                app:cardPreventCornerOverlap="false"
-                app:cardBackgroundColor="@color/color_surface">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/icon_airport"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/airport"
-                        android:contentDescription="Airport icon"
-                        android:scaleType="centerCrop" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:id="@+id/title_airport"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Airport"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="#0B2540" />
-
-                        <TextView
-                            android:id="@+id/sub_airport"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Aeropuerto"
-                            android:textSize="14sp"
-                            android:textColor="#7A8B99"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/star_airport"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_star_filled"
-                        android:contentDescription="Favorito"
-                        android:tint="#FFD056" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- espacio final para que no choque con el bottom nav -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="24dp" />
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Barra inferior de navegación -->
-    <include layout="@layout/bottom_navigation" />
-</LinearLayout>
+    <include
+        android:id="@+id/bottom_navigation"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

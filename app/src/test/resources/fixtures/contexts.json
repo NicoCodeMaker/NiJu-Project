@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "slug": "restaurant",
+    "name": "Restaurante",
+    "description": "Pide una mesa, ordena comida y paga la cuenta.",
+    "icon": "restaurant",
+    "sort_order": 1,
+    "is_published": true
+  },
+  {
+    "id": 2,
+    "slug": "supermarket",
+    "name": "Supermercado",
+    "description": "Encuentra productos y paga en la caja.",
+    "icon": "supermarket",
+    "sort_order": 2,
+    "is_published": true
+  },
+  {
+    "id": 3,
+    "slug": "airport",
+    "name": "Aeropuerto",
+    "description": "Haz el check-in, aborda y entiende los avisos.",
+    "icon": "airport",
+    "sort_order": 3,
+    "is_published": true
+  }
+]

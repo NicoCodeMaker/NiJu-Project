@@ -10,6 +10,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/bg_icon_blue"
@@ -21,12 +22,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Configuración"
+        android:text="@string/ui_configuracion"
         android:textColor="@color/color_text_primary"
         android:textSize="16sp"
         android:layout_marginStart="10dp" />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_arrow_right"

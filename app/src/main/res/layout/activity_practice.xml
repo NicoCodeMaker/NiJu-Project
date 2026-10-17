@@ -59,14 +59,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎉"
+                    android:text="@string/ui_texto_5"
                     android:textSize="56sp"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¡Correcto!"
+                    android:text="@string/ui_correcto"
                     android:textColor="@color/color_text_primary"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -77,7 +77,7 @@
                     android:id="@+id/tvCorrectWord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Word"
+                    android:text="@string/ui_word"
                     android:textColor="#7B61FF"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -87,7 +87,7 @@
                     android:id="@+id/tvCorrectXp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+10 XP"
+                    android:text="@string/ui_10_xp"
                     android:textColor="#2E7D32"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:backgroundTint="#7B61FF"
-                    android:text="Continuar"
+                    android:text="@string/ui_continuar"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -113,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:backgroundTint="@color/color_background"
-                    android:text="Finalizar sesión"
+                    android:text="@string/ui_finalizar_sesion"
                     android:textColor="#4B5563"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -151,14 +151,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="😅"
+                    android:text="@string/ui_texto_6"
                     android:textSize="56sp"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¡Casi!"
+                    android:text="@string/ui_casi"
                     android:textColor="@color/color_text_primary"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -167,7 +167,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="La respuesta correcta era:"
+                    android:text="@string/ui_la_respuesta_correcta_era"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
@@ -176,7 +176,7 @@
                     android:id="@+id/tvCorrectAnswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Word"
+                    android:text="@string/ui_word"
                     android:textColor="#E65100"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -187,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:backgroundTint="#7B61FF"
-                    android:text="Seguir intentando"
+                    android:text="@string/ui_seguir_intentando"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -224,7 +224,7 @@
                 android:background="@drawable/rounded_button_bg"
                 android:padding="8dp"
                 android:src="@drawable/ic_arrow_back"
-                android:contentDescription="Cerrar" />
+                android:contentDescription="@string/ui_cerrar" />
 
             <!-- Índice de pregunta -->
             <TextView
@@ -234,7 +234,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="20dp"
-                android:text="1 / 10"
+                android:text="@string/ui_1_10"
                 android:textColor="@color/color_text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -290,7 +290,7 @@
                             android:layout_height="200dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/beach_scene"
-                            android:contentDescription="Imagen de la palabra" />
+                            android:contentDescription="@string/ui_imagen_de_la_palabra" />
 
                         <!-- Badge de categoría (sobre imagen) -->
                         <LinearLayout
@@ -310,7 +310,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="¿Cómo se dice en inglés?"
+                                    android:text="@string/ui_como_se_dice_en_ingles"
                                     android:textColor="@color/color_text_secondary"
                                     android:textSize="12sp"
                                     android:layout_marginBottom="4dp" />
@@ -319,7 +319,7 @@
                                     android:id="@+id/txtQuestion"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="palabra"
+                                    android:text="@string/ui_palabra"
                                     android:textColor="@color/color_text_primary"
                                     android:textSize="26sp"
                                     android:textStyle="bold"
@@ -329,7 +329,7 @@
                                     android:id="@+id/tvWordCategory"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="restaurante"
+                                    android:text="@string/ui_restaurante"
                                     android:textColor="@color/color_text_hint"
                                     android:textSize="13sp"
                                     android:layout_marginTop="2dp" />
@@ -340,7 +340,7 @@
                                 android:id="@+id/tvDifficulty"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="⭐ 1"
+                                android:text="@string/ui_1_2"
                                 android:textColor="@color/color_text_secondary"
                                 android:textSize="13sp"
                                 android:background="@drawable/bg_contexto_default"
@@ -354,7 +354,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Elige la traducción correcta"
+                    android:text="@string/ui_elige_la_traduccion_correcta"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="13sp"
                     android:layout_marginBottom="12dp"
@@ -369,7 +369,7 @@
                     android:textColor="@color/color_text_primary"
                     android:textSize="15sp"
                     android:textAllCaps="false"
-                    android:text="Opción 1"
+                    android:text="@string/ui_opcion_1"
                     android:elevation="2dp"
                     android:stateListAnimator="@null" />
 
@@ -382,7 +382,7 @@
                     android:textColor="@color/color_text_primary"
                     android:textSize="15sp"
                     android:textAllCaps="false"
-                    android:text="Opción 2"
+                    android:text="@string/ui_opcion_2"
                     android:elevation="2dp"
                     android:stateListAnimator="@null" />
 
@@ -395,7 +395,7 @@
                     android:textColor="@color/color_text_primary"
                     android:textSize="15sp"
                     android:textAllCaps="false"
-                    android:text="Opción 3"
+                    android:text="@string/ui_opcion_3"
                     android:elevation="2dp"
                     android:stateListAnimator="@null" />
 
@@ -405,7 +405,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:backgroundTint="#D1D5DB"
-                    android:text="Confirmar"
+                    android:text="@string/ui_confirmar"
                     android:textAllCaps="false"
                     android:textColor="@color/color_text_hint"
                     android:textSize="16sp"
@@ -420,6 +420,8 @@
     <include
         android:id="@+id/bottom_navigation_include"
         layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -46,7 +46,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_button_bg"
-                    android:contentDescription="Atrás"
+                    android:contentDescription="@string/ui_atras"
                     android:padding="8dp"
                     android:src="@drawable/ic_arrow_back" />
 
@@ -71,7 +71,7 @@
                     android:layout_below="@id/profile_image"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
-                    android:text="Usuario"
+                    android:text="@string/ui_usuario"
                     android:textColor="@color/color_text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -86,7 +86,7 @@
                     android:layout_below="@id/user_name"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp"
-                    android:text="Registro: ..."
+                    android:text=""
                     android:textColor="@color/color_text_secondary"
                     android:textSize="12sp"
                     tools:text="Registro: 2025-10" />
@@ -108,7 +108,7 @@
                     android:id="@+id/tvLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🏅 Nivel 1"
+                    android:text="@string/ui_nivel_1"
                     android:textColor="#3949AB"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -118,7 +118,7 @@
                     android:id="@+id/tvStreak"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🔥 0 días"
+                    android:text="@string/ui_0_dias"
                     android:textColor="#E65100"
                     android:textSize="14sp"
                     android:layout_marginEnd="16dp" />
@@ -127,7 +127,7 @@
                     android:id="@+id/tvXP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⭐ 0 XP"
+                    android:text="@string/ui_0_xp"
                     android:textColor="#2E7D32"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -139,7 +139,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="18dp"
                 android:layout_marginBottom="10dp"
-                android:text="Mis estadísticas"
+                android:text="@string/ui_mis_estadisticas"
                 android:textColor="@color/color_text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -170,6 +170,7 @@
                         android:padding="8dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:src="@drawable/ic_edit"
@@ -180,7 +181,7 @@
                             android:id="@+id/tvWordsCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/ui_0"
                             android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -188,7 +189,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Palabras"
+                            android:text="@string/ui_practicadas"
                             android:textColor="#D8D4FF"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -212,6 +213,7 @@
                         android:padding="8dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:src="@drawable/ic_contexts"
@@ -222,7 +224,7 @@
                             android:id="@+id/tvContextsCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/ui_0"
                             android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -230,7 +232,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contextos"
+                            android:text="@string/ui_lecciones"
                             android:textColor="#B3B9FF"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -254,6 +256,7 @@
                         android:padding="8dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:src="@drawable/ic_trofeo"
@@ -264,7 +267,7 @@
                             android:id="@+id/tvPlanName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Free"
+                            android:text="@string/ui_0"
                             android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -272,7 +275,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Plan"
+                            android:text="@string/ui_dominadas"
                             android:textColor="#FFF3E0"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -307,7 +310,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Meta diaria"
+                            android:text="@string/ui_meta_diaria"
                             android:textColor="@color/color_text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -316,7 +319,7 @@
                             android:id="@+id/tvDailyGoalProgress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0 / 50 XP"
+                            android:text="@string/ui_0_50_xp"
                             android:textColor="#7B61FF"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -340,7 +343,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="10dp"
-                android:text="Opciones"
+                android:text="@string/ui_opciones"
                 android:textColor="@color/color_text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -367,54 +370,15 @@
                     android:layout_marginTop="4dp"
                     android:paddingHorizontal="16dp" />
 
+                <!-- ESTADÍSTICAS Y LOGROS -->
+                <include
+                    android:id="@+id/option_stats"
+                    layout="@layout/item_option_stats" />
+
                 <!-- CONFIGURACIÓN -->
                 <include
                     android:id="@+id/option_config"
                     layout="@layout/item_option_config" />
-
-                <!-- 2FA -->
-                <LinearLayout
-                    android:id="@+id/option_setup_2fa"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/option_item_bg"
-                    android:layout_marginBottom="4dp"
-                    android:paddingHorizontal="10dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_icon_blue"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_shield"
-                        app:tint="#FFFFFF" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Verificación en 2 pasos"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="15sp"
-                        android:layout_marginStart="10dp" />
-
-                    <TextView
-                        android:id="@+id/tv2fa_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Inactivo"
-                        android:textColor="#F59E0B"
-                        android:textSize="12sp"
-                        android:layout_marginEnd="8dp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_arrow_right"
-                        app:tint="#999999" />
-                </LinearLayout>
 
                 <!-- CERRAR SESIÓN -->
                 <include layout="@layout/item_option_logout" />

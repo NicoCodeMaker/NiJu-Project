@@ -1,0 +1,62 @@
+[
+  {
+    "code": "first_lesson",
+    "title": "Primer paso",
+    "description": "Completa tu primera lección.",
+    "metric": "lessons_completed",
+    "threshold": 1,
+    "xp_reward": 20,
+    "current_value": 0,
+    "unlocked_at": null
+  },
+  {
+    "code": "all_lessons",
+    "title": "Ruta completa",
+    "description": "Completa 6 lecciones.",
+    "metric": "lessons_completed",
+    "threshold": 6,
+    "xp_reward": 100,
+    "current_value": 0,
+    "unlocked_at": null
+  },
+  {
+    "code": "streak_3",
+    "title": "Constancia",
+    "description": "Estudia 3 días seguidos.",
+    "metric": "streak_days",
+    "threshold": 3,
+    "xp_reward": 30,
+    "current_value": 1,
+    "unlocked_at": null
+  },
+  {
+    "code": "streak_7",
+    "title": "Una semana",
+    "description": "Estudia 7 días seguidos.",
+    "metric": "streak_days",
+    "threshold": 7,
+    "xp_reward": 70,
+    "current_value": 1,
+    "unlocked_at": null
+  },
+  {
+    "code": "reviews_25",
+    "title": "Buena memoria",
+    "description": "Acierta 25 repasos programados.",
+    "metric": "correct_reviews",
+    "threshold": 25,
+    "xp_reward": 50,
+    "current_value": 0,
+    "unlocked_at": null
+  },
+  {
+    "code": "mastered_10",
+    "title": "Vocabulario firme",
+    "description": "Domina 10 palabras (repaso a 21+ días).",
+    "metric": "words_mastered",
+    "threshold": 10,
+    "xp_reward": 100,
+    "current_value": 0,
+    "unlocked_at": null
+  }
+]

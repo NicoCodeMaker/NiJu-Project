@@ -2,38 +2,54 @@ package com.example.niju_project.ui.contexts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.niju_project.data.model.ContextModel
-import com.example.niju_project.data.repository.ContextRepository
+import com.example.niju_project.data.model.ContextProgress
+import com.example.niju_project.data.model.ContextRow
+import com.example.niju_project.data.remote.NijuErrors
+import com.example.niju_project.data.repository.LearningRepository
+import com.example.niju_project.ui.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-sealed class ContextsUiState {
-    object Loading : ContextsUiState()
-    data class Success(val contexts: List<ContextModel>) : ContextsUiState()
-    data class Error(val message: String) : ContextsUiState()
-}
-
+/** Catálogo de contextos (pantalla Contextos). */
 class ContextsViewModel(
-    private val repository: ContextRepository = ContextRepository()
+    private val repo: LearningRepository = LearningRepository()
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ContextsUiState>(ContextsUiState.Loading)
-    val uiState: StateFlow<ContextsUiState> = _uiState.asStateFlow()
+    private val _state = MutableStateFlow<UiState<List<ContextRow>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ContextRow>>> = _state.asStateFlow()
 
-    init {
-        loadContexts()
-    }
+    init { load() }
 
-    fun loadContexts() {
+    fun load() {
+        _state.value = UiState.Loading
         viewModelScope.launch {
-            _uiState.value = ContextsUiState.Loading
-            repository.getAllContexts().onSuccess { list ->
-                _uiState.value = ContextsUiState.Success(list)
-            }.onFailure {
-                _uiState.value = ContextsUiState.Error(it.message ?: "Error desconocido")
-            }
+            repo.getContexts()
+                .onSuccess { _state.value = UiState.Success(it) }
+                .onFailure {
+                    _state.value = UiState.Error(NijuErrors.messageFor(it), NijuErrors.isSessionExpired(it))
+                }
+        }
+    }
+}
+
+/** Avance por contexto (pantalla Ruta). */
+class RutaViewModel(
+    private val repo: LearningRepository = LearningRepository()
+) : ViewModel() {
+
+    private val _state = MutableStateFlow<UiState<List<ContextProgress>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ContextProgress>>> = _state.asStateFlow()
+
+    fun load() {
+        if (_state.value !is UiState.Success) _state.value = UiState.Loading
+        viewModelScope.launch {
+            repo.getContextProgress()
+                .onSuccess { _state.value = UiState.Success(it) }
+                .onFailure {
+                    _state.value = UiState.Error(NijuErrors.messageFor(it), NijuErrors.isSessionExpired(it))
+                }
         }
     }
 }

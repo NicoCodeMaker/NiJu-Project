@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- En Android 9+ los títulos de sección se anuncian como encabezados (TalkBack) -->
+    <style name="NijuSectionTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/color_text_primary</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:accessibilityHeading">true</item>
+    </style>
+</resources>

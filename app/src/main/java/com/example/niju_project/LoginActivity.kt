@@ -2,202 +2,130 @@ package com.example.niju_project
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.credentials.CredentialManager
-import androidx.credentials.CustomCredential
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.GetCredentialResponse
-import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import androidx.activity.viewModels
-import com.example.niju_project.ui.LoginState
-import com.example.niju_project.ui.LoginViewModel
-import com.google.firebase.auth.GoogleAuthProvider
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.niju_project.data.remote.SupabaseProvider
+import com.example.niju_project.data.repository.AuthRepository
+import com.example.niju_project.data.repository.ProfileRepository
+import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.launch
+import java.util.TimeZone
 
+/**
+ * Inicio de sesión con Microsoft (y Google si está habilitado).
+ *
+ * Abre el navegador; al terminar, Supabase vuelve a esta pantalla mediante
+ * niju://login-callback (ver intent-filter en el AndroidManifest).
+ */
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var etEmail:          EditText
-    private lateinit var etPassword:       EditText
-    private lateinit var ivTogglePassword: ImageView
-    private lateinit var progressBar:      ProgressBar
-    private lateinit var btnLogin:         Button
-    private lateinit var btnRegister:      Button
-    private lateinit var btnGoogle:        Button
-    private lateinit var btnPhone:         Button
-    private lateinit var tvForgotPassword: TextView
+    private lateinit var btnMicrosoft: Button
+    private lateinit var btnGoogle: Button
+    private lateinit var progressBar: ProgressBar
+    private lateinit var tvConfigWarning: TextView
 
-    private val viewModel: LoginViewModel by viewModels()
-    private lateinit var credentialManager: CredentialManager
-    private var isPasswordVisible = false
-
-    companion object {
-        private const val TAG = "LoginActivity"
-    }
+    private var auth: AuthRepository? = null
+    private var waitingForBrowser = false
+    private var navigated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        credentialManager = CredentialManager.create(this)
+        btnMicrosoft = findViewById(R.id.btnMicrosoft)
+        btnGoogle = findViewById(R.id.btnGoogle)
+        progressBar = findViewById(R.id.progressBar)
+        tvConfigWarning = findViewById(R.id.tvConfigWarning)
 
-        bindViews()
-        setupListeners()
-        setupObservers()
+        btnGoogle.visibility = if (BuildConfig.AUTH_GOOGLE_ENABLED) View.VISIBLE else View.GONE
 
-        viewModel.checkCurrentSession()
+        if (!SupabaseProvider.isConfigured) {
+            tvConfigWarning.visibility = View.VISIBLE
+            btnMicrosoft.isEnabled = false
+            btnGoogle.isEnabled = false
+            return
+        }
+
+        auth = AuthRepository().also { repo ->
+            repo.handleRedirect(intent)
+            observeSession(repo)
+        }
+
+        btnMicrosoft.setOnClickListener { signIn { it.signInWithMicrosoft() } }
+        btnGoogle.setOnClickListener { signIn { it.signInWithGoogle() } }
     }
 
-    private fun setupObservers() {
-        viewModel.loginState.observe(this) { state ->
-            when (state) {
-                is LoginState.Loading -> showLoading(true)
-                is LoginState.Success -> {
-                    showLoading(false)
-                    goToMain()
-                }
-                is LoginState.Require2FA -> {
-                    showLoading(false)
-                    startActivity(Intent(this, TwoFactorActivity::class.java).apply {
-                        putExtra("mode", "verify")
-                        putExtra("totp_secret", state.secret)
-                        putExtra("user_email", state.email)
-                    })
-                }
-                is LoginState.Error -> {
-                    showLoading(false)
-                    toast(state.message)
-                }
-                else -> showLoading(false)
-            }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        auth?.handleRedirect(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Si el usuario cerró el navegador sin terminar, se reactivan los botones.
+        if (waitingForBrowser && auth?.isLoggedIn() != true) {
+            waitingForBrowser = false
+            showLoading(false)
         }
     }
 
-    private fun bindViews() {
-        etEmail          = findViewById(R.id.etEmail)
-        etPassword       = findViewById(R.id.etPassword)
-        ivTogglePassword = findViewById(R.id.ivTogglePassword)
-        progressBar      = findViewById(R.id.progressBar)
-        btnLogin         = findViewById(R.id.btnLogin)
-        btnRegister      = findViewById(R.id.btnRegister)
-        btnGoogle        = findViewById(R.id.btnGoogle)
-        btnPhone         = findViewById(R.id.btnPhone)
-        tvForgotPassword = findViewById(R.id.tvForgotPassword)
-    }
-
-    private fun setupListeners() {
-        ivTogglePassword.setOnClickListener {
-            isPasswordVisible = !isPasswordVisible
-            etPassword.inputType = if (isPasswordVisible)
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            else
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            ivTogglePassword.setImageResource(
-                if (isPasswordVisible) R.drawable.ic_eye_open else R.drawable.ic_eye_closed
-            )
-            etPassword.setSelection(etPassword.text.length)
-        }
-        btnLogin.setOnClickListener    { loginWithEmail() }
-        btnRegister.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }
-        btnGoogle.setOnClickListener   { signInWithGoogle() }
-        btnPhone.setOnClickListener    { startActivity(Intent(this, PhoneAuthActivity::class.java)) }
-        tvForgotPassword.setOnClickListener { sendPasswordReset() }
-    }
-
-    // ── Email / Password ─────────────────────────────────────────────────────
-    private fun loginWithEmail() {
-        viewModel.loginWithEmail(
-            etEmail.text.toString().trim(),
-            etPassword.text.toString().trim()
-        )
-    }
-
-    // ── Google Sign-In con Credential Manager (API moderna) ──────────────────
-    private fun signInWithGoogle() {
+    private fun signIn(action: suspend (AuthRepository) -> Result<Unit>) {
+        val repo = auth ?: return
         showLoading(true)
-
-        val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(getString(R.string.default_web_client_id))
-            .setAutoSelectEnabled(false)
-            .build()
-
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
-            .build()
-
         lifecycleScope.launch {
-            try {
-                val result: GetCredentialResponse = credentialManager.getCredential(
-                    request = request,
-                    context = this@LoginActivity
-                )
-                handleGoogleCredential(result)
-            } catch (e: GetCredentialException) {
-                showLoading(false)
-                Log.e(TAG, "Google Sign-In failed: ${e.type} — ${e.message}")
-                toast("Error Google: ${e.message}")
-            }
+            action(repo)
+                .onSuccess { waitingForBrowser = true }
+                .onFailure {
+                    Log.e(TAG, "Inicio de sesión fallido", it)
+                    showLoading(false)
+                    toast(getString(R.string.login_error))
+                }
         }
     }
 
-    private fun handleGoogleCredential(result: GetCredentialResponse) {
-        when (val credential = result.credential) {
-            is CustomCredential -> {
-                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                    try {
-                        val googleIdToken = GoogleIdTokenCredential
-                            .createFrom(credential.data)
-                            .idToken
-
-                        val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
-                        viewModel.loginWithCredential(firebaseCredential)
-                    } catch (e: GoogleIdTokenParsingException) {
-                        showLoading(false)
-                        Log.e(TAG, "Invalid Google ID token", e)
-                        toast("Token de Google inválido")
+    private fun observeSession(repo: AuthRepository) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                repo.sessionStatus.collect { status ->
+                    when (status) {
+                        is SessionStatus.Authenticated -> onSignedIn()
+                        is SessionStatus.Initializing -> showLoading(true)
+                        else -> if (!waitingForBrowser) showLoading(false)
                     }
-                } else {
-                    showLoading(false)
-                    Log.w(TAG, "Credential type not supported: ${credential.type}")
-                    toast("Tipo de credencial no soportado")
                 }
             }
-            else -> {
-                showLoading(false)
-                Log.w(TAG, "Unexpected credential type")
-                toast("Credencial inesperada")
-            }
         }
     }
 
-    // ── Recuperar contraseña ─────────────────────────────────────────────────
-    private fun sendPasswordReset() {
-        val email = etEmail.text.toString().trim()
-        if (email.isEmpty()) { etEmail.error = "Ingresa tu correo primero"; return }
-        viewModel.sendPasswordReset(email)
-        toast("Si el correo existe, se enviarán instrucciones")
+    private fun onSignedIn() {
+        if (navigated) return
+        navigated = true
+        lifecycleScope.launch {
+            // Zona horaria del teléfono → la racha se calcula con días locales.
+            ProfileRepository().syncTimezone(TimeZone.getDefault().id)
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+            finish()
+        }
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
     private fun showLoading(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
-        btnLogin.isEnabled     = !show
-        btnGoogle.isEnabled    = !show
-        btnPhone.isEnabled     = !show
+        btnMicrosoft.isEnabled = !show
+        btnGoogle.isEnabled = !show
     }
 
     private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 
-    private fun goToMain() {
-        startActivity(Intent(this, HomeActivity::class.java))
-        finish()
+    private companion object {
+        const val TAG = "LoginActivity"
     }
 }

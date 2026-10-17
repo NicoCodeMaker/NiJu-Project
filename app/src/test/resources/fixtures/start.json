@@ -1,0 +1,86 @@
+{
+  "mode": "lesson",
+  "items": [
+    {
+      "hint": "/ˈmenjuː/",
+      "prompt": "menu",
+      "item_id": 100,
+      "options": [
+        "menú",
+        "mesero",
+        "mesa"
+      ],
+      "word_id": 1,
+      "position": 1,
+      "exercise_type": "en_to_es"
+    },
+    {
+      "hint": null,
+      "prompt": "mesero",
+      "item_id": 101,
+      "options": [
+        "menu",
+        "waiter",
+        "reservation"
+      ],
+      "word_id": 2,
+      "position": 2,
+      "exercise_type": "es_to_en"
+    },
+    {
+      "hint": "Necesitamos una mesa para dos.",
+      "prompt": "We need a _____ for two.",
+      "item_id": 102,
+      "options": [
+        "bill",
+        "table",
+        "reservation"
+      ],
+      "word_id": 3,
+      "position": 3,
+      "exercise_type": "fill_blank"
+    },
+    {
+      "hint": "/ˌrezərˈveɪʃən/",
+      "prompt": "reservation",
+      "item_id": 103,
+      "options": [
+        "postre",
+        "reserva",
+        "propina"
+      ],
+      "word_id": 4,
+      "position": 4,
+      "exercise_type": "en_to_es"
+    },
+    {
+      "hint": null,
+      "prompt": "pedir",
+      "item_id": 104,
+      "options": [
+        "order",
+        "delicious",
+        "pay"
+      ],
+      "word_id": 5,
+      "position": 5,
+      "exercise_type": "es_to_en"
+    },
+    {
+      "hint": "Un vaso de agua, por favor.",
+      "prompt": "A glass of _____, please.",
+      "item_id": 105,
+      "options": [
+        "water",
+        "dessert",
+        "table"
+      ],
+      "word_id": 6,
+      "position": 6,
+      "exercise_type": "fill_blank"
+    }
+  ],
+  "lesson_id": 2,
+  "context_id": 1,
+  "session_id": "137e4a80-9f4f-4b3b-9ae3-b83c13be4773"
+}

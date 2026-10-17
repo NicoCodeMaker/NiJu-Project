@@ -51,7 +51,7 @@
                     android:layout_below="@id/logoNiJu"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
-                    android:text="Elige un contexto"
+                    android:text="@string/ui_elige_un_contexto"
                     android:textColor="@color/color_text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -63,7 +63,7 @@
                     android:layout_below="@id/logoNiJu"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
-                    android:text="¿Dónde quieres practicar hoy?"
+                    android:text="@string/ui_donde_quieres_practicar_hoy"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="13sp" />
             </RelativeLayout>
@@ -89,7 +89,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💡"
+                        android:text="@string/ui_texto"
                         android:textSize="20sp"
                         android:layout_marginEnd="10dp" />
 
@@ -97,7 +97,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Cada contexto incluye vocabulario, frases y flashcards específicos para esa situación."
+                        android:text="@string/ui_cada_contexto_incluye_lecciones_con"
                         android:textColor="#3949AB"
                         android:textSize="13sp"
                         android:lineSpacingExtra="2dp" />
@@ -116,6 +116,9 @@
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false" />
 
+            <!-- Estado vacío / error -->
+            <include layout="@layout/view_empty_state" />
+
             <!-- ══════════ BOTÓN PRINCIPAL ══════════ -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartSession"
@@ -126,7 +129,7 @@
                 android:layout_marginBottom="36dp"
                 app:backgroundTint="#7B61FF"
                 app:cornerRadius="16dp"
-                android:text="🎯  Comenzar sesión de hoy"
+                android:text="@string/ui_practica_libre"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"

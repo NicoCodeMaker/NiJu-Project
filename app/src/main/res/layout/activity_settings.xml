@@ -21,7 +21,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/rounded_button_bg"
-            android:contentDescription="Atrás"
+            android:contentDescription="@string/ui_atras"
             android:padding="8dp"
             android:src="@drawable/ic_arrow_back" />
 
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/roboto_bold"
             android:gravity="center"
-            android:text="Configuración"
+            android:text="@string/ui_configuracion"
             android:textColor="@color/color_text_primary"
             android:textSize="18sp" />
 
@@ -63,7 +63,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Cuenta"
+                android:text="@string/ui_cuenta"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
@@ -93,6 +93,7 @@
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_blue"
@@ -111,7 +112,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
-                                android:text="Editar perfil"
+                                android:text="@string/ui_editar_perfil"
                                 android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
@@ -119,95 +120,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="Nombre, foto y bio"
+                                android:text="@string/ui_nombre_y_meta_diaria"
                                 android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
                             app:tint="#D1D5DB" />
-                    </LinearLayout>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="@color/color_background" />
-
-                    <!-- Cambiar contraseña -->
-                    <LinearLayout
-                        android:id="@+id/rowChangePassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp"
-                        android:background="?attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_yellow"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="Cambiar contraseña"
-                            android:textColor="@color/color_text_primary"
-                            android:textSize="15sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_arrow_right"
-                            app:tint="#D1D5DB" />
-                    </LinearLayout>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="@color/color_background" />
-
-                    <!-- Verificar correo -->
-                    <LinearLayout
-                        android:id="@+id/rowVerifyEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp"
-                        android:background="?attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_blue"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_contexts"
-                            app:tint="#FFFFFF" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="Verificar correo"
-                            android:textColor="@color/color_text_primary"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:id="@+id/tvVerifyBadge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="Sin verificar"
-                            android:textColor="#F59E0B"
-                            android:textSize="12sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -222,7 +145,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Apariencia"
+                android:text="@string/ui_apariencia"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
@@ -244,6 +167,7 @@
                     android:paddingHorizontal="16dp">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_icon_blue"
@@ -257,7 +181,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="Modo oscuro"
+                        android:text="@string/ui_modo_oscuro"
                         android:textColor="@color/color_text_primary"
                         android:textSize="15sp" />
 
@@ -279,7 +203,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Notificaciones"
+                android:text="@string/ui_notificaciones"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
@@ -307,6 +231,7 @@
                         android:paddingHorizontal="16dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_red"
@@ -325,7 +250,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
-                                android:text="Recordatorio diario"
+                                android:text="@string/ui_recordatorio_diario"
                                 android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
@@ -333,7 +258,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="Practicar cada día"
+                                android:text="@string/ui_todos_los_dias_a_las"
                                 android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -358,6 +283,7 @@
                         android:paddingHorizontal="16dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_yellow"
@@ -376,7 +302,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
-                                android:text="Alertas de lección"
+                                android:text="@string/ui_aviso_de_repasos"
                                 android:textColor="@color/color_text_primary"
                                 android:textSize="15sp" />
 
@@ -384,7 +310,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="Nueva lección disponible"
+                                android:text="@string/ui_cuando_tengas_palabras_por_repasar"
                                 android:textColor="@color/color_text_hint"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -409,7 +335,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Privacidad y seguridad"
+                android:text="@string/ui_privacidad_y_seguridad"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
@@ -428,57 +354,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- 2FA -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_blue"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto_medium"
-                                android:text="Verificación en 2 pasos"
-                                android:textColor="@color/color_text_primary"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto_regular"
-                                android:text="Capa extra de seguridad"
-                                android:textColor="@color/color_text_hint"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <Switch
-                            android:id="@+id/switch2FA"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:thumbTint="@color/color_switch_thumb"
-                            android:trackTint="@color/color_switch_track" />
-                    </LinearLayout>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:layout_marginStart="64dp" android:background="@color/color_background" />
-
                     <!-- Borrar historial -->
                     <LinearLayout
                         android:id="@+id/rowClearHistory"
@@ -490,6 +365,7 @@
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_red"
@@ -503,11 +379,12 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="Borrar historial de lecciones"
+                            android:text="@string/ui_reiniciar_mi_progreso"
                             android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
@@ -526,7 +403,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Acerca de la app"
+                android:text="@string/ui_acerca_de_la_app"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
@@ -556,6 +433,7 @@
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_blue"
@@ -569,7 +447,7 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="Idioma"
+                            android:text="@string/ui_idioma"
                             android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
@@ -578,12 +456,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Español"
+                            android:text="@string/ui_espanol"
                             android:textColor="@color/color_text_hint"
                             android:textSize="14sp"
                             android:layout_marginEnd="8dp" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
@@ -604,6 +483,7 @@
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_yellow"
@@ -617,11 +497,12 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="Términos y condiciones"
+                            android:text="@string/ui_terminos_y_condiciones"
                             android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
@@ -642,6 +523,7 @@
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_blue"
@@ -655,11 +537,12 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="Política de privacidad"
+                            android:text="@string/ui_politica_de_privacidad"
                             android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
@@ -680,6 +563,7 @@
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_icon_blue"
@@ -693,7 +577,7 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="Versión"
+                            android:text="@string/ui_version"
                             android:textColor="@color/color_text_primary"
                             android:textSize="15sp" />
 
@@ -702,7 +586,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="v1.0"
+                            android:text="@string/ui_v1_0"
                             android:textColor="@color/color_text_hint"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -719,7 +603,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Sesión"
+                android:text="@string/ui_sesion"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true"
@@ -744,6 +628,7 @@
                     android:background="?attr/selectableItemBackground">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_icon_red"
@@ -757,11 +642,12 @@
                         android:layout_marginStart="12dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="Cerrar sesión"
+                        android:text="@string/ui_cerrar_sesion"
                         android:textColor="#EF4444"
                         android:textSize="15sp" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_arrow_right"
@@ -788,6 +674,7 @@
                     android:background="?attr/selectableItemBackground">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_icon_red"
@@ -806,7 +693,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="Eliminar cuenta"
+                            android:text="@string/ui_eliminar_cuenta"
                             android:textColor="#DC2626"
                             android:textSize="15sp" />
 
@@ -814,12 +701,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Esta acción es irreversible"
+                            android:text="@string/ui_esta_accion_es_irreversible"
                             android:textColor="#EF4444"
                             android:textSize="12sp" />
                     </LinearLayout>
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_arrow_right"

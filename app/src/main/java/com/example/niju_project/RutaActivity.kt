@@ -1,114 +1,85 @@
 package com.example.niju_project
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.niju_project.data.model.ContextProgress
 import com.example.niju_project.databinding.ActivityRutaBinding
-import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.example.niju_project.data.model.ContextModel
+import com.example.niju_project.ui.UiState
+import com.example.niju_project.ui.contexts.RutaViewModel
+import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
+/** Avance real por contexto: lecciones superadas y palabras dominadas. */
 class RutaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRutaBinding
-    private lateinit var progressIndicator: LinearProgressIndicator
+    private val viewModel: RutaViewModel by viewModels()
+    private var progressById: Map<Int, ContextProgress> = emptyMap()
+    private var selectedId: Int? = null
 
-    private lateinit var navHome: LinearLayout
-    private lateinit var navContexts: LinearLayout
-    private lateinit var navRuta: LinearLayout
-    private lateinit var navProfile: LinearLayout
-    private var backButton: ImageButton? = null
-
-    // 🔹 Lista de contextos con su porcentaje fijo
-    private val listaContextos = listOf(
-        ContextModel(
-            id = "restaurant",
-            name = "Restaurante",
-            description = "Aprende vocabulario de restaurantes"
-        ),
-        ContextModel(
-            id = "supermarket",
-            name = "Supermercado",
-            description = "Aprende vocabulario de supermercado"
-        ),
-        ContextModel(
-            id = "airport",
-            name = "Aeropuerto",
-            description = "Aprende vocabulario de aeropuerto"
-        )
-    )
+    private val adapter = ContextosAdapter(emptyList()) { ctx ->
+        selectedId = ctx.id
+        progressById[ctx.id]?.let { show(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRutaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        progressIndicator = binding.progressIndicator
-
-        // 🔹 Inicializar navegación inferior
-        navHome = binding.bottomNavigation.navHome
-        navContexts = binding.bottomNavigation.navContexts
-        navRuta = binding.bottomNavigation.navRuta
-        navProfile = binding.bottomNavigation.navProfile
-        setupNavigation()
-
-        // 🔹 Adapter con callback
-        val adapter = ContextosAdapter(listaContextos) { contexto ->
-
-            Toast.makeText(
-                this,
-                "Seleccionaste ${contexto.name}",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            actualizarProgreso(40)
-        }
-
-        binding.rvContextos.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvContextos.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvContextos.adapter = adapter
 
-        updateBottomNavColors(
-            current = navRuta,
-            navHome, navContexts, navRuta, navProfile
-        )
-    }
-
-    private fun actualizarProgreso(porcentaje: Int) {
-        progressIndicator.setProgress(porcentaje, true)
-        binding.tvPercent.text = "$porcentaje%"
-    }
-
-    private fun setupNavigation() {
-        navHome.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
-
-        navContexts.setOnClickListener {
-            startActivity(Intent(this, ContextsActivity::class.java))
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
-
-        navRuta.setOnClickListener {
-            Toast.makeText(this, "Ya estás en Ruta", Toast.LENGTH_SHORT).show()
-        }
-
-        navProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
+        setupBottomNav(R.id.navRuta)
+        observe()
     }
 
     override fun onResume() {
         super.onResume()
-        highlightCurrentTab()
+        viewModel.load()
     }
 
-    private fun highlightCurrentTab() {
-        // Aquí puedes resaltar el icono actual si lo deseas
+    private fun observe() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is UiState.Success -> render(state.data)
+                        is UiState.Error ->
+                            if (state.sessionExpired) goToLogin()
+                            else Toast.makeText(this@RutaActivity, state.message, Toast.LENGTH_SHORT).show()
+                        UiState.Loading -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private fun render(list: List<ContextProgress>) {
+        progressById = list.associateBy { it.contextId }
+        adapter.updateList(list.map { it.toContextRow() })
+        val selected = selectedId?.let { progressById[it] } ?: list.firstOrNull()
+        if (selected != null) show(selected) else showOverall(list)
+    }
+
+    private fun show(p: ContextProgress) {
+        val pct = p.percentComplete.roundToInt().coerceIn(0, 100)
+        binding.progressIndicator.setProgress(pct, true)
+        binding.tvPercent.text = "$pct%"
+        binding.tvProgreso.text =
+            "${p.name}: ${p.lessonsCompleted}/${p.lessonsTotal} lecciones · " +
+            "${p.wordsMastered}/${p.wordsTotal} palabras dominadas"
+    }
+
+    private fun showOverall(list: List<ContextProgress>) {
+        binding.progressIndicator.setProgress(0, false)
+        binding.tvPercent.text = "0%"
+        binding.tvProgreso.text = if (list.isEmpty()) "Aún no hay contextos disponibles" else ""
     }
 }

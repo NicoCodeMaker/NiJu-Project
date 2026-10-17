@@ -3,89 +3,76 @@ package com.example.niju_project
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.niju_project.ui.contexts.ContextsUiState
+import com.example.niju_project.data.model.SessionMode
+import com.example.niju_project.ui.UiState
 import com.example.niju_project.ui.contexts.ContextsViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/** Catálogo de contextos. Cada contexto abre su lista de lecciones. */
 class ContextsActivity : AppCompatActivity() {
 
     private val viewModel: ContextsViewModel by viewModels()
     private lateinit var adapter: ContextosAdapter
-    private lateinit var rvContexts: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var btnStartSession: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contexts)
 
-        initViews()
-        setupRecyclerView()
-        setupNavigation()
-        observeViewModel()
-    }
-
-    private fun initViews() {
-        rvContexts = findViewById(R.id.rvContexts)
         progressBar = findViewById(R.id.progressBar)
-        btnStartSession = findViewById(R.id.btnStartSession)
-    }
-
-    private fun setupRecyclerView() {
-        adapter = ContextosAdapter(emptyList()) { contexto ->
-            val intent = Intent(this, PracticeActivity::class.java).apply {
-                putExtra("context_id", contexto.id)
-                putExtra("context_name", contexto.name)
-            }
-            startActivity(intent)
+        adapter = ContextosAdapter(emptyList()) { ctx ->
+            startActivity(Intent(this, LessonActivity::class.java).apply {
+                putExtra(LessonActivity.EXTRA_CONTEXT_ID, ctx.id)
+                putExtra(LessonActivity.EXTRA_CONTEXT_SLUG, ctx.slug)
+                putExtra(LessonActivity.EXTRA_CONTEXT_NAME, ctx.name)
+                putExtra(LessonActivity.EXTRA_CONTEXT_DESCRIPTION, ctx.description)
+            })
         }
-        rvContexts.layoutManager = GridLayoutManager(this, 2)
-        rvContexts.adapter = adapter
+        findViewById<Button>(R.id.btnEmptyAction).setOnClickListener { viewModel.load() }
+        findViewById<RecyclerView>(R.id.rvContexts).apply {
+            layoutManager = GridLayoutManager(this@ContextsActivity, 2)
+            adapter = this@ContextsActivity.adapter
+        }
+        findViewById<View>(R.id.btnStartSession).setOnClickListener {
+            openSession(SessionMode.PRACTICE, title = "Práctica libre")
+        }
+
+        setupBottomNav(R.id.navContexts)
+        observe()
     }
 
-    private fun observeViewModel() {
+    private fun showEmpty(message: String?, retry: Boolean) {
+        findViewById<View>(R.id.emptyState).visibility = if (message == null) View.GONE else View.VISIBLE
+        findViewById<TextView>(R.id.tvEmptyMessage).text = message.orEmpty()
+        findViewById<Button>(R.id.btnEmptyAction).visibility = if (retry) View.VISIBLE else View.GONE
+    }
+
+    private fun observe() {
         lifecycleScope.launch {
-            viewModel.uiState.collectLatest { state ->
-                when (state) {
-                    is ContextsUiState.Loading -> progressBar.visibility = View.VISIBLE
-                    is ContextsUiState.Success -> {
-                        progressBar.visibility = View.GONE
-                        adapter.updateList(state.contexts)
-                    }
-                    is ContextsUiState.Error -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(this@ContextsActivity, state.message, Toast.LENGTH_SHORT).show()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    progressBar.visibility = if (state is UiState.Loading) View.VISIBLE else View.GONE
+                    when (state) {
+                        is UiState.Success -> {
+                            adapter.updateList(state.data)
+                            showEmpty(if (state.data.isEmpty()) getString(R.string.contexts_empty) else null, false)
+                        }
+                        is UiState.Error ->
+                            if (state.sessionExpired) goToLogin() else showEmpty(state.message, true)
+                        else -> Unit
                     }
                 }
             }
-        }
-    }
-
-    private fun setupNavigation() {
-        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navProfile).setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navRuta).setOnClickListener {
-            startActivity(Intent(this, RutaActivity::class.java))
-            finish()
-        }
-
-        btnStartSession.setOnClickListener {
-            startActivity(Intent(this, PracticeActivity::class.java))
         }
     }
 }

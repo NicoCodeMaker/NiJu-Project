@@ -1,0 +1,41 @@
+[
+  {
+    "context_id": 1,
+    "slug": "restaurant",
+    "name": "Restaurante",
+    "description": "Pide una mesa, ordena comida y paga la cuenta.",
+    "icon": "restaurant",
+    "lessons_total": 2,
+    "lessons_completed": 0,
+    "words_total": 12,
+    "words_practiced": 2,
+    "words_mastered": 0,
+    "percent_complete": 0
+  },
+  {
+    "context_id": 2,
+    "slug": "supermarket",
+    "name": "Supermercado",
+    "description": "Encuentra productos y paga en la caja.",
+    "icon": "supermarket",
+    "lessons_total": 2,
+    "lessons_completed": 0,
+    "words_total": 12,
+    "words_practiced": 0,
+    "words_mastered": 0,
+    "percent_complete": 0
+  },
+  {
+    "context_id": 3,
+    "slug": "airport",
+    "name": "Aeropuerto",
+    "description": "Haz el check-in, aborda y entiende los avisos.",
+    "icon": "airport",
+    "lessons_total": 2,
+    "lessons_completed": 0,
+    "words_total": 12,
+    "words_practiced": 0,
+    "words_mastered": 0,
+    "percent_complete": 0
+  }
+]

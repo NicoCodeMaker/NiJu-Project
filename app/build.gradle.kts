@@ -1,8 +1,21 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.kotlin.serialization)
 }
+
+// Las credenciales de Supabase se leen de local.properties (no se sube a git).
+//   SUPABASE_URL=https://xxxx.supabase.co
+//   SUPABASE_ANON_KEY=eyJ...
+//   AUTH_GOOGLE_ENABLED=false
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+fun localProp(name: String, default: String = ""): String =
+    (localProps.getProperty(name) ?: System.getenv(name) ?: default).trim()
 
 android {
     namespace = "com.example.niju_project"
@@ -12,13 +25,23 @@ android {
         applicationId = "com.example.niju_project"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "SUPABASE_URL", "\"${localProp("SUPABASE_URL")}\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"${localProp("SUPABASE_ANON_KEY")}\"")
+        buildConfigField("boolean", "AUTH_GOOGLE_ENABLED", localProp("AUTH_GOOGLE_ENABLED", "false"))
+
+        // Esquema del enlace de retorno del inicio de sesión: niju://login-callback
+        manifestPlaceholders["authScheme"] = "niju"
+        manifestPlaceholders["authHost"] = "login-callback"
     }
 
     buildTypes {
         release {
+            // Se activará en la etapa de pulido junto con las reglas de R8 para
+            // kotlinx.serialization y Ktor.
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -38,26 +61,18 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
-    implementation("commons-codec:commons-codec:1.15")
-    implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.0")
-    implementation("com.google.zxing:core:3.5.3")
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-
-    // ── Firebase BoM ────────────────────────────────────────────────────────
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-
-    // ── Google Sign-In MODERNO (Credential Manager) ──────────────────────────
-    // Reemplaza play-services-auth legacy que falla en Android 14+
-    implementation("androidx.credentials:credentials:1.3.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    // ── Supabase ─────────────────────────────────────────────────────────────
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
+    implementation(libs.supabase.postgrest)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.androidx.browser)        // pestaña segura para el login OAuth
+    implementation(libs.androidx.work)           // recordatorios diarios
 
     // ── AndroidX / UI ────────────────────────────────────────────────────────
     implementation(libs.androidx.core.ktx)
@@ -65,25 +80,20 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.cardview)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment)
-
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    // ── Seguridad y Almacenamiento ────────────────────────────────────────────
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    // ── Corrutinas ───────────────────────────────────────────────────────────
+    implementation(libs.kotlinx.coroutines.android)
 
-    // ── Corrutinas y Lifecycle ────────────────────────────────────────────────
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-
-    // ── Tests ─────────────────────────────────────────────────────────────────
+    // ── Pruebas ──────────────────────────────────────────────────────────────
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation("org.jboss.aerogear:aerogear-otp-java:1.0.0")
 }

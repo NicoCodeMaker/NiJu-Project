@@ -1,34 +1,83 @@
 <resources>
-    <!-- App info -->
-    <string name="app_name">Niju</string>
+    <!-- App -->
+    <string name="app_name">NiJu</string>
+    <string name="app_display_name" translatable="false">NiJu</string>
     <string name="subtitle">English</string>
+    <string name="title_activity_login">Iniciar sesión</string>
+    <string name="logo">Logo de NiJu</string>
+    <string name="point1">Etapa de la ruta</string>
+    <string name="desc_top_decoration">Decoración superior</string>
+    <string name="desc_bottom_decoration">Decoración inferior</string>
+    <string name="desc_logo">Logo de NiJu</string>
+    <string name="loading_text">Cargando…</string>
 
-    <string name="default_web_client_id">1073180074577-7qf9b7qkvmdfenauj4d0pljic9gb6h7u.apps.googleusercontent.com</string>
-    <string name="loading_text">Loading...</string>
-    <string name="desc_top_decoration">Top decoration</string>
-    <string name="desc_bottom_decoration">Bottom decoration</string>
-    <string name="desc_logo">App logo</string>
+    <!-- Inicio de sesión -->
+    <string name="login_title">Bienvenido</string>
+    <string name="login_subtitle">Inicia sesión para guardar tu progreso y tus repasos.</string>
+    <string name="login_microsoft">Continuar con Microsoft</string>
+    <string name="login_google">Continuar con Google</string>
+    <string name="login_terms">Al continuar aceptas los términos y la política de privacidad de NiJu.</string>
+    <string name="login_not_configured">La app aún no está conectada a Supabase. Agrega SUPABASE_URL y SUPABASE_ANON_KEY en local.properties y vuelve a compilar.</string>
+    <string name="login_error">No se pudo iniciar sesión. Intenta de nuevo.</string>
 
-    <!-- Activity titles -->
-    <string name="title_activity_login">LoginActivity</string>
+    <!-- Sesiones -->
+    <string name="session_finish_title">¡Sesión terminada!</string>
+    <string name="session_retry">Reintentar</string>
+    <string name="session_exit">Salir</string>
+    <string name="session_continue">Continuar</string>
+    <string name="session_select_answer">Selecciona una respuesta</string>
 
-    <!-- Prompts -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <!-- Comunes -->
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Aceptar</string>
+    <!-- Navegación común -->
+    <string name="back">Atrás</string>
 
-    <!-- Actions -->
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="btn_login">Log In</string>
-    <string name="forgot_password">Forgot password?</string>
+    <!-- Contextos y lecciones -->
+    <string name="contexts_empty">Todavía no hay contextos publicados. Cuando se agregue contenido aparecerá aquí.</string>
+    <string name="lessons_title">Lecciones</string>
+    <string name="lessons_empty">Este contexto aún no tiene lecciones.</string>
+    <string name="lessons_locked">Supera la lección anterior (70 % o más) para abrir esta.</string>
+    <string name="lessons_practice_context">Práctica libre de este contexto</string>
 
-    <!-- Messages -->
-    <string name="welcome">Welcome !</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be &gt; 5 characters</string>
-    <string name="login_failed">Login failed</string>
-    <string name="contexto_icon">Contextual Icon</string>
-    <string name="logo" />
-    <string name="point1" />
-    <string name="show_password" />
+    <!-- Tarjetas -->
+    <string name="cards_index">Palabra %1$d de %2$d</string>
+    <string name="cards_example">Ejemplo</string>
+    <string name="cards_previous">Anterior</string>
+    <string name="cards_next">Siguiente</string>
+    <string name="cards_start_exercises">Empezar ejercicios</string>
+    <string name="favorite_add">Agregar a favoritas</string>
+    <string name="favorite_remove">Quitar de favoritas</string>
+
+    <!-- Favoritas -->
+    <string name="favorites_title">Favoritas</string>
+    <string name="favorites_empty">Aún no tienes palabras favoritas. Toca la estrella en las tarjetas de una lección para guardarlas aquí.</string>
+
+    <!-- Estadísticas -->
+    <string name="stats_title">Estadísticas y logros</string>
+    <string name="stats_summary">Resumen</string>
+    <string name="stats_activity">Actividad de la semana (XP por día)</string>
+    <string name="stats_achievements">Logros</string>
+    <string name="stats_struggling">Palabras para reforzar</string>
+    <string name="stats_review_now">Repasar ahora</string>
+    <string name="stats_no_activity">Sin actividad en los últimos 7 días.</string>
+    <string name="stats_no_struggling">¡Bien! No tienes palabras con muchos fallos.</string>
+    <string name="stats_no_achievements">Todavía no hay logros configurados.</string>
+    <string name="stats_unlocked">Desbloqueado</string>
+
+    <!-- Sesiones (extra) -->
+    <string name="session_review_title">Repaso</string>
+    <string name="session_repeat_lesson">Repetir lección</string>
+
+    <!-- Recordatorios -->
+    <string name="reminders_channel">Recordatorios de estudio</string>
+    <string name="reminders_channel_description">Recordatorio diario y aviso de repasos pendientes</string>
+    <string name="reminders_permission_denied">Sin permiso de notificaciones no podemos enviarte recordatorios.</string>
+
+    <!-- Configuración: información -->
+    <string name="language_only_spanish">Por ahora NiJu está disponible solo en español.</string>
+    <string name="privacy_title">Política de privacidad</string>
+    <string name="privacy_text">NiJu guarda tu nombre y correo de Microsoft, tu zona horaria, tu meta diaria y tu historial de aprendizaje (respuestas, repasos, puntos, logros y favoritas).\n\nEstos datos se usan solo para mostrar tu progreso y programar tus repasos. Nadie más puede verlos: la base de datos solo te permite leer tus propios datos.\n\nPuedes reiniciar tu progreso o eliminar tu cuenta y todos sus datos desde Configuración.</string>
+    <string name="terms_title">Términos y condiciones</string>
+    <string name="terms_text">NiJu es un proyecto académico para practicar vocabulario en inglés. Se ofrece tal cual, sin garantías.\n\nUsa la app de forma personal y no intentes alterar los puntos ni los datos de otros usuarios.\n\nAl iniciar sesión aceptas que guardemos los datos descritos en la política de privacidad.</string>
 </resources>
