@@ -23,7 +23,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="#7B61FF" />
+            android:indeterminateTint="@color/color_accent" />
     </FrameLayout>
 
     <!-- ════════════════════════════════════
@@ -41,7 +41,8 @@
         android:focusable="true">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="24dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:cardCornerRadius="24dp"
@@ -60,6 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ui_texto_5"
+                    android:importantForAccessibility="no"
                     android:textSize="56sp"
                     android:layout_marginBottom="8dp" />
 
@@ -78,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ui_word"
-                    android:textColor="#7B61FF"
+                    android:textColor="@color/color_accent"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="4dp" />
@@ -88,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ui_10_xp"
-                    android:textColor="#2E7D32"
+                    android:textColor="@color/color_success"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:background="@drawable/bg_xp_badge"
@@ -96,14 +98,26 @@
                     android:paddingVertical="4dp"
                     android:layout_marginBottom="24dp" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnListenAnswerCorrect"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:minHeight="48dp"
+                    android:text="@string/audio_listen"
+                    android:textAllCaps="false"
+                    app:icon="@drawable/ic_volume_up"
+                    app:iconTint="@color/color_primary" />
+
                 <!-- Botones: Continuar / Finalizar -->
                 <Button
                     android:id="@+id/btnContinuePractice"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:backgroundTint="#7B61FF"
+                    android:backgroundTint="@color/color_accent"
                     android:text="@string/ui_continuar"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/color_on_solid"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp" />
@@ -114,7 +128,7 @@
                     android:layout_height="50dp"
                     android:backgroundTint="@color/color_background"
                     android:text="@string/ui_finalizar_sesion"
-                    android:textColor="#4B5563"
+                    android:textColor="@color/color_text_secondary"
                     android:textSize="15sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -134,7 +148,8 @@
         android:focusable="true">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="24dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:cardCornerRadius="24dp"
@@ -152,6 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ui_texto_6"
+                    android:importantForAccessibility="no"
                     android:textSize="56sp"
                     android:layout_marginBottom="8dp" />
 
@@ -163,6 +179,16 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvYourAnswer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/color_text_secondary"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -177,18 +203,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ui_word"
-                    android:textColor="#E65100"
+                    android:textColor="@color/color_warning"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="24dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnListenAnswerWrong"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:minHeight="48dp"
+                    android:text="@string/audio_listen"
+                    android:textAllCaps="false"
+                    app:icon="@drawable/ic_volume_up"
+                    app:iconTint="@color/color_primary" />
 
                 <Button
                     android:id="@+id/btnContinueAfterWrong"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:backgroundTint="#7B61FF"
+                    android:backgroundTint="@color/color_accent"
                     android:text="@string/ui_seguir_intentando"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/color_on_solid"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -249,8 +287,8 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:progress="10"
-                android:progressTint="#7B61FF"
-                android:backgroundTint="#D8D4FF" />
+                android:progressTint="@color/color_accent"
+                android:backgroundTint="@color/color_accent_container" />
         </RelativeLayout>
 
         <!-- ── SCROLL DEL CONTENIDO ── -->
@@ -289,63 +327,58 @@
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/beach_scene"
-                            android:contentDescription="@string/ui_imagen_de_la_palabra" />
+                            android:importantForAccessibility="no" />
 
-                        <!-- Badge de categoría (sobre imagen) -->
+                        <!-- Enunciado: instrucción, palabra/frase, botón «Escuchar» y pista -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="16dp"
-                            android:gravity="center">
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                            <!-- Pregunta en ingles (la palabra a adivinar) -->
-                            <LinearLayout
-                                android:layout_width="0dp"
+                            <TextView
+                                android:id="@+id/tvWordCategory"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
+                                android:textColor="@color/color_text_secondary"
+                                android:textSize="13sp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/ui_como_se_dice_en_ingles"
-                                    android:textColor="@color/color_text_secondary"
-                                    android:textSize="12sp"
-                                    android:layout_marginBottom="4dp" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:id="@+id/txtQuestion"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/ui_palabra"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
                                     android:textColor="@color/color_text_primary"
                                     android:textSize="26sp"
-                                    android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium" />
+                                    android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/tvWordCategory"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/ui_restaurante"
-                                    android:textColor="@color/color_text_hint"
-                                    android:textSize="13sp"
-                                    android:layout_marginTop="2dp" />
+                                <!-- Solo cuando el enunciado está en inglés (en_to_es) -->
+                                <ImageButton
+                                    android:id="@+id/btnListenQuestion"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
+                                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription="@string/audio_listen"
+                                    android:src="@drawable/ic_volume_up"
+                                    android:visibility="gone"
+                                    app:tint="@color/listen_tint" />
                             </LinearLayout>
 
-                            <!-- Dificultad -->
                             <TextView
                                 android:id="@+id/tvDifficulty"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/ui_1_2"
+                                android:layout_marginTop="4dp"
                                 android:textColor="@color/color_text_secondary"
-                                android:textSize="13sp"
-                                android:background="@drawable/bg_contexto_default"
-                                android:paddingHorizontal="10dp"
-                                android:paddingVertical="4dp" />
+                                android:textSize="14sp"
+                                android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -354,7 +387,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ui_elige_la_traduccion_correcta"
+                    android:text="@string/session_choose_answer"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="13sp"
                     android:layout_marginBottom="12dp"
@@ -404,7 +437,7 @@
                     android:id="@+id/btnNext"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
-                    android:backgroundTint="#D1D5DB"
+                    android:backgroundTint="@color/color_disabled_bg"
                     android:text="@string/ui_confirmar"
                     android:textAllCaps="false"
                     android:textColor="@color/color_text_hint"

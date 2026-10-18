@@ -7,6 +7,9 @@
 | `migrations/20261017000001_schema.sql` | Tablas, relaciones, índices, triggers y seguridad (RLS) |
 | `migrations/20261017000002_functions.sql` | Lógica del servidor: sesiones, SM-2, XP, racha, logros, estadísticas, bloqueo de lecciones |
 | `migrations/20261017000003_lessons_favorites_stats.sql` | Tarjetas de lección, favoritas, avance de logros y los 6 logros |
+| `migrations/20261017000004_next_lesson.sql` | `get_next_lesson()`: la lección que muestra "Continuar" en Inicio |
+| `seed_home_transport.sql` | **Opcional.** Contextos Hogar y Transporte (4 lecciones, 24 palabras). Ejecutar después de `seed.sql` |
+| `tests/02_niju_home_transport_tests.sql` | Pruebas de ese contenido y de `get_next_lesson` |
 | `seed.sql` | **Opcional.** Contenido de demostración: 3 contextos, 6 lecciones, 36 palabras |
 | `tests/00_local_supabase_stub.sql` | **Solo pruebas locales.** Simula `auth` de Supabase |
 | `tests/01_niju_tests.sql` | 86 comprobaciones automáticas (se revierten al terminar; usan `seed.sql`) |
@@ -18,7 +21,8 @@
    1. `migrations/20261017000001_schema.sql`
    2. `migrations/20261017000002_functions.sql`
    3. `migrations/20261017000003_lessons_favorites_stats.sql`
-   4. *(Opcional)* `seed.sql`, si quieres contenido de demostración.
+   4. `migrations/20261017000004_next_lesson.sql` (sin ella Inicio oculta la tarjeta "Continuar")
+   5. *(Opcional)* `seed.sql` y luego `seed_home_transport.sql`, si quieres contenido de demostración.
 3. Comprueba en **Table Editor** que `achievements` tiene 6 filas (y `words` 36 si cargaste el seed).
    Sin contenido la app funciona y muestra pantallas vacías con su mensaje.
 4. **Authentication → Providers → Email**: actívalo. Para pruebas puedes desactivar

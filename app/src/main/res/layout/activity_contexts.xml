@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/ui_cada_contexto_incluye_lecciones_con"
-                        android:textColor="#3949AB"
+                        android:textColor="@color/color_primary"
                         android:textSize="13sp"
                         android:lineSpacingExtra="2dp" />
                 </LinearLayout>
@@ -127,11 +127,11 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="36dp"
-                app:backgroundTint="#7B61FF"
+                app:backgroundTint="@color/color_accent"
                 app:cornerRadius="16dp"
                 android:text="@string/ui_practica_libre"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/color_on_solid"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:elevation="4dp" />

@@ -1,39 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/bg_contexto_default"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:minHeight="160dp"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="10dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="2dp"
-    android:background="@drawable/bg_contexto_default">
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/iv_contexto_icono"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="@string/app_name"
+        android:importantForAccessibility="no"
         android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/tv_contexto_nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ui_contexto"
-        android:textSize="13sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:maxLines="2"
+        android:textColor="@color/color_text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_contexto_desc"
+        android:id="@+id/tv_contexto_lecciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ui_descripcion"
-        android:textSize="11sp"
+        android:layout_marginTop="2dp"
         android:textColor="@color/color_text_secondary"
-        android:ellipsize="end"
-        android:maxLines="1"/>
+        android:textSize="12sp" />
+
+    <ProgressBar
+        android:id="@+id/pb_contexto"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="8dp"
+        android:importantForAccessibility="no"
+        android:progressTint="@color/color_primary"
+        android:backgroundTint="@color/color_primary_container" />
+
+    <TextView
+        android:id="@+id/tv_contexto_hecho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/context_completed"
+        android:textColor="@color/color_success"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 </LinearLayout>

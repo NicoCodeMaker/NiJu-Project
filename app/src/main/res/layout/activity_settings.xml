@@ -9,7 +9,8 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
         android:background="@color/color_header_bg"
         android:elevation="4dp"
         android:gravity="center_vertical"
@@ -86,7 +87,8 @@
                     <LinearLayout
                         android:id="@+id/rowEditProfile"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
@@ -99,7 +101,7 @@
                             android:background="@drawable/bg_icon_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_edit"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -130,7 +132,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
-                            app:tint="#D1D5DB" />
+                            app:tint="@color/color_arrow_tint" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -161,7 +163,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="16dp">
@@ -173,7 +176,7 @@
                         android:background="@drawable/bg_icon_blue"
                         android:padding="8dp"
                         android:src="@drawable/ic_settings"
-                        app:tint="#FFFFFF" />
+                        app:tint="@color/color_on_solid" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -191,6 +194,142 @@
                         android:layout_height="wrap_content"
                         android:thumbTint="@color/color_switch_thumb"
                         android:trackTint="@color/color_switch_track" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 SECCIÓN: AUDIO DE PRONUNCIACIÓN
+            ══════════════════════════════════════════════════════════════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/settings_audio_section"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="12sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/color_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_blue"
+                            android:importantForAccessibility="no"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_volume_up"
+                            app:tint="@color/color_on_solid" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/settings_audio_autoplay"
+                                android:textColor="@color/color_text_primary"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/settings_audio_autoplay_desc"
+                                android:textColor="@color/color_text_hint"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <Switch
+                            android:id="@+id/switchAudioAutoplay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            android:thumbTint="@color/color_switch_thumb"
+                            android:trackTint="@color/color_switch_track" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:layout_marginStart="64dp" android:background="@color/color_background" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_yellow"
+                            android:importantForAccessibility="no"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_volume_up"
+                            app:tint="@color/color_on_solid" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/settings_audio_slow"
+                                android:textColor="@color/color_text_primary"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/settings_audio_slow_desc"
+                                android:textColor="@color/color_text_hint"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <Switch
+                            android:id="@+id/switchAudioSlow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            android:thumbTint="@color/color_switch_thumb"
+                            android:trackTint="@color/color_switch_track" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -225,7 +364,8 @@
                     <!-- Recordatorios diarios -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp">
@@ -234,10 +374,10 @@
         android:importantForAccessibility="no"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_red"
+                            android:background="@drawable/bg_icon_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -277,7 +417,8 @@
                     <!-- Alertas de lección -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp">
@@ -289,7 +430,7 @@
                             android:background="@drawable/bg_icon_yellow"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -358,7 +499,8 @@
                     <LinearLayout
                         android:id="@+id/rowClearHistory"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
@@ -371,7 +513,7 @@
                             android:background="@drawable/bg_icon_red"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -388,7 +530,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
-                            app:tint="#D1D5DB" />
+                            app:tint="@color/color_arrow_tint" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -426,7 +568,8 @@
                     <LinearLayout
                         android:id="@+id/rowLanguage"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
@@ -439,7 +582,7 @@
                             android:background="@drawable/bg_icon_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_contexts"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -466,7 +609,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
-                            app:tint="#D1D5DB" />
+                            app:tint="@color/color_arrow_tint" />
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
@@ -476,7 +619,8 @@
                     <LinearLayout
                         android:id="@+id/rowTerms"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
@@ -489,7 +633,7 @@
                             android:background="@drawable/bg_icon_yellow"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -506,7 +650,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
-                            app:tint="#D1D5DB" />
+                            app:tint="@color/color_arrow_tint" />
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
@@ -516,7 +660,8 @@
                     <LinearLayout
                         android:id="@+id/rowPrivacyPolicy"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
@@ -529,7 +674,7 @@
                             android:background="@drawable/bg_icon_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -546,7 +691,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_arrow_right"
-                            app:tint="#D1D5DB" />
+                            app:tint="@color/color_arrow_tint" />
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp"
@@ -556,7 +701,8 @@
                     <LinearLayout
                         android:id="@+id/rowVersion"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
@@ -569,7 +715,7 @@
                             android:background="@drawable/bg_icon_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#FFFFFF" />
+                            app:tint="@color/color_on_solid" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -621,7 +767,8 @@
                 <LinearLayout
                     android:id="@+id/btnLogout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
@@ -634,7 +781,7 @@
                         android:background="@drawable/bg_icon_red"
                         android:padding="8dp"
                         android:src="@drawable/ic_settings"
-                        app:tint="#FFFFFF" />
+                        app:tint="@color/color_on_solid" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -643,7 +790,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/ui_cerrar_sesion"
-                        android:textColor="#EF4444"
+                        android:textColor="@color/color_error"
                         android:textSize="15sp" />
 
                     <ImageView
@@ -651,7 +798,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_arrow_right"
-                        app:tint="#D1D5DB" />
+                        app:tint="@color/color_arrow_tint" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -667,7 +814,8 @@
                 <LinearLayout
                     android:id="@+id/btnDeleteAccount"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="wrap_content"
+                        android:minHeight="64dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
@@ -680,7 +828,7 @@
                         android:background="@drawable/bg_icon_red"
                         android:padding="8dp"
                         android:src="@drawable/ic_settings"
-                        app:tint="#FFFFFF" />
+                        app:tint="@color/color_on_solid" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -694,7 +842,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_medium"
                             android:text="@string/ui_eliminar_cuenta"
-                            android:textColor="#DC2626"
+                            android:textColor="@color/color_error"
                             android:textSize="15sp" />
 
                         <TextView
@@ -702,7 +850,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
                             android:text="@string/ui_esta_accion_es_irreversible"
-                            android:textColor="#EF4444"
+                            android:textColor="@color/color_error"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -711,7 +859,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_arrow_right"
-                        app:tint="#EF4444" />
+                        app:tint="@color/color_error" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
+import com.example.niju_project.audio.AudioPrefs
 import com.example.niju_project.data.remote.NijuErrors
 import com.example.niju_project.data.repository.AuthRepository
 import com.example.niju_project.data.repository.LearningRepository
@@ -47,6 +48,17 @@ class SettingsActivity : AppCompatActivity() {
             val mode = if (checked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             prefs.edit().putInt(MainApplication.KEY_THEME, mode).apply()
             AppCompatDelegate.setDefaultNightMode(mode)
+        }
+
+        // Audio de pronunciación (preferencias locales)
+        val audioPrefs = AudioPrefs(this)
+        findViewById<CompoundButton>(R.id.switchAudioAutoplay).apply {
+            isChecked = audioPrefs.autoPlay
+            setOnCheckedChangeListener { _, checked -> audioPrefs.autoPlay = checked }
+        }
+        findViewById<CompoundButton>(R.id.switchAudioSlow).apply {
+            isChecked = audioPrefs.slow
+            setOnCheckedChangeListener { _, checked -> audioPrefs.slow = checked }
         }
 
         // Notificaciones: recordatorio diario y aviso de repasos pendientes.

@@ -39,7 +39,9 @@ sealed interface SessionUiState {
         val number: Int,
         val total: Int,
         val percent: Int,
-        val isLast: Boolean
+        val isLast: Boolean,
+        /** Lo que eligió el estudiante (para mostrar «Tu respuesta» al fallar). */
+        val answer: String = ""
     ) : SessionUiState
 
     data class Finished(val summary: SessionSummary) : SessionUiState
@@ -109,7 +111,7 @@ class PracticeViewModel(
                 .onSuccess { result ->
                     p.record(result)
                     _state.value = SessionUiState.Feedback(
-                        item, result, p.number, p.total, p.percent, p.isLast
+                        item, result, p.number, p.total, p.percent, p.isLast, answer
                     )
                 }
                 .onFailure { e ->

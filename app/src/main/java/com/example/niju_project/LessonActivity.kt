@@ -154,12 +154,17 @@ private class LessonsAdapter(
     override fun onBindViewHolder(h: VH, position: Int) {
         val l = items[position]
         val ctx = h.itemView.context
-        h.number.text = if (l.completed) "✓" else (position + 1).toString()
+        // Estado por forma y texto, no solo por color: ✓ superada, número disponible, 🔒 bloqueada.
+        h.number.text = when {
+            l.completed -> "✓"
+            l.unlocked -> (position + 1).toString()
+            else -> "🔒"
+        }
         h.number.setBackgroundResource(
             when {
-                l.completed -> R.drawable.bg_icon_yellow
+                l.completed -> R.drawable.bg_icon_success
                 l.unlocked -> R.drawable.bg_icon_blue
-                else -> R.drawable.bg_icon_red
+                else -> R.drawable.bg_icon_neutral
             }
         )
         h.title.text = l.title
@@ -167,7 +172,7 @@ private class LessonsAdapter(
         h.description.visibility = if (l.description.isBlank()) View.GONE else View.VISIBLE
         h.status.text = Formatters.lessonStatus(l)
         h.status.setTextColor(
-            ContextCompat.getColor(ctx, if (l.completed) R.color.color_ruta_completed else R.color.color_text_hint)
+            ContextCompat.getColor(ctx, if (l.completed) R.color.color_success else R.color.color_text_secondary)
         )
         h.itemView.alpha = if (l.unlocked) 1f else 0.6f
         h.itemView.contentDescription = "${l.title}. ${Formatters.lessonStatus(l)}"

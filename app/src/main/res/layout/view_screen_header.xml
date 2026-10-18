@@ -12,8 +12,8 @@
 
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="@drawable/rounded_button_bg"
         android:contentDescription="@string/back"
         android:padding="8dp"
@@ -32,6 +32,6 @@
         android:textSize="18sp" />
 
     <View
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
 </LinearLayout>

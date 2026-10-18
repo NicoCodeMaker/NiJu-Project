@@ -3,7 +3,6 @@ package com.example.niju_project.ui.contexts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.niju_project.data.model.ContextProgress
-import com.example.niju_project.data.model.ContextRow
 import com.example.niju_project.data.remote.NijuErrors
 import com.example.niju_project.data.repository.LearningRepository
 import com.example.niju_project.ui.UiState
@@ -17,15 +16,16 @@ class ContextsViewModel(
     private val repo: LearningRepository = LearningRepository()
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<UiState<List<ContextRow>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<ContextRow>>> = _state.asStateFlow()
+    private val _state = MutableStateFlow<UiState<List<ContextProgress>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ContextProgress>>> = _state.asStateFlow()
 
     init { load() }
 
+    /** Contextos con su avance real (lecciones superadas / total). Recarga también al volver a la pantalla. */
     fun load() {
-        _state.value = UiState.Loading
+        if (_state.value !is UiState.Success) _state.value = UiState.Loading
         viewModelScope.launch {
-            repo.getContexts()
+            repo.getContextProgress()
                 .onSuccess { _state.value = UiState.Success(it) }
                 .onFailure {
                     _state.value = UiState.Error(NijuErrors.messageFor(it), NijuErrors.isSessionExpired(it))

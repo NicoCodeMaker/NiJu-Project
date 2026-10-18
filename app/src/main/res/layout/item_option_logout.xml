@@ -17,7 +17,7 @@
         android:background="@drawable/bg_icon_red"
         android:padding="8dp"
         android:src="@drawable/ic_logout"
-        app:tint="#FFFFFF" />
+        app:tint="@color/color_on_solid" />
 
     <TextView
         android:layout_width="0dp"

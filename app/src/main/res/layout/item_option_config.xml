@@ -16,7 +16,7 @@
         android:background="@drawable/bg_icon_blue"
         android:padding="8dp"
         android:src="@drawable/ic_settings"
-        app:tint="#FFFFFF" />
+        app:tint="@color/color_on_solid" />
 
     <TextView
         android:layout_width="0dp"
@@ -32,5 +32,5 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_arrow_right"
-        app:tint="#999999" />
+        app:tint="@color/color_arrow_tint" />
 </LinearLayout>

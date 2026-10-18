@@ -26,6 +26,6 @@
         android:paddingHorizontal="20dp"
         android:text="@string/session_retry"
         android:textAllCaps="false"
-        android:textColor="#5865F2"
+        android:textColor="@color/color_primary"
         android:visibility="gone" />
 </LinearLayout>

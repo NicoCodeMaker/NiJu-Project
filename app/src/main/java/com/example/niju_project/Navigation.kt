@@ -39,10 +39,15 @@ fun Activity.openTab(target: Class<out Activity>) {
     overridePendingTransition(0, 0)
 }
 
-/** Imagen ilustrativa de cada contexto (por su slug en la base de datos). */
+/**
+ * Imagen ilustrativa de cada contexto (por su slug en la base de datos).
+ * Un contexto nuevo sin ilustración usa una genérica, nunca la de otro contexto.
+ */
 fun contextImage(slug: String?): Int = when (slug) {
     "restaurant" -> R.drawable.restaurant
     "supermarket" -> R.drawable.supermarket
     "airport" -> R.drawable.airport
-    else -> R.drawable.beach_scene
+    "home" -> R.drawable.ctx_home
+    "transport" -> R.drawable.ctx_transport
+    else -> R.drawable.ctx_generic
 }

@@ -64,7 +64,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/lessons_practice_context"
                 android:textAllCaps="false"
-                android:textColor="#5865F2"
+                android:textColor="@color/color_primary"
                 android:textSize="15sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -242,3 +242,19 @@ data class StrugglingWord(
     @SerialName("incorrect_count") val incorrectCount: Int = 0,
     @SerialName("due_at") val dueAt: String? = null
 )
+
+/** Siguiente lección que debe hacer el estudiante (RPC get_next_lesson, migración 4). */
+@Serializable
+data class NextLesson(
+    @SerialName("lesson_id") val lessonId: Int,
+    @SerialName("lesson_slug") val lessonSlug: String,
+    @SerialName("lesson_title") val lessonTitle: String,
+    @SerialName("lesson_description") val lessonDescription: String = "",
+    val level: String = "A1",
+    @SerialName("word_count") val wordCount: Int = 0,
+    @SerialName("context_id") val contextId: Int,
+    @SerialName("context_slug") val contextSlug: String,
+    @SerialName("context_name") val contextName: String,
+    @SerialName("context_lessons_completed") val contextLessonsCompleted: Int = 0,
+    @SerialName("context_lessons_total") val contextLessonsTotal: Int = 0
+)

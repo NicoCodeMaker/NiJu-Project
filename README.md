@@ -68,3 +68,8 @@ El plan completo, con la trazabilidad requisito → código → prueba, está en
 
 La app no puede escribir puntos ni progreso directamente: lo impiden las políticas de seguridad
 (RLS) de la base de datos.
+
+
+## Audio de pronunciación
+
+La app incluye 120 audios locales (voz sintética Piper). Fuentes, licencias, estrategia y límites: `docs/AUDIO.md`. Auditoría: `docs/AUDITORIA_NIJU.md`.

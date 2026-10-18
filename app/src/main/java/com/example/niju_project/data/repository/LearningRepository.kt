@@ -9,6 +9,7 @@ import com.example.niju_project.data.model.Dashboard
 import com.example.niju_project.data.model.FavoriteWord
 import com.example.niju_project.data.model.LessonWord
 import com.example.niju_project.data.model.LessonStatus
+import com.example.niju_project.data.model.NextLesson
 import com.example.niju_project.data.model.SessionMode
 import com.example.niju_project.data.model.SessionStart
 import com.example.niju_project.data.model.SessionSummary
@@ -92,6 +93,14 @@ class LearningRepository(
             "finish_session",
             buildJsonObject { put("p_session_id", sessionId) }
         ).decodeAs<SessionSummary>()
+    }
+
+    /**
+     * Siguiente lección desbloqueada y sin superar. `null` si el estudiante ya las superó todas.
+     * Requiere la migración 4 (get_next_lesson); sin ella la llamada falla y Inicio oculta la tarjeta.
+     */
+    suspend fun getNextLesson(): Result<NextLesson?> = runCatching {
+        client.postgrest.rpc("get_next_lesson").decodeList<NextLesson>().firstOrNull()
     }
 
     /** Tarjetas de presentación de una lección (error "lesson_locked" si está bloqueada). */

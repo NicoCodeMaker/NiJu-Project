@@ -86,6 +86,17 @@ pendiente de aprobación) · **Implementada** · **Probada**.
 - **Pruebas de la app:** 35 (antes 22). Documentos nuevos: `MANUAL_USUARIO.md`, `MANUAL_TECNICO.md`,
   `PLAN_PRUEBAS.md`.
 
+## Rediseño y audio (2026-10-17)
+
+- **Audio local pregenerado con Piper** (voz `en_US-ljspeech-medium`, dominio público) en vez de nube: sin claves
+  ni cuotas, funciona sin conexión. Se descartó la voz `lessac` por licencia de investigación. Forvo se descartó por
+  uso no comercial. Detalle y fuentes en `docs/AUDIO.md`.
+- **Clave de audio derivada del texto** (no columna nueva en la base): la app encuentra el audio con el texto que ya recibe.
+- **"Continuar" calculado en el servidor** (`get_next_lesson`, migración 4) para no duplicar la regla de desbloqueo.
+- **Contenido nuevo opcional** (`seed_home_transport.sql`); el logro "Ruta completa" pasa de 6 a 10 lecciones.
+- **Identidad visual:** azul claro / azul medio / morado suave con tokens de color y modo oscuro.
+- Pruebas: 50 unitarias (antes 35), SQL ampliado; Lint 0 errores.
+
 ## Pendientes conocidos
 
 - Conectar Supabase y Microsoft (Azure) y ejecutar las pruebas manuales M01–M16 de `PLAN_PRUEBAS.md`.

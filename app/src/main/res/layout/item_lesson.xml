@@ -19,7 +19,7 @@
         android:background="@drawable/bg_icon_blue"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/color_on_solid"
         android:textSize="16sp" />
 
     <LinearLayout

@@ -3,9 +3,16 @@
 -- Simula lo mínimo de Supabase: roles, esquema auth, auth.users, auth.uid()
 -- y los privilegios por defecto que Supabase concede sobre el esquema public.
 -- =============================================================================
-create role anon nologin;
-create role authenticated nologin;
-create role service_role nologin bypassrls;
+-- Los roles son del servidor (no de la base): se crean solo si faltan, para poder
+-- preparar varias bases de prueba en el mismo servidor.
+do $$ begin
+  if not exists (select 1 from pg_roles where rolname = 'anon') then
+    create role anon nologin; end if;
+  if not exists (select 1 from pg_roles where rolname = 'authenticated') then
+    create role authenticated nologin; end if;
+  if not exists (select 1 from pg_roles where rolname = 'service_role') then
+    create role service_role nologin bypassrls; end if;
+end $$;
 
 create schema auth;
 create table auth.users (

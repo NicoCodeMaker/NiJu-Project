@@ -30,9 +30,9 @@ class ContextsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_contexts)
 
         progressBar = findViewById(R.id.progressBar)
-        adapter = ContextosAdapter(emptyList()) { ctx ->
+        adapter = ContextosAdapter(emptyList(), null) { ctx ->
             startActivity(Intent(this, LessonActivity::class.java).apply {
-                putExtra(LessonActivity.EXTRA_CONTEXT_ID, ctx.id)
+                putExtra(LessonActivity.EXTRA_CONTEXT_ID, ctx.contextId)
                 putExtra(LessonActivity.EXTRA_CONTEXT_SLUG, ctx.slug)
                 putExtra(LessonActivity.EXTRA_CONTEXT_NAME, ctx.name)
                 putExtra(LessonActivity.EXTRA_CONTEXT_DESCRIPTION, ctx.description)
@@ -44,11 +44,16 @@ class ContextsActivity : AppCompatActivity() {
             adapter = this@ContextsActivity.adapter
         }
         findViewById<View>(R.id.btnStartSession).setOnClickListener {
-            openSession(SessionMode.PRACTICE, title = "Práctica libre")
+            openSession(SessionMode.PRACTICE, title = getString(R.string.home_free_practice))
         }
 
         setupBottomNav(R.id.navContexts)
         observe()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.load() // refresca el avance al volver de una lección
     }
 
     private fun showEmpty(message: String?, retry: Boolean) {

@@ -100,7 +100,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_0"
-                            android:textColor="#E65100"
+                            android:textColor="@color/color_warning"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -108,7 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_racha"
-                            android:textColor="#9E9E9E"
+                            android:textColor="@color/color_text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -140,7 +140,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_0"
-                            android:textColor="#2E7D32"
+                            android:textColor="@color/color_success"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -148,7 +148,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_xp_total"
-                            android:textColor="#9E9E9E"
+                            android:textColor="@color/color_text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -180,7 +180,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_1"
-                            android:textColor="#3949AB"
+                            android:textColor="@color/color_primary"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -188,7 +188,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_nivel"
-                            android:textColor="#9E9E9E"
+                            android:textColor="@color/color_text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -231,7 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_0_50_xp"
-                            android:textColor="#7B61FF"
+                            android:textColor="@color/color_accent"
                             android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -242,77 +242,136 @@
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:progress="0"
-                        android:progressTint="#7B61FF"
-                        android:backgroundTint="@color/color_card_purple_light" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:progressTint="@color/color_accent"
+                        android:backgroundTint="@color/color_accent_container" />
 
-            <!-- ══════════ LECCIÓN DEL DÍA ══════════ -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="22dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/ui_leccion_del_dia"
-                android:textColor="@color/color_text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-        android:importantForAccessibility="no"
-                        android:id="@+id/ivBeachImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="170dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/beach_scene" />
-
-                    <!-- Overlay gradiente sobre la imagen -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="170dp"
-                        android:background="@drawable/image_overlay_gradient" />
-
-                    <!-- Texto sobre imagen -->
+                    <!-- Nivel y XP hacia el siguiente nivel -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/ivBeachImage"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvLevelTitle"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="#CC7B61FF"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="4dp"
-                            android:text="@string/ui_contexto_activo"
-                            android:textColor="#FFFFFF"
-                            android:textSize="11sp"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvLevelProgress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/ui_beach_playa"
-                            android:textColor="#FFFFFF"
-                            android:textSize="22sp"
+                            android:textColor="@color/color_primary"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </RelativeLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressLevel"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:progress="0"
+                        android:progressTint="@color/color_primary"
+                        android:backgroundTint="@color/color_primary_container" />
+
+                    <TextView
+                        android:id="@+id/tvProgressSummary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/color_text_secondary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ══════════ CONTINUAR (siguiente lección real, get_next_lesson) ══════════ -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardContinue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="22dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/color_primary_container"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/ivContinueImage"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerInside" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvContinueEyebrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:letterSpacing="0.06"
+                                android:textAllCaps="true"
+                                android:textColor="@color/color_on_primary_container"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvContinueTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textColor="@color/color_text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvContinueMeta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textColor="@color/color_text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnContinue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:minHeight="52dp"
+                        android:text="@string/home_continue_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color_on_solid"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/color_primary"
+                        app:cornerRadius="14dp" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- ══════════ ACCESOS RÁPIDOS ══════════ -->
@@ -389,9 +448,9 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Amigos -->
+                <!-- Contextos -->
                 <LinearLayout
-                    android:id="@+id/btnAmigos"
+                    android:id="@+id/btnContextos"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -420,18 +479,21 @@
             <!-- ══════════ BOTÓN PRINCIPAL ══════════ -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartSession"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="36dp"
-                android:text="@string/ui_comenzar_sesion_de_hoy"
-                android:textColor="#FFFFFF"
+                android:minHeight="54dp"
+                android:text="@string/ui_practica_libre"
+                android:textAllCaps="false"
+                android:textColor="@color/color_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:elevation="4dp"
                 app:cornerRadius="16dp"
-                app:backgroundTint="#7B61FF" />
+                app:strokeColor="@color/color_primary"
+                app:strokeWidth="2dp" />
 
         </LinearLayout>
     </ScrollView>

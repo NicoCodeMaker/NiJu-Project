@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Tarjetas de presentación de las palabras de una lección -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background">
@@ -80,20 +81,38 @@
 
                     <ImageButton
                         android:id="@+id/btnFavorite"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="?android:attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/favorite_add"
                         android:src="@drawable/ic_star" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvEnglish"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="34sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvEnglish"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/color_text_primary"
+                        android:textSize="34sp" />
+
+                    <!-- Escuchar / repetir la palabra -->
+                    <ImageButton
+                        android:id="@+id/btnListenWord"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/audio_listen"
+                        android:src="@drawable/ic_volume_up"
+                        app:tint="@color/listen_tint" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvPronunciation"
@@ -117,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:textColor="#5865F2"
+                    android:textColor="@color/color_primary"
                     android:textSize="22sp" />
 
                 <View
@@ -134,13 +153,32 @@
                     android:textColor="@color/color_text_hint"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tvExampleEn"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/rowExample"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="17sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvExampleEn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/color_text_primary"
+                        android:textSize="17sp" />
+
+                    <!-- Escuchar / repetir la oración de ejemplo -->
+                    <ImageButton
+                        android:id="@+id/btnListenExample"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/audio_listen_sentence"
+                        android:src="@drawable/ic_volume_up"
+                        app:tint="@color/listen_tint" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvExampleEs"
@@ -171,7 +209,7 @@
             android:background="@drawable/button_outline_background"
             android:text="@string/cards_previous"
             android:textAllCaps="false"
-            android:textColor="#5865F2" />
+            android:textColor="@color/color_primary" />
 
         <Button
             android:id="@+id/btnNextCard"

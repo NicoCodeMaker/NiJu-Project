@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.niju_project.audio.AudioKind
+import com.example.niju_project.audio.PronunciationUi
+import com.example.niju_project.data.model.LessonWord
 import com.example.niju_project.data.model.SessionMode
 import com.example.niju_project.data.repository.LearningRepository
 import com.example.niju_project.ui.Formatters
@@ -58,6 +61,11 @@ class WordCardsActivity : AppCompatActivity() {
     private lateinit var tvExampleEs: TextView
     private lateinit var btnPrevious: Button
     private lateinit var btnNextCard: Button
+    private lateinit var rowExample: View
+
+    private lateinit var audio: PronunciationUi
+    private var currentWord: LessonWord? = null
+    private var lastAutoPlayedWordId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +93,12 @@ class WordCardsActivity : AppCompatActivity() {
         tvExampleEs = findViewById(R.id.tvExampleEs)
         btnPrevious = findViewById(R.id.btnPrevious)
         btnNextCard = findViewById(R.id.btnNextCard)
+        rowExample = findViewById(R.id.rowExample)
+
+        // Pronunciación: «Escuchar» la palabra y la oración; tocar de nuevo = repetir.
+        audio = PronunciationUi(this)
+        audio.bind(findViewById(R.id.btnListenWord), AudioKind.WORD) { currentWord?.english }
+        audio.bind(findViewById(R.id.btnListenExample), AudioKind.SENTENCE) { currentWord?.sentenceEn }
 
         btnEmptyAction.setOnClickListener { viewModel.load() }
         btnFavorite.setOnClickListener { viewModel.toggleFavoriteCurrent() }
@@ -142,7 +156,7 @@ class WordCardsActivity : AppCompatActivity() {
         tvPartOfSpeech.visibility = if (pos == null) View.GONE else View.VISIBLE
         tvSpanish.text = w.spanish
         val hasExample = !w.sentenceEn.isNullOrBlank()
-        listOf(tvExampleLabel, tvExampleEn, tvExampleEs).forEach {
+        listOf(tvExampleLabel, rowExample, tvExampleEs).forEach {
             it.visibility = if (hasExample) View.VISIBLE else View.GONE
         }
         tvExampleEn.text = w.sentenceEn.orEmpty()
@@ -151,6 +165,14 @@ class WordCardsActivity : AppCompatActivity() {
         btnFavorite.setImageResource(if (w.isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star)
         btnFavorite.contentDescription =
             getString(if (w.isFavorite) R.string.favorite_remove else R.string.favorite_add)
+
+        // Audio: actualiza los botones y, si el estudiante lo activó, suena la palabra (una vez por tarjeta).
+        currentWord = w
+        audio.refresh()
+        if (audio.autoPlay && lastAutoPlayedWordId != w.wordId) {
+            lastAutoPlayedWordId = w.wordId
+            audio.play(w.english, AudioKind.WORD)
+        }
 
         btnPrevious.isEnabled = !s.isFirst
         btnPrevious.alpha = if (s.isFirst) 0.4f else 1f

@@ -73,7 +73,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/ic_profile_user"
-                    app:civ_border_color="#5865F2"
+                    app:civ_border_color="@color/color_primary"
                     app:civ_border_width="3dp" />
 
                 <!-- Badge de cámara -->
@@ -90,7 +90,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_edit"
-                        app:tint="#FFFFFF" />
+                        app:tint="@color/color_on_solid" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -103,7 +103,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:padding="8dp"
                 android:text="@string/ui_cambiar_foto"
-                android:textColor="#5865F2"
+                android:textColor="@color/color_primary"
                 android:textSize="14sp" />
 
             <!-- ── TARJETA FORMULARIO ─────────────────────────────────── -->
@@ -140,7 +140,7 @@
                         android:layout_marginBottom="6dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/ui_nombre"
-                        android:textColor="#374151"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="14sp" />
 
                     <EditText
@@ -164,7 +164,7 @@
                         android:layout_marginBottom="6dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/ui_correo_electronico"
-                        android:textColor="#374151"
+                        android:textColor="@color/color_text_primary"
                         android:textSize="14sp" />
 
                     <EditText

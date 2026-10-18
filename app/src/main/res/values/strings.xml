@@ -80,4 +80,52 @@
     <string name="privacy_text">NiJu guarda tu nombre y correo de Microsoft, tu zona horaria, tu meta diaria y tu historial de aprendizaje (respuestas, repasos, puntos, logros y favoritas).\n\nEstos datos se usan solo para mostrar tu progreso y programar tus repasos. Nadie más puede verlos: la base de datos solo te permite leer tus propios datos.\n\nPuedes reiniciar tu progreso o eliminar tu cuenta y todos sus datos desde Configuración.</string>
     <string name="terms_title">Términos y condiciones</string>
     <string name="terms_text">NiJu es un proyecto académico para practicar vocabulario en inglés. Se ofrece tal cual, sin garantías.\n\nUsa la app de forma personal y no intentes alterar los puntos ni los datos de otros usuarios.\n\nAl iniciar sesión aceptas que guardemos los datos descritos en la política de privacidad.</string>
+
+    <!-- Audio de pronunciación -->
+    <string name="audio_listen">Escuchar</string>
+    <string name="audio_listen_word">Escuchar «%1$s»</string>
+    <string name="audio_listen_sentence">Escuchar la oración de ejemplo</string>
+    <string name="audio_unavailable">Todavía no hay audio para «%1$s».</string>
+    <string name="audio_failed">No se pudo reproducir el audio. Intenta de nuevo.</string>
+    <string name="settings_audio_section">Audio de pronunciación</string>
+    <string name="settings_audio_autoplay">Reproducir automáticamente</string>
+    <string name="settings_audio_autoplay_desc">Suena la palabra al mostrarla</string>
+    <string name="settings_audio_slow">Velocidad lenta</string>
+    <string name="settings_audio_slow_desc">Pronunciación más pausada para empezar</string>
+    <string name="session_choose_answer">Elige tu respuesta</string>
+    <string name="session_your_answer">Tu respuesta: %1$s</string>
+    <string name="session_hint_translation">Significa: %1$s</string>
+    <string name="session_option_selected">Seleccionada</string>
+
+    <!-- Inicio -->
+    <string name="home_greeting">¡Hola, %1$s!</string>
+    <string name="home_default_name">estudiante</string>
+    <string name="home_subtitle_start">Empieza con tu primera lección</string>
+    <string name="home_subtitle_caught_up">¡Estás al día con tus repasos!</string>
+    <plurals name="home_subtitle_due">
+        <item quantity="one">Tienes %d palabra por repasar</item>
+        <item quantity="other">Tienes %d palabras por repasar</item>
+    </plurals>
+    <string name="home_daily_goal_value">%1$d / %2$d XP</string>
+    <string name="home_level_title">Nivel %1$d</string>
+    <string name="home_level_value">%1$d / %2$d XP</string>
+    <string name="home_progress_summary">%1$d palabras practicadas · %2$d dominadas · %3$d lecciones superadas</string>
+    <string name="home_review_now">Repasar ahora (%1$d)</string>
+    <string name="home_free_practice">Práctica libre</string>
+    <string name="home_continue_eyebrow">Continuar · %1$s</string>
+    <string name="home_continue_meta">%1$s · %2$d palabras · lección %3$d de %4$d</string>
+    <string name="home_continue_button">Continuar lección</string>
+    <string name="home_all_done_title">¡Superaste todas las lecciones!</string>
+    <string name="home_all_done_meta">Repasa para fijar lo aprendido.</string>
+    <string name="home_all_done_eyebrow">Ruta completa</string>
+    <string name="home_quick_access">Accesos rápidos</string>
+
+    <!-- Contextos -->
+    <plurals name="context_lessons_progress">
+        <item quantity="one">%1$d / %2$d lección</item>
+        <item quantity="other">%1$d / %2$d lecciones</item>
+    </plurals>
+    <string name="context_completed">✓ Completado</string>
+    <string name="context_card_desc">%1$s, %2$d de %3$d lecciones superadas</string>
+    <string name="context_card_desc_done">%1$s, completado: %2$d de %3$d lecciones superadas</string>
 </resources>

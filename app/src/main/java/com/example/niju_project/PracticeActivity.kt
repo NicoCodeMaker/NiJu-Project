@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
+import com.google.android.material.button.MaterialButton
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -18,9 +19,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.niju_project.audio.AudioKind
+import com.example.niju_project.audio.AudioTarget
+import com.example.niju_project.audio.ExerciseAudio
+import com.example.niju_project.audio.PronunciationUi
 import com.example.niju_project.data.model.ExerciseType
 import com.example.niju_project.data.model.SessionMode
 import com.example.niju_project.data.model.SessionSummary
@@ -62,6 +68,13 @@ class PracticeActivity : AppCompatActivity() {
     private var soundCorrectId = 0
     private var soundWrongId = 0
     private var soundsLoaded = false
+
+    private lateinit var audio: PronunciationUi
+    private lateinit var btnListenQuestion: View
+    private lateinit var tvYourAnswer: TextView
+    private var questionTarget: AudioTarget? = null
+    private var answerTarget: AudioTarget? = null
+    private var lastAutoPlayedItem = -1L
 
     private var selectedAnswer: String? = null
     private var shownDialog: AlertDialog? = null
@@ -122,6 +135,15 @@ class PracticeActivity : AppCompatActivity() {
         btnFinishPractice = findViewById(R.id.btnFinishPractice)
         btnContinueAfterWrong = findViewById(R.id.btnContinueAfterWrong)
 
+        tvYourAnswer = findViewById(R.id.tvYourAnswer)
+        btnListenQuestion = findViewById(R.id.btnListenQuestion)
+
+        // Pronunciación: el enunciado (cuando está en inglés) y la respuesta correcta al corregir.
+        audio = PronunciationUi(this)
+        audio.bindTarget(btnListenQuestion) { questionTarget }
+        audio.bindTarget(findViewById(R.id.btnListenAnswerCorrect)) { answerTarget }
+        audio.bindTarget(findViewById(R.id.btnListenAnswerWrong)) { answerTarget }
+
         optionButtons.forEach { btn ->
             btn.setOnClickListener {
                 selectedAnswer = btn.text.toString()
@@ -175,9 +197,19 @@ class PracticeActivity : AppCompatActivity() {
         val hint = item.hint
         tvDifficulty.visibility = if (hint.isNullOrBlank()) View.GONE else View.VISIBLE
         tvDifficulty.text = when (item.exerciseType) {
-            ExerciseType.FILL_BLANK -> "💬 $hint"
-            ExerciseType.EN_TO_ES -> "🔊 $hint"
+            // Pista: la traducción de la oración / la pronunciación escrita (IPA) de la palabra.
+            ExerciseType.FILL_BLANK -> getString(R.string.session_hint_translation, hint)
+            ExerciseType.EN_TO_ES -> hint
             ExerciseType.ES_TO_EN -> hint
+        }
+
+        // «Escuchar» solo aparece si el enunciado está en inglés.
+        questionTarget = if (item.exerciseType == ExerciseType.EN_TO_ES) AudioTarget(item.prompt, AudioKind.WORD) else null
+        btnListenQuestion.visibility = if (questionTarget != null) View.VISIBLE else View.GONE
+        audio.refresh()
+        if (questionTarget != null && audio.autoPlay && lastAutoPlayedItem != item.itemId) {
+            lastAutoPlayedItem = item.itemId
+            audio.play(item.prompt, AudioKind.WORD)
         }
 
         tvQuestionIndex.text = "${state.number} / ${state.total}"
@@ -189,8 +221,7 @@ class PracticeActivity : AppCompatActivity() {
             btn.visibility = if (option == null) View.GONE else View.VISIBLE
             btn.text = option.orEmpty()
             btn.isEnabled = true
-            btn.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.white))
-            btn.setTextColor(getColor(android.R.color.black))
+            styleOption(btn, selected = false)
         }
         setConfirmEnabled(false)
 
@@ -204,6 +235,10 @@ class PracticeActivity : AppCompatActivity() {
         val firstTime = lastFeedbackItem != state.item.itemId
         lastFeedbackItem = state.item.itemId
 
+        // Audio de la respuesta correcta (palabra u oración completa); se suma al panel.
+        answerTarget = ExerciseAudio.forAnswer(state.item.exerciseType, state.item.prompt, state.result.correctAnswer)
+        audio.refresh()
+
         if (state.result.isCorrect) {
             tvCorrectWord.text = state.result.correctAnswer
             tvCorrectXp.text = if (state.result.xpAwarded > 0) "+${state.result.xpAwarded} XP" else "¡Bien!"
@@ -213,6 +248,8 @@ class PracticeActivity : AppCompatActivity() {
             showPanel(correctPanel, animate = firstTime)
         } else {
             tvCorrectAnswer.text = state.result.correctAnswer
+            tvYourAnswer.text = getString(R.string.session_your_answer, state.answer)
+            tvYourAnswer.visibility = if (state.answer.isBlank()) View.GONE else View.VISIBLE
             btnContinueAfterWrong.text = if (state.isLast) "Ver resultado" else getString(R.string.session_continue)
             if (firstTime) play(soundWrongId)
             showPanel(wrongPanel, animate = firstTime)
@@ -310,18 +347,31 @@ class PracticeActivity : AppCompatActivity() {
     private fun setConfirmEnabled(enabled: Boolean) {
         btnNext.isEnabled = enabled
         btnNext.backgroundTintList = ColorStateList.valueOf(
-            getColor(if (enabled) R.color.nav_selected else android.R.color.darker_gray)
+            getColor(if (enabled) R.color.color_primary else R.color.color_disabled_bg)
         )
-        btnNext.setTextColor(getColor(android.R.color.white))
+        btnNext.setTextColor(getColor(if (enabled) R.color.color_on_solid else R.color.color_text_secondary))
     }
 
     private fun highlightSelected(selected: Button) {
-        optionButtons.forEach {
-            it.backgroundTintList = ColorStateList.valueOf(getColor(android.R.color.white))
-            it.setTextColor(getColor(android.R.color.black))
+        optionButtons.forEach { styleOption(it, selected = it === selected) }
+    }
+
+    /**
+     * La opción elegida se distingue por color Y por una marca ✓ (no solo por color),
+     * y se anuncia a TalkBack como seleccionada.
+     */
+    private fun styleOption(btn: Button, selected: Boolean) {
+        btn.backgroundTintList = ColorStateList.valueOf(
+            getColor(if (selected) R.color.color_primary else R.color.color_surface)
+        )
+        btn.setTextColor(getColor(if (selected) R.color.color_on_solid else R.color.color_text_primary))
+        btn.isSelected = selected
+        (btn as? MaterialButton)?.apply {
+            setIconResource(if (selected) R.drawable.ic_check else 0)
+            iconTint = ColorStateList.valueOf(getColor(R.color.color_on_solid))
+            iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
         }
-        selected.backgroundTintList = ColorStateList.valueOf(getColor(R.color.nav_selected))
-        selected.setTextColor(getColor(android.R.color.white))
+        ViewCompat.setStateDescription(btn, if (selected) getString(R.string.session_option_selected) else null)
     }
 
     override fun onDestroy() {

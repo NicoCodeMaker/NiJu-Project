@@ -92,7 +92,7 @@
                             android:layout_height="20dp"
                             android:src="@drawable/ic_road"
                             android:layout_marginEnd="8dp"
-                            app:tint="#7B61FF" />
+                            app:tint="@color/color_accent" />
 
                         <TextView
                             android:id="@+id/tv_progreso"
@@ -109,7 +109,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ui_40"
-                            android:textColor="#7B61FF"
+                            android:textColor="@color/color_accent"
                             android:textSize="15sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -119,8 +119,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:progress="40"
-                        app:indicatorColor="#7B61FF"
-                        app:trackColor="#EDE9FE"
+                        app:indicatorColor="@color/color_accent"
+                        app:trackColor="@color/color_accent_container"
                         app:trackCornerRadius="5dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -208,7 +208,7 @@
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
                             android:text="@string/ui_etapa_1"
-                            android:textColor="#3949AB"
+                            android:textColor="@color/color_primary"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
@@ -237,7 +237,7 @@
                         android:layout_height="30dp"
                         android:src="@drawable/ic_star"
                         android:contentDescription="@string/ui_marcar_favorito"
-                        app:tint="#FFB300" />
+                        app:tint="@color/color_star" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -288,7 +288,7 @@
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
                             android:text="@string/ui_etapa_2"
-                            android:textColor="#2E7D32"
+                            android:textColor="@color/color_success"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
@@ -316,7 +316,7 @@
                         android:layout_height="30dp"
                         android:src="@drawable/ic_star"
                         android:contentDescription="@string/ui_marcar_favorito"
-                        app:tint="#FFB300" />
+                        app:tint="@color/color_star" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -367,7 +367,7 @@
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
                             android:text="@string/ui_etapa_3"
-                            android:textColor="#E65100"
+                            android:textColor="@color/color_warning"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
@@ -395,7 +395,7 @@
                         android:layout_height="30dp"
                         android:src="@drawable/ic_star"
                         android:contentDescription="@string/ui_marcar_favorito"
-                        app:tint="#FFB300" />
+                        app:tint="@color/color_star" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

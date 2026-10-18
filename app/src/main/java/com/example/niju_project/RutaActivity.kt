@@ -23,9 +23,9 @@ class RutaActivity : AppCompatActivity() {
     private var progressById: Map<Int, ContextProgress> = emptyMap()
     private var selectedId: Int? = null
 
-    private val adapter = ContextosAdapter(emptyList()) { ctx ->
-        selectedId = ctx.id
-        progressById[ctx.id]?.let { show(it) }
+    private val adapter = ContextosAdapter(emptyList(), fixedWidthDp = 150) { ctx ->
+        selectedId = ctx.contextId
+        progressById[ctx.contextId]?.let { show(it) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class RutaActivity : AppCompatActivity() {
 
     private fun render(list: List<ContextProgress>) {
         progressById = list.associateBy { it.contextId }
-        adapter.updateList(list.map { it.toContextRow() })
+        adapter.updateList(list)
         val selected = selectedId?.let { progressById[it] } ?: list.firstOrNull()
         if (selected != null) show(selected) else showOverall(list)
     }

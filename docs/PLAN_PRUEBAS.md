@@ -76,6 +76,19 @@ generadas ejecutando las funciones SQL. Si una columna cambia en el servidor, fa
 | M15 | Sin internet, responder un ejercicio | Mensaje "Sin conexión" y opción de continuar con la misma pregunta | Pendiente |
 | M16 | Girar el teléfono durante una sesión | No se pierde la pregunta ni se repite el sonido | Pendiente |
 
+## 3b. Pruebas manuales añadidas (audio y rediseño) — NO ejecutadas aún
+
+| Id | Prueba | Esperado |
+|---|---|---|
+| M17 | Tarjeta de palabra → Escuchar (normal y lento) | Suena la palabra; el botón cambia mientras suena |
+| M18 | Escuchar dos veces seguidas | Reinicia, sin superponer |
+| M19 | Responder un ejercicio → Escuchar | Suena la palabra o la oración completa |
+| M20 | Modo avión | El audio sigue sonando (es local) |
+| M21 | Inicio → Continuar | Abre la siguiente lección real; con todo superado muestra "Ruta completa" |
+| M22 | Contextos tras terminar una lección | Sube X/Y y la barra al volver |
+| M23 | TalkBack en Inicio, Contextos y lecciones | Todo se anuncia con su estado (no solo color) |
+| M24 | Fuente grande + pantalla pequeña | Sin texto cortado |
+
 ## 4. Limitaciones conocidas
 
 - No se pudo ejecutar la app en un emulador (el entorno de desarrollo no lo permite). Las pruebas
