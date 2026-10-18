@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ilustración de contexto (estilo de los iconos existentes: relleno plano y contorno oscuro) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <path android:fillColor="#262628" android:pathData="M16,0h68a16,16 0 0 1 16,16v68a16,16 0 0 1 -16,16h-68a16,16 0 0 1 -16,-16v-68a16,16 0 0 1 16,-16z" />
+    <path android:pathData="M22,24h56a8,8 0 0 1 8,8v28a8,8 0 0 1 -8,8h-30l-16,14v-14h-10a8,8 0 0 1 -8,-8v-28a8,8 0 0 1 8,-8z" android:fillColor="#BDE8F8" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M34,40h32" android:fillColor="#6AB0E8" android:strokeColor="#6AB0E8" android:strokeWidth="4" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M34,52h20" android:fillColor="#6AB0E8" android:strokeColor="#6AB0E8" android:strokeWidth="4" android:strokeLineJoin="round" android:strokeLineCap="round" />
+</vector>

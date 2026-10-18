@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ilustración de contexto (estilo de los iconos existentes: relleno plano y contorno oscuro) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <path android:fillColor="#262628" android:pathData="M16,0h68a16,16 0 0 1 16,16v68a16,16 0 0 1 -16,16h-68a16,16 0 0 1 -16,-16v-68a16,16 0 0 1 16,-16z" />
+    <path android:pathData="M62,26h8v14h-8z" android:fillColor="#D95F57" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M26,50h48v32h-48z" android:fillColor="#FFDC96" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M17,52L50,22L83,52z" android:fillColor="#6AB0E8" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M44,60h12v22h-12z" android:fillColor="#996B4D" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M30,58h10v10h-10z" android:fillColor="#BDE8F8" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M60,58h10v10h-10z" android:fillColor="#BDE8F8" android:strokeColor="#4A3B3E" android:strokeWidth="3" android:strokeLineJoin="round" android:strokeLineCap="round" />
+    <path android:pathData="M53,72h1" android:fillColor="#FFDC96" android:strokeColor="#4A3B3E" android:strokeWidth="2" android:strokeLineJoin="round" android:strokeLineCap="round" />
+</vector>

@@ -1,0 +1,3 @@
+# Solo para GENERAR los audios (herramienta de desarrollo, NO forma parte de la app).
+# Piper es GPL-3.0: se usa como herramienta en tu computadora; no se distribuye dentro del APK.
+piper-tts>=1.3
