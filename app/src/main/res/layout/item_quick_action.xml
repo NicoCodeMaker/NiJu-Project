@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Acceso rápido de Inicio: emoji · título · detalle con datos reales -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.NiJu.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="112dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvQuickEmoji"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_circle_accent_soft"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:textSize="22sp"
+            tools:text="🔁" />
+
+        <TextView
+            android:id="@+id/tvQuickTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/TextAppearance.NiJu.Subtitle"
+            tools:text="Repasar" />
+
+        <TextView
+            android:id="@+id/tvQuickSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.NiJu.Caption"
+            tools:text="6 pendientes · 2 urgentes" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

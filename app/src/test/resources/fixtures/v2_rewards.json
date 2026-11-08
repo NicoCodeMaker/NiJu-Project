@@ -1,0 +1,134 @@
+{
+ "level": 2,
+ "xp_total": 145,
+ "challenges": [
+  {
+   "code": "d_correct_15",
+   "title": "Puntería",
+   "period": "daily",
+   "target": 15,
+   "claimed": false,
+   "progress": 5,
+   "completed": false,
+   "xp_reward": 25,
+   "description": "Acierta 15 ejercicios hoy."
+  },
+  {
+   "code": "d_review_5",
+   "title": "Memoria fresca",
+   "period": "daily",
+   "target": 5,
+   "claimed": false,
+   "progress": 0,
+   "completed": false,
+   "xp_reward": 25,
+   "description": "Acierta 5 ejercicios en un repaso programado."
+  },
+  {
+   "code": "d_new_words_5",
+   "title": "Palabras nuevas",
+   "period": "daily",
+   "target": 5,
+   "claimed": true,
+   "progress": 5,
+   "completed": true,
+   "xp_reward": 25,
+   "description": "Estudia 5 palabras nuevas hoy."
+  },
+  {
+   "code": "w_xp",
+   "title": "Meta semanal de XP",
+   "period": "weekly",
+   "target": 250,
+   "claimed": false,
+   "progress": 120,
+   "completed": false,
+   "xp_reward": 100,
+   "description": "Gana 5 veces tu meta diaria de XP esta semana."
+  },
+  {
+   "code": "w_days_5",
+   "title": "Cinco días",
+   "period": "weekly",
+   "target": 5,
+   "claimed": false,
+   "progress": 1,
+   "completed": false,
+   "xp_reward": 120,
+   "description": "Estudia 5 días distintos esta semana."
+  },
+  {
+   "code": "w_lessons_3",
+   "title": "Tres lecciones",
+   "period": "weekly",
+   "target": 3,
+   "claimed": false,
+   "progress": 1,
+   "completed": false,
+   "xp_reward": 80,
+   "description": "Supera 3 lecciones esta semana."
+  }
+ ],
+ "week_start": "2026-11-02",
+ "level_title": "Principiante",
+ "next_level_xp": 400,
+ "studied_today": true,
+ "current_streak": 1,
+ "level_start_xp": 100,
+ "longest_streak": 1,
+ "recent_rewards": [
+  {
+   "ref": "12",
+   "amount": 50,
+   "reason": "lesson_complete",
+   "created_at": "2026-11-08T13:13:16.928484-05:00"
+  },
+  {
+   "ref": "d_new_words_5:2026-11-08",
+   "amount": 25,
+   "reason": "daily_challenge",
+   "created_at": "2026-11-08T13:13:16.928484-05:00"
+  },
+  {
+   "ref": "first_lesson",
+   "amount": 20,
+   "reason": "achievement",
+   "created_at": "2026-11-08T13:13:16.928484-05:00"
+  }
+ ],
+ "next_level_title": "Explorador",
+ "streak_milestones": [
+  {
+   "xp": 15,
+   "days": 3,
+   "reached": false
+  },
+  {
+   "xp": 40,
+   "days": 7,
+   "reached": false
+  },
+  {
+   "xp": 80,
+   "days": 14,
+   "reached": false
+  },
+  {
+   "xp": 150,
+   "days": 30,
+   "reached": false
+  },
+  {
+   "xp": 300,
+   "days": 60,
+   "reached": false
+  },
+  {
+   "xp": 500,
+   "days": 100,
+   "reached": false
+  }
+ ],
+ "achievements_total": 20,
+ "achievements_unlocked": 1
+}

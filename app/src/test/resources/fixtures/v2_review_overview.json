@@ -1,0 +1,41 @@
+{
+ "total": 6,
+ "review": 0,
+ "urgent": 0,
+ "due_now": 0,
+ "forecast": [
+  {
+   "day": "2026-11-08",
+   "count": 0
+  },
+  {
+   "day": "2026-11-09",
+   "count": 6
+  },
+  {
+   "day": "2026-11-10",
+   "count": 0
+  },
+  {
+   "day": "2026-11-11",
+   "count": 0
+  },
+  {
+   "day": "2026-11-12",
+   "count": 0
+  },
+  {
+   "day": "2026-11-13",
+   "count": 0
+  },
+  {
+   "day": "2026-11-14",
+   "count": 0
+  }
+ ],
+ "learning": 6,
+ "mastered": 0,
+ "reinforce": 0,
+ "next_due_at": "2026-11-09T13:13:16.928484-05:00",
+ "average_ease": 2.53
+}

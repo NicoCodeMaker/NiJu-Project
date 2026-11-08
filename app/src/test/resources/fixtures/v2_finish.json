@@ -1,0 +1,33 @@
+{
+ "mode": "lesson",
+ "level": 2,
+ "score": 83.33,
+ "total": 6,
+ "correct": 5,
+ "perfect": false,
+ "answered": 6,
+ "study_ms": 15000,
+ "xp_total": 145,
+ "xp_earned": 145,
+ "session_id": "d05a409b-b175-4fe4-9efd-cf1a2e0ccf12",
+ "exam_passed": false,
+ "level_title": "Principiante",
+ "current_streak": 1,
+ "previous_level": 1,
+ "lesson_completed": true,
+ "new_achievements": [
+  {
+   "code": "first_lesson",
+   "title": "Primer paso",
+   "xp_reward": 20
+  }
+ ],
+ "challenges_completed": [
+  {
+   "code": "d_new_words_5",
+   "title": "Palabras nuevas",
+   "period": "daily",
+   "xp_reward": 25
+  }
+ ]
+}

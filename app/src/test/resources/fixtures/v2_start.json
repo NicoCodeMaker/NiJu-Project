@@ -1,0 +1,86 @@
+{
+ "mode": "lesson",
+ "items": [
+  {
+   "hint": "/ˈtiːtʃər/",
+   "prompt": "teacher",
+   "item_id": 1,
+   "options": [
+    "examen",
+    "cuaderno",
+    "profesor"
+   ],
+   "word_id": 61,
+   "position": 1,
+   "exercise_type": "en_to_es"
+  },
+  {
+   "hint": null,
+   "prompt": "🧑‍🎓",
+   "item_id": 2,
+   "options": [
+    "teacher",
+    "backpack",
+    "student"
+   ],
+   "word_id": 62,
+   "position": 2,
+   "exercise_type": "image_match"
+  },
+  {
+   "hint": null,
+   "prompt": "notebook",
+   "item_id": 3,
+   "options": [
+    "notebook",
+    "schedule",
+    "exam",
+    "student"
+   ],
+   "word_id": 63,
+   "position": 3,
+   "exercise_type": "listen_choose"
+  },
+  {
+   "hint": "¿Me prestas tu lápiz?",
+   "prompt": "Can I borrow your _____?",
+   "item_id": 4,
+   "options": [
+    "pencil",
+    "schedule",
+    "homework"
+   ],
+   "word_id": 64,
+   "position": 4,
+   "exercise_type": "fill_blank"
+  },
+  {
+   "hint": "Empieza por «b» · 8 letras",
+   "prompt": "mochila",
+   "item_id": 5,
+   "options": [],
+   "word_id": 65,
+   "position": 5,
+   "exercise_type": "type_answer"
+  },
+  {
+   "hint": null,
+   "prompt": "Hago mi tarea después de la cena.",
+   "item_id": 6,
+   "options": [
+    "dinner",
+    "I",
+    "my",
+    "homework",
+    "after",
+    "do"
+   ],
+   "word_id": 66,
+   "position": 6,
+   "exercise_type": "word_order"
+  }
+ ],
+ "lesson_id": 12,
+ "context_id": 6,
+ "session_id": "d05a409b-b175-4fe4-9efd-cf1a2e0ccf12"
+}

@@ -1,0 +1,33 @@
+{
+ "emoji": "🧑‍🏫",
+ "level": "A1",
+ "bucket": "learning",
+ "due_at": "2026-11-09T13:13:16.928484-05:00",
+ "lapses": 0,
+ "urgent": false,
+ "english": "teacher",
+ "history": [
+  {
+   "quality": 5,
+   "created_at": "2026-11-08T13:13:16.928484-05:00",
+   "is_correct": true,
+   "response_ms": 2500,
+   "exercise_type": "en_to_es"
+  }
+ ],
+ "spanish": "profesor",
+ "word_id": 61,
+ "example_en": "Our teacher explains the lesson very well.",
+ "example_es": "Nuestro profesor explica muy bien la lección.",
+ "ease_factor": 2.6,
+ "is_favorite": false,
+ "repetitions": 1,
+ "last_quality": 5,
+ "correct_count": 1,
+ "first_seen_at": "2026-11-08T13:13:16.928484-05:00",
+ "interval_days": 1,
+ "pronunciation": "/ˈtiːtʃər/",
+ "part_of_speech": "noun",
+ "incorrect_count": 0,
+ "last_reviewed_at": "2026-11-08T13:13:16.928484-05:00"
+}

@@ -1,0 +1,80 @@
+[
+ {
+  "emoji": "🧑‍🏫",
+  "status": "learning",
+  "english": "teacher",
+  "spanish": "profesor",
+  "word_id": 61,
+  "position": 1,
+  "is_favorite": false,
+  "sentence_en": "Our teacher explains the lesson very well.",
+  "sentence_es": "Nuestro profesor explica muy bien la lección.",
+  "pronunciation": "/ˈtiːtʃər/",
+  "part_of_speech": "noun"
+ },
+ {
+  "emoji": "🧑‍🎓",
+  "status": "learning",
+  "english": "student",
+  "spanish": "estudiante",
+  "word_id": 62,
+  "position": 2,
+  "is_favorite": false,
+  "sentence_en": "Every student has a book.",
+  "sentence_es": "Cada estudiante tiene un libro.",
+  "pronunciation": "/ˈstuːdənt/",
+  "part_of_speech": "noun"
+ },
+ {
+  "emoji": "📓",
+  "status": "learning",
+  "english": "notebook",
+  "spanish": "cuaderno",
+  "word_id": 63,
+  "position": 3,
+  "is_favorite": false,
+  "sentence_en": "Write the new words in your notebook.",
+  "sentence_es": "Escribe las palabras nuevas en tu cuaderno.",
+  "pronunciation": "/ˈnoʊtbʊk/",
+  "part_of_speech": "noun"
+ },
+ {
+  "emoji": "✏️",
+  "status": "learning",
+  "english": "pencil",
+  "spanish": "lápiz",
+  "word_id": 64,
+  "position": 4,
+  "is_favorite": false,
+  "sentence_en": "Can I borrow your pencil?",
+  "sentence_es": "¿Me prestas tu lápiz?",
+  "pronunciation": "/ˈpensəl/",
+  "part_of_speech": "noun"
+ },
+ {
+  "emoji": "🎒",
+  "status": "learning",
+  "english": "backpack",
+  "spanish": "mochila",
+  "word_id": 65,
+  "position": 5,
+  "is_favorite": false,
+  "sentence_en": "My books are in my backpack.",
+  "sentence_es": "Mis libros están en mi mochila.",
+  "pronunciation": "/ˈbækpæk/",
+  "part_of_speech": "noun"
+ },
+ {
+  "emoji": "📝",
+  "status": "learning",
+  "english": "homework",
+  "spanish": "tarea",
+  "word_id": 66,
+  "position": 6,
+  "is_favorite": false,
+  "sentence_en": "I do my homework after dinner.",
+  "sentence_es": "Hago mi tarea después de la cena.",
+  "pronunciation": "/ˈhoʊmwɜːrk/",
+  "part_of_speech": "noun"
+ }
+]

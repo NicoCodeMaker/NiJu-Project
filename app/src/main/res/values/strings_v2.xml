@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Navegación ───────────────────────────────────────────────────── -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_learn">Aprender</string>
+    <string name="nav_review">Repaso</string>
+    <string name="nav_rewards">Logros</string>
+    <string name="nav_profile">Perfil</string>
+    <string name="nav_current">Pantalla actual</string>
+
+    <!-- ── Autenticación ────────────────────────────────────────────────── -->
+    <string name="auth_email">Correo electrónico</string>
+    <string name="auth_password">Contraseña</string>
+    <string name="auth_password_new">Contraseña nueva</string>
+    <string name="auth_password_confirm">Confirmar contraseña</string>
+    <string name="auth_name">Tu nombre</string>
+    <string name="auth_login">Iniciar sesión</string>
+    <string name="auth_forgot">¿Olvidaste tu contraseña?</string>
+    <string name="auth_or">o continúa con</string>
+    <string name="auth_no_account">¿No tienes cuenta?</string>
+    <string name="auth_create_account">Crear cuenta</string>
+    <string name="auth_have_account">¿Ya tienes cuenta?</string>
+    <string name="auth_register_title">Crea tu cuenta</string>
+    <string name="auth_register_subtitle">Guarda tu progreso, tus repasos y tus logros en cualquier teléfono.</string>
+    <string name="auth_password_help">Mínimo 8 caracteres, con letras y números.</string>
+    <string name="auth_accept_terms">Acepto los términos y la política de privacidad</string>
+    <string name="auth_read_terms">Leer términos y privacidad</string>
+    <string name="auth_terms_required">Debes aceptar los términos para crear tu cuenta</string>
+    <string name="auth_confirm_title">Revisa tu correo</string>
+    <string name="auth_confirm_message">Te enviamos un enlace a %1$s. Ábrelo desde este teléfono para activar tu cuenta.</string>
+    <string name="auth_forgot_title">Recupera tu contraseña</string>
+    <string name="auth_forgot_subtitle">Escribe el correo de tu cuenta y te enviaremos un enlace para crear una contraseña nueva.</string>
+    <string name="auth_forgot_send">Enviar enlace</string>
+    <string name="auth_forgot_sent_title">Enlace enviado</string>
+    <string name="auth_forgot_sent">Si existe una cuenta con %1$s, recibirás un correo en unos minutos. Ábrelo desde este teléfono.</string>
+    <string name="auth_back_to_login">Volver a iniciar sesión</string>
+    <string name="auth_reset_title">Crea una contraseña nueva</string>
+    <string name="auth_reset_subtitle">Por seguridad, elige una contraseña que no hayas usado antes.</string>
+    <string name="auth_reset_save">Guardar contraseña</string>
+    <string name="auth_reset_done">Contraseña actualizada. ¡Bienvenido de vuelta!</string>
+    <string name="auth_reset_no_session">El enlace venció o no es válido. Pide uno nuevo.</string>
+    <string name="auth_strength_0">Muy débil</string>
+    <string name="auth_strength_1">Débil</string>
+    <string name="auth_strength_2">Aceptable</string>
+    <string name="auth_strength_3">Buena</string>
+    <string name="auth_strength_4">Excelente</string>
+    <string name="auth_working">Un momento…</string>
+
+    <!-- ── Comunes ──────────────────────────────────────────────────────── -->
+    <string name="common_retry">Reintentar</string>
+    <string name="common_close">Cerrar</string>
+    <string name="common_continue">Continuar</string>
+    <string name="common_see_all">Ver todo</string>
+    <string name="common_loading">Cargando…</string>
+    <string name="xp_value">%1$d XP</string>
+    <string name="xp_plus">+%1$d XP</string>
+    <string name="level_value">Nivel %1$d</string>
+    <string name="level_title_value">Nivel %1$d · %2$s</string>
+    <string name="percent_value">%1$d %%</string>
+    <string name="fraction_value">%1$d / %2$d</string>
+    <!-- ── Inicio ───────────────────────────────────────────────────────── -->
+    <string name="home_chip_streak">racha</string>
+    <string name="home_chip_xp">XP total</string>
+    <string name="home_chip_level">nivel</string>
+    <string name="home_streak_value">🔥 %1$d</string>
+    <string name="home_streak_desc">Racha: %1$s</string>
+    <string name="home_xp_value">⚡ %1$d</string>
+    <string name="home_level_chip">🏅 %1$d</string>
+    <string name="home_daily_goal">Meta de hoy</string>
+    <string name="home_study_today">Hoy estudiaste %1$s</string>
+    <string name="home_study_none">Aún no estudias hoy: una sesión corta mantiene tu racha</string>
+    <string name="home_continue_section">Continúa tu ruta</string>
+    <string name="home_quick_title">Accesos rápidos</string>
+    <string name="home_quick_review">Repasar</string>
+    <string name="home_quick_review_none">Al día: sin repasos pendientes</string>
+    <string name="home_quick_review_urgent">%1$d pendientes · %2$d urgentes</string>
+    <string name="home_quick_challenges">Retos de hoy</string>
+    <string name="home_quick_challenges_sub">%1$d de %2$d cumplidos</string>
+    <string name="home_quick_practice">Práctica libre</string>
+    <string name="home_quick_practice_sub">10 palabras al azar</string>
+    <string name="home_quick_favorites">Favoritas</string>
+    <string name="home_quick_favorites_sub">Tus palabras guardadas</string>
+    <string name="home_route_title">Tu ruta de aprendizaje</string>
+
+    <!-- ── Contextos y evaluación ───────────────────────────────────────── -->
+    <string name="contexts_subtitle">12 situaciones de la vida cotidiana, de A1 a A2.</string>
+    <string name="context_exam_passed">🎓 Evaluación aprobada</string>
+    <string name="context_exam_ready">🎓 Evaluación disponible</string>
+    <string name="exam_title">Evaluación del contexto</string>
+    <string name="exam_start">Presentar evaluación</string>
+    <string name="exam_retake">Volver a presentarla</string>
+    <string name="exam_locked_button">Bloqueada</string>
+    <string name="exam_session_title">Evaluación · %1$s</string>
+    <string name="exam_status_ready">10 ejercicios variados, sin pistas. Se aprueba con 80 %%.</string>
+    <string name="exam_status_retry">Tu mejor resultado: %1$d %%. Se aprueba con 80 %%.</string>
+    <string name="exam_status_passed">Aprobada · mejor resultado %1$d %%.</string>
+    <string name="exam_status_locked">Supera todas las lecciones para abrirla (%1$d de %2$d).</string>
+
+    <!-- ── Sesión de ejercicios ─────────────────────────────────────────── -->
+    <string name="session_close">Cerrar la sesión</string>
+    <string name="session_check">Comprobar</string>
+    <string name="session_see_result">Ver resultado</string>
+    <string name="session_finish_now">Terminar ahora</string>
+    <string name="session_good">¡Bien!</string>
+    <string name="session_wrong_title">Casi…</string>
+    <string name="session_correct_answer_label">Respuesta correcta</string>
+    <string name="session_solution">Completa: %1$s</string>
+    <string name="session_solution_spot">La palabra incorrecta era «%1$s». Oración correcta: %2$s</string>
+    <string name="session_streak_bonus">🔥 +%1$d XP por tu racha</string>
+    <string name="session_listen_again">Escuchar otra vez</string>
+    <string name="session_audio_missing">Este teléfono no tiene voz en inglés: se muestra la palabra.</string>
+    <string name="session_type_hint">Escribe en inglés</string>
+    <string name="session_order_placeholder">Toca las palabras en el orden correcto</string>
+    <string name="session_order_answer_area">Tu oración</string>
+    <string name="session_order_undo">Deshacer</string>
+    <string name="session_order_add">Agregar «%1$s»</string>
+    <string name="session_order_remove">Quitar «%1$s»</string>
+    <string name="session_question_desc">Ejercicio %1$d de %2$d</string>
+    <string name="session_image_desc">Imagen de la palabra</string>
+    <string name="session_xp_desc">%1$d XP ganados en esta sesión</string>
+    <string name="session_mode_lesson">Lección</string>
+    <string name="session_mode_review">Repaso</string>
+    <string name="session_mode_practice">Práctica</string>
+    <string name="session_mode_exam">Evaluación</string>
+    <string name="session_exit_title">¿Salir de la sesión?</string>
+    <string name="session_exit_message">Tus respuestas ya están guardadas. Las que falten no contarán.</string>
+    <string-array name="feedback_correct_titles">
+        <item>¡Excelente!</item>
+        <item>¡Correcto!</item>
+        <item>¡Muy bien!</item>
+        <item>¡Así se hace!</item>
+        <item>¡Perfecto!</item>
+        <item>¡Lo tienes!</item>
+    </string-array>
+
+    <!-- ── Resultado ────────────────────────────────────────────────────── -->
+    <string name="result_correct_of">%1$d de %2$d</string>
+    <string name="result_stat_xp">⚡ +%1$d XP</string>
+    <string name="result_stat_xp_desc">%1$d XP ganados</string>
+    <string name="result_stat_time">⏱ %1$s</string>
+    <string name="result_stat_time_desc">Tiempo de estudio: %1$s</string>
+    <string name="result_stat_streak">🔥 %1$s</string>
+    <string name="result_stat_streak_desc">Racha: %1$s</string>
+    <string name="result_rewards_title">Lo que ganaste</string>
+    <string name="result_level_up">¡Subiste al nivel %1$d!</string>
+    <string name="result_lesson_passed">Lección superada</string>
+    <string name="result_lesson_passed_sub">Se abrió la siguiente lección</string>
+    <string name="result_exam_passed">Evaluación aprobada</string>
+    <string name="result_exam_passed_sub">Dominas el vocabulario de este contexto</string>
+    <string name="result_perfect">Sesión perfecta</string>
+    <string name="result_perfect_sub">Sin un solo error</string>
+    <string name="result_challenge_done">Reto diario cumplido</string>
+    <string name="result_weekly_done">Meta semanal cumplida</string>
+    <string name="result_achievement">Insignia desbloqueada</string>
+    <string name="result_another_round">Otra ronda</string>
+    <string name="result_retry_exam">Intentar de nuevo</string>
+
+    <!-- ── Repaso ───────────────────────────────────────────────────────── -->
+    <string name="review_title">Repaso</string>
+    <string name="review_subtitle">Repetición espaciada: cada palabra vuelve justo antes de olvidarla.</string>
+    <string name="review_start">Repasar ahora</string>
+    <string name="review_reinforce">Reforzar palabras difíciles</string>
+    <string name="review_reinforce_title">Refuerzo</string>
+    <string name="review_none_yet">Aún no hay palabras: completa una lección para empezar</string>
+    <string name="review_caught_up">¡Estás al día! Vuelve cuando toque el próximo repaso</string>
+    <string name="review_memory_title">Tu memoria</string>
+    <string name="review_forecast_title">Próximos 7 días</string>
+    <string name="review_forecast_note">Facilidad promedio %1$s · próximo repaso %2$s</string>
+    <string name="review_words_title">Tus palabras</string>
+    <string name="review_words_empty">No hay palabras en este grupo.</string>
+    <string name="review_filter_all">Todas</string>
+    <string name="review_filter_due">Para hoy</string>
+    <string name="review_filter_urgent">Urgentes</string>
+    <string name="review_bucket_learning">Aprendiendo</string>
+    <string name="review_bucket_reinforce">Refuerzo</string>
+    <string name="review_bucket_review">En repaso</string>
+    <string name="review_bucket_mastered">Dominadas</string>
+    <string name="review_bucket_urgent">⚠️ Urgente · %1$s</string>
+    <string name="review_help_learning">Menos de 2 repasos acertados</string>
+    <string name="review_help_reinforce">Olvidadas varias veces</string>
+    <string name="review_help_review">En el calendario de repasos</string>
+    <string name="review_help_mastered">Recordadas 21+ días</string>
+    <string name="review_word_due">Próximo repaso %1$s · facilidad %2$s</string>
+    <string name="review_d_ease">Facilidad (SM-2)</string>
+    <string name="review_d_interval">Intervalo</string>
+    <string name="review_d_reps">Repeticiones seguidas</string>
+    <string name="review_d_lapses">Olvidos</string>
+    <string name="review_d_correct">Aciertos / fallos</string>
+    <string name="review_d_quality">Última respuesta</string>
+    <string name="review_d_first">Aprendida</string>
+    <string name="review_d_last">Último repaso</string>
+    <string name="review_d_next">Próximo repaso</string>
+    <string name="review_history_title">Historial de respuestas</string>
+    <string name="review_history_empty">Todavía no has respondido esta palabra.</string>
+    <string name="review_history_row">%1$s %2$s · %3$s · %4$s</string>
+    <plurals name="review_due_label">
+        <item quantity="one">palabra para repasar hoy</item>
+        <item quantity="other">palabras para repasar hoy</item>
+    </plurals>
+    <plurals name="review_urgent">
+        <item quantity="one">⚠️ %1$d urgente (muy atrasada o difícil)</item>
+        <item quantity="other">⚠️ %1$d urgentes (muy atrasadas o difíciles)</item>
+    </plurals>
+    <plurals name="home_quick_review_due">
+        <item quantity="one">%1$d pendiente</item>
+        <item quantity="other">%1$d pendientes</item>
+    </plurals>
+
+    <!-- ── Logros y recompensas ─────────────────────────────────────────── -->
+    <string name="rewards_title">Logros</string>
+    <string name="rewards_level_xp">%1$d XP · faltan %2$d para el nivel %3$d</string>
+    <string name="rewards_next_title">Próximo título: %1$s</string>
+    <string name="rewards_daily_title">Retos de hoy</string>
+    <string name="rewards_weekly_title">Metas de la semana</string>
+    <string name="rewards_no_daily">No hay retos activos hoy.</string>
+    <string name="rewards_no_weekly">No hay metas activas esta semana.</string>
+    <string name="rewards_done">Cumplido</string>
+    <string name="rewards_progress_desc">Avance %1$d de %2$d. Premio %3$d XP</string>
+    <string name="rewards_claimed_badge">✓ +%1$d XP</string>
+    <string name="rewards_claimed">¡Cobraste %1$d XP en recompensas!</string>
+    <string name="rewards_streak_title">Racha</string>
+    <string name="rewards_streak_now">%1$s seguidos</string>
+    <string name="rewards_streak_next">%1$s más para el bono de %2$d días (+%3$d XP) · récord %4$d</string>
+    <string name="rewards_streak_max">¡Alcanzaste todos los bonos de racha! Récord: %1$d días</string>
+    <string name="rewards_milestone">%1$d d</string>
+    <string name="rewards_milestone_desc">Hito de %1$d días, %2$d XP, %3$s</string>
+    <string name="rewards_reached">alcanzado</string>
+    <string name="rewards_pending">pendiente</string>
+    <string name="rewards_badges_title">Insignias</string>
+    <string name="rewards_badges_count">%1$d de %2$d</string>
+    <string name="rewards_badge_unlocked">Desbloqueada el %1$s.</string>
+    <string name="rewards_badge_progress">Avance: %1$d de %2$d.</string>
+    <string name="rewards_badge_reward">Premio: %1$d XP.</string>
+    <string name="rewards_recent_title">Últimos premios</string>
+    <string name="rewards_no_recent">Completa lecciones y retos para ganar tus primeros premios.</string>
+
+    <!-- ── Perfil ───────────────────────────────────────────────────────── -->
+    <string name="profile_edit">Editar perfil</string>
+    <string name="profile_next_level">%1$d XP para el nivel %2$d</string>
+    <string name="profile_member_since">Estudiante desde %1$s · meta diaria %2$d XP</string>
+    <string name="profile_stats_title">Tu avance</string>
+    <string name="profile_stat_lessons">Lecciones superadas</string>
+    <string name="profile_stat_words">Palabras aprendidas</string>
+    <string name="profile_stat_mastered">Palabras dominadas</string>
+    <string name="profile_stat_streak">Racha actual</string>
+    <string name="profile_stat_streak_record">récord %1$d</string>
+    <string name="profile_stat_time">Tiempo de estudio</string>
+    <string name="profile_stat_time_week">semana %1$s</string>
+    <string name="profile_stat_accuracy">Precisión</string>
+    <string name="profile_stat_answers">%1$d respuestas</string>
+    <string name="profile_stat_exams">Evaluaciones aprobadas</string>
+    <string name="profile_stat_badges">Insignias</string>
+    <string name="profile_week_title">Últimos 7 días</string>
+    <string name="profile_week_summary">%1$d XP · %2$d respuestas · %3$d días activos</string>
+    <string name="profile_history_title">Historial de actividades</string>
+    <string name="profile_history_empty">Aún no has terminado ninguna sesión.</string>
+    <string name="profile_history_meta">%1$s · %2$d/%3$d correctas · %4$s · +%5$d XP</string>
+    <string name="profile_more_title">Más</string>
+    <string name="profile_menu_stats">Estadísticas</string>
+    <string name="profile_menu_stats_sub">Actividad, precisión y palabras difíciles</string>
+    <string name="profile_menu_route">Tu ruta</string>
+    <string name="profile_menu_route_sub">Avance por contexto</string>
+    <string name="profile_menu_favorites">Favoritas</string>
+    <string name="profile_menu_favorites_sub">Palabras guardadas con la estrella</string>
+    <string name="profile_menu_settings">Configuración</string>
+    <string name="profile_menu_settings_sub">Meta, audio, recordatorios, tema y cuenta</string>
+    <string name="profile_logout">Cerrar sesión</string>
+    <string name="profile_logout_title">¿Cerrar sesión?</string>
+    <string name="profile_logout_message">Tu progreso está guardado en tu cuenta. Podrás continuar al volver a iniciar sesión.</string>
+    <!-- ── Ruta ─────────────────────────────────────────────────────────── -->
+    <string name="route_title">Tu ruta</string>
+    <string name="route_overall">Avance general</string>
+    <string name="route_steps">Contextos en orden</string>
+    <string name="route_summary">%1$d de %2$d lecciones · %3$d palabras dominadas · %4$d evaluaciones aprobadas</string>
+    <string name="route_step_meta">%1$d/%2$d lecciones · %3$d/%4$d dominadas</string>
+    <string name="route_step_desc">Paso %1$d, %2$s: %3$d de %4$d lecciones, %5$d palabras dominadas, %6$s</string>
+    <string name="route_exam_passed">evaluación aprobada</string>
+    <string name="route_exam_pending">evaluación pendiente</string>
+    <string name="settings_password">Contraseña</string>
+    <string name="settings_password_sub">Cambiar (o crear) la contraseña de tu cuenta</string>
+</resources>

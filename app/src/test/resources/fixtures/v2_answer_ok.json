@@ -1,0 +1,14 @@
+{
+ "bucket": "learning",
+ "status": "learning",
+ "quality": 5,
+ "was_due": true,
+ "solution": null,
+ "is_correct": true,
+ "xp_awarded": 10,
+ "ease_factor": 2.6,
+ "next_due_at": "2026-11-09T13:13:16.928484-05:00",
+ "streak_bonus": 0,
+ "interval_days": 1,
+ "correct_answer": "profesor"
+}
