@@ -1,9 +1,10 @@
 package com.example.niju_project
 
+import android.widget.ImageView
+import android.graphics.drawable.GradientDrawable
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -20,6 +21,9 @@ import com.example.niju_project.ui.LoaderViewModel
 import com.example.niju_project.ui.UiState
 import com.example.niju_project.ui.factoryOf
 import com.example.niju_project.ui.home.DashboardViewModel
+import com.example.niju_project.ui.scene.ContextSceneView
+import com.example.niju_project.ui.scene.ContextTheme
+import com.example.niju_project.ui.scene.SceneUi
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.launch
@@ -42,12 +46,12 @@ class HomeActivity : AppCompatActivity() {
         cardContinue = findViewById(R.id.cardContinue)
         btnContinue = findViewById(R.id.btnContinue)
 
-        quick(R.id.quickReview, "🔁", R.string.home_quick_review) { openTab(ReviewActivity::class.java) }
-        quick(R.id.quickChallenges, "🎯", R.string.home_quick_challenges) { openTab(RewardsActivity::class.java) }
-        quick(R.id.quickPractice, "🎲", R.string.home_quick_practice) {
+        quick(R.id.quickReview, R.drawable.ic_review, 0xFF1677B8.toInt(), R.string.home_quick_review) { openTab(ReviewActivity::class.java) }
+        quick(R.id.quickChallenges, R.drawable.ic_target, 0xFFC63D31.toInt(), R.string.home_quick_challenges) { openTab(RewardsActivity::class.java) }
+        quick(R.id.quickPractice, R.drawable.ic_play, 0xFF1D8A52.toInt(), R.string.home_quick_practice) {
             openSession(SessionMode.PRACTICE, title = getString(R.string.home_free_practice))
         }
-        quick(R.id.quickFavorites, "⭐", R.string.home_quick_favorites) {
+        quick(R.id.quickFavorites, R.drawable.ic_star_filled, 0xFFB86A0A.toInt(), R.string.home_quick_favorites) {
             startActivity(Intent(this, FavoritesActivity::class.java))
         }
         setQuickSubtitle(R.id.quickPractice, getString(R.string.home_quick_practice_sub))
@@ -67,9 +71,13 @@ class HomeActivity : AppCompatActivity() {
         nextLessonVm.load()
     }
 
-    private fun quick(id: Int, emoji: String, title: Int, onClick: () -> Unit) {
+    /** Acceso rápido: icono blanco sobre un círculo de color propio (cada acceso se distingue también por su texto). */
+    private fun quick(id: Int, icon: Int, color: Int, title: Int, onClick: () -> Unit) {
         val v = findViewById<View>(id)
-        v.findViewById<TextView>(R.id.tvQuickEmoji).text = emoji
+        v.findViewById<ImageView>(R.id.ivQuickIcon).apply {
+            setImageResource(icon)
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(color) }
+        }
         v.findViewById<TextView>(R.id.tvQuickTitle).setText(title)
         v.setOnClickListener { onClick() }
     }
@@ -112,23 +120,19 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setContinueImage(slug: String?, emoji: String?) {
-        val image = findViewById<ImageView>(R.id.ivContinueImage)
-        val emojiView = findViewById<TextView>(R.id.tvContinueEmoji)
-        if (hasContextImage(slug) || emoji.isNullOrBlank()) {
-            image.setImageResource(contextImage(slug))
-            emojiView.visibility = View.GONE
-        } else {
-            emojiView.text = emoji
-            emojiView.visibility = View.VISIBLE
-        }
+    /** Escena y colores del contexto de la siguiente lección (null = todo completado: tema de marca). */
+    private fun setContinueScene(slug: String?) {
+        val theme = ContextTheme.of(slug)
+        findViewById<ContextSceneView>(R.id.sceneContinue).slug = slug ?: "travel"
+        SceneUi.tint(btnContinue, theme)
+        findViewById<TextView>(R.id.tvContinueEyebrow).setTextColor(SceneUi.accentColor(this, theme))
     }
 
     private fun renderNextLesson(n: NextLesson?) {
         cardContinue.visibility = View.VISIBLE
         btnContinue.isEnabled = true
         if (n == null) {
-            setContinueImage(null, "🏆")
+            setContinueScene(null)
             findViewById<TextView>(R.id.tvContinueEyebrow).setText(R.string.home_all_done_eyebrow)
             findViewById<TextView>(R.id.tvContinueTitle).setText(R.string.home_all_done_title)
             findViewById<TextView>(R.id.tvContinueMeta).setText(R.string.home_all_done_meta)
@@ -141,7 +145,7 @@ class HomeActivity : AppCompatActivity() {
             }
             return
         }
-        setContinueImage(n.contextSlug, contextEmoji(n.contextSlug))
+        setContinueScene(n.contextSlug)
         findViewById<TextView>(R.id.tvContinueEyebrow).text = getString(R.string.home_continue_eyebrow, n.contextName)
         findViewById<TextView>(R.id.tvContinueTitle).text = n.lessonTitle
         findViewById<TextView>(R.id.tvContinueMeta).text = getString(

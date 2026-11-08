@@ -36,6 +36,9 @@ class PronunciationUi(private val activity: AppCompatActivity) {
         fallback = SystemSpeech(activity)
     )
 
+    /** Aviso de cada cambio de reproducción (p. ej. para animar una onda de sonido). */
+    var onPlayback: ((PlaybackState) -> Unit)? = null
+
     /** ¿Reproducir automáticamente al mostrar cada palabra? (Configuración → Audio) */
     val autoPlay: Boolean get() = prefs.autoPlay
 
@@ -93,6 +96,7 @@ class PronunciationUi(private val activity: AppCompatActivity) {
     }
 
     private fun render(state: PlaybackState) {
+        onPlayback?.invoke(state)
         bound.forEach { b ->
             val t = b.target()
             b.view.isSelected = state is PlaybackState.Playing &&

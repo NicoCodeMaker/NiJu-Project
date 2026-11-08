@@ -17,59 +17,77 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Barra superior: cerrar · progreso · número · XP de la sesión -->
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/sessionHeader"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="12dp">
+            android:layout_height="96dp">
 
-            <ImageButton
-                android:id="@+id/btnClose"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/session_close"
-                android:src="@drawable/ic_close"
-                app:tint="@color/color_text_secondary" />
+            <com.example.niju_project.ui.scene.ContextSceneView
+                android:id="@+id/sceneSession"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progressSession"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_weight="1"
-                android:importantForAccessibility="no"
-                android:max="100"
-                app:trackThickness="12dp"
-                app:trackCornerRadius="6dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#26000000" />
 
-            <TextView
-                android:id="@+id/tvQuestionIndex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/roboto_bold"
-                android:textColor="@color/color_text_secondary"
-                android:textSize="14sp"
-                tools:text="3 / 6" />
+            <!-- Encabezado: escena animada del contexto con cerrar · progreso · número · XP encima -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
 
-            <TextView
-                android:id="@+id/tvSessionXp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_badge_xp"
-                android:drawablePadding="4dp"
-                android:fontFamily="@font/roboto_bold"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:textColor="@color/color_xp"
-                android:textSize="13sp"
-                app:drawableStartCompat="@drawable/ic_bolt"
-                app:drawableTint="@color/color_xp"
-                tools:text="30" />
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/btnClose"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/session_close"
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/white" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressSession"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:importantForAccessibility="no"
+                    android:max="100"
+                    app:indicatorColor="@color/white"
+                    app:trackColor="#59FFFFFF"
+                    app:trackThickness="10dp"
+                    app:trackCornerRadius="5dp" />
+
+                <TextView
+                    android:id="@+id/tvQuestionIndex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    tools:text="3 / 6" />
+
+                <TextView
+                    android:id="@+id/tvSessionXp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_pill_white"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/color_xp_on_pill"
+                    android:textSize="13sp"
+                    app:drawableStartCompat="@drawable/ic_bolt"
+                    app:drawableTint="@color/color_xp_on_pill"
+                    tools:text="30" />
+            </LinearLayout>
+        </FrameLayout>
 
         <ScrollView
             android:id="@+id/scrollExercise"

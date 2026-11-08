@@ -28,12 +28,9 @@ select c.id, v.slug, v.title, v.description, v.level::public.cefr_level, v.sort_
 on conflict (slug) do nothing;
 
 -- Palabras + ejemplo + lección + posición
-create temporary table seed_words (
-  lesson text, pos smallint, english text, spanish text, ipa text,
-  pos_tag text, level text, sentence_en text, sentence_es text
-) on commit drop;
-
-insert into seed_words values
+-- Una sola sentencia (WITH ... VALUES): no usa tablas auxiliares, así funciona igual
+-- en el SQL Editor de Supabase. tools/audio/generate_audio.py lee las tuplas de seed_words.
+with seed_words (lesson, pos, english, spanish, ipa, pos_tag, level, sentence_en, sentence_es) as (values
   -- Restaurante · Pedir una mesa
   ('restaurant_table', 1, 'menu',        'menú',     '/ˈmenjuː/',       'noun', 'A1', 'Can I see the menu, please?',      '¿Puedo ver el menú, por favor?'),
   ('restaurant_table', 2, 'waiter',      'mesero',   '/ˈweɪtər/',       'noun', 'A1', 'The waiter brings us two glasses.', 'El mesero nos trae dos vasos.'),
@@ -75,26 +72,36 @@ insert into seed_words values
   ('airport_gate', 3, 'seat',      'asiento',            '/siːt/',       'noun', 'A2', 'Excuse me, this is my seat.',      'Disculpe, este es mi asiento.'),
   ('airport_gate', 4, 'board',     'abordar',            '/bɔːrd/',      'verb', 'A2', 'Passengers can board now.',        'Los pasajeros pueden abordar ahora.'),
   ('airport_gate', 5, 'arrival',   'llegada',            '/əˈraɪvəl/',   'noun', 'A2', 'The arrival time is six o''clock.', 'La hora de llegada es a las seis.'),
-  ('airport_gate', 6, 'departure', 'salida',             '/dɪˈpɑːrtʃər/','noun', 'A2', 'Check the departure screen.',      'Revisa la pantalla de salidas.');
-
-insert into public.words (english, spanish, pronunciation, part_of_speech, level)
-select english, spanish, ipa, pos_tag::public.part_of_speech, level::public.cefr_level
-  from seed_words
-on conflict on constraint words_english_pos_unique do nothing;
-
-insert into public.word_examples (word_id, context_id, sentence_en, sentence_es)
-select w.id, l.context_id, s.sentence_en, s.sentence_es
-  from seed_words s
-  join public.words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
-  join public.lessons l on l.slug = s.lesson
- where not exists (select 1 from public.word_examples e
-                    where e.word_id = w.id and e.sentence_en = s.sentence_en);
-
+  ('airport_gate', 6, 'departure', 'salida',             '/dɪˈpɑːrtʃər/','noun', 'A2', 'Check the departure screen.',      'Revisa la pantalla de salidas.')
+),
+new_words as (
+  insert into public.words (english, spanish, pronunciation, part_of_speech, level)
+  select english, spanish, ipa, pos_tag::public.part_of_speech, level::public.cefr_level
+    from seed_words
+  on conflict on constraint words_english_pos_unique do nothing
+  returning id, english, part_of_speech
+),
+all_words as (                      -- palabras recién creadas + las que ya existían
+  select id, english, part_of_speech from new_words
+  union all
+  select id, english, part_of_speech from public.words
+),
+new_examples as (
+  insert into public.word_examples (word_id, context_id, sentence_en, sentence_es)
+  select w.id, l.context_id, s.sentence_en, s.sentence_es
+    from seed_words s
+    join all_words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
+    join public.lessons l on l.slug = s.lesson
+   where not exists (select 1 from public.word_examples e
+                      where e.word_id = w.id and e.sentence_en = s.sentence_en)
+  returning 1
+)
 insert into public.lesson_words (lesson_id, word_id, position)
 select l.id, w.id, s.pos
   from seed_words s
-  join public.words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
+  join all_words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
   join public.lessons l on l.slug = s.lesson
 on conflict do nothing;
+
 
 commit;

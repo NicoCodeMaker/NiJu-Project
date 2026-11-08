@@ -2,7 +2,7 @@
 """
 NiJu · Generador de audios de pronunciación (Piper TTS, sin conexión).
 
-Lee el vocabulario de supabase/seed*.sql (tabla temporal `seed_words`), sintetiza cada
+Lee el vocabulario de supabase/seed*.sql (tuplas de `seed_words`), sintetiza cada
 palabra y cada oración de ejemplo con Piper, los convierte a OGG/Vorbis y escribe:
 
     app/src/main/assets/audio/<variante>/words/<clave>.ogg
@@ -75,7 +75,7 @@ def read_vocabulary():
         in_block = False
         for raw in path.read_text(encoding="utf-8").splitlines():
             line = raw.strip()
-            if line.lower().startswith("insert into seed_words"):
+            if line.lower().startswith(("insert into seed_words", "with seed_words")):
                 in_block = True
                 continue
             if not in_block:

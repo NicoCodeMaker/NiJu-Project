@@ -5,12 +5,14 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.niju_project.audio.AudioCatalogHolder
 import com.example.niju_project.reminders.StudyReminders
+import com.example.niju_project.ui.SystemBars
 
 class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         applySavedTheme()
+        SystemBars.install(this)          // barras del sistema y teclado iguales en todas las pantallas
         AudioCatalogHolder.preload(this)   // lee assets/audio/manifest.json sin bloquear el arranque
         StudyReminders.createChannel(this)
         StudyReminders.reschedule(this)

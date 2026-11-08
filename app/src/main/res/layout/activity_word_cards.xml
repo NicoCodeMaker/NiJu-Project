@@ -1,16 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Tarjetas de presentación de las palabras de una lección -->
+<!-- Tarjetas de la lección: escena animada del contexto, palabra con audio y onda de sonido,
+     significado que se descubre con un toque (recuerdo activo) y ejemplo con la palabra resaltada. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background">
 
-    <include
-        android:id="@+id/headerInclude"
-        layout="@layout/view_screen_header"
+    <ScrollView
+        android:id="@+id/cardContainer"
         android:layout_width="match_parent"
-        android:layout_height="64dp" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/navButtons"
+        android:clipToPadding="false"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+                <com.example.niju_project.ui.scene.ContextSceneView
+                    android:id="@+id/sceneHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_scene_scrim" />
+
+                <TextView
+                    android:id="@+id/tvHeaderTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="48dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_bold"
+                    android:maxLines="2"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    tools:text="Un día de sol" />
+            </FrameLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card"
+                style="@style/Widget.NiJu.Card.Scene"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="-36dp"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="22dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="22dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvCardIndex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_bold"
+                            android:letterSpacing="0.08"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            tools:text="Palabra 3 de 6" />
+
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_text_hint"
+                            android:textSize="12sp"
+                            tools:text="· Nueva" />
+
+                        <ImageButton
+                            android:id="@+id/btnFavorite"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/favorite_add"
+                            android:src="@drawable/ic_star" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvEnglish"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/roboto_bold"
+                            android:letterSpacing="-0.02"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="36sp"
+                            tools:text="sunscreen" />
+
+                        <!-- Imagen de la palabra (emoji) en un recuadro suave del color del contexto -->
+                        <TextView
+                            android:id="@+id/tvCardEmoji"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginStart="10dp"
+                            android:gravity="center"
+                            android:importantForAccessibility="no"
+                            android:textSize="32sp"
+                            android:visibility="gone"
+                            tools:text="🧴"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvPronunciation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_text_secondary"
+                            android:textSize="16sp"
+                            tools:text="/ˈsʌnskriːn/" />
+
+                        <TextView
+                            android:id="@+id/tvPartOfSpeech"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/color_text_hint"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            tools:text="sustantivo" />
+                    </LinearLayout>
+
+                    <!-- Escuchar la palabra + onda que se mueve mientras suena -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btnListenWord"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:background="@drawable/bg_quick_icon"
+                            android:contentDescription="@string/audio_listen"
+                            android:padding="14dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_volume_up"
+                            app:tint="@color/white" />
+
+                        <com.example.niju_project.ui.widget.SoundWaveView
+                            android:id="@+id/waveWord"
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <!-- Significado: primero se intenta recordar; se descubre con un toque -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnReveal"
+                            style="@style/Widget.NiJu.Button.Outlined"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cards_reveal"
+                            app:icon="@drawable/ic_lightbulb"
+                            app:iconGravity="textStart" />
+
+                        <LinearLayout
+                            android:id="@+id/meaningBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp"
+                            android:paddingHorizontal="14dp"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/cards_meaning"
+                                android:textColor="@color/color_text_hint"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvSpanish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_bold"
+                                android:textSize="24sp"
+                                tools:text="bloqueador solar" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="18dp"
+                        android:background="@color/color_track" />
+
+                    <TextView
+                        android:id="@+id/tvExampleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cards_example"
+                        android:textColor="@color/color_text_hint"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:id="@+id/rowExample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvExampleEn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:lineSpacingExtra="3dp"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="18sp"
+                            tools:text="Put on sunscreen before you swim." />
+
+                        <ImageButton
+                            android:id="@+id/btnListenExample"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/audio_listen_sentence"
+                            android:src="@drawable/ic_volume_up"
+                            app:tint="@color/listen_tint" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvExampleEs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/color_text_secondary"
+                        android:textSize="15sp"
+                        tools:text="Ponte bloqueador antes de nadar." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Barra superior sobre la escena: volver + avance de la lección -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_pill_white"
+            android:contentDescription="@string/back"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/color_on_pill" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressCards"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:importantForAccessibility="no"
+            android:max="100"
+            app:indicatorColor="@color/white"
+            app:trackColor="#59FFFFFF"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="8dp" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -23,211 +329,35 @@
         layout="@layout/view_empty_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/headerInclude" />
-
-    <ScrollView
-        android:id="@+id/cardContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/navButtons"
-        android:layout_below="@id/headerInclude"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/tvCardIndex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:textColor="@color/color_text_hint"
-                android:textSize="13sp" />
-
-            <ProgressBar
-                android:id="@+id/progressCards"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_marginBottom="16dp"
-                android:max="100"
-                android:progressDrawable="@drawable/progress_bar_custom" />
-
-            <LinearLayout
-                android:id="@+id/card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/card_bg"
-                android:elevation="3dp"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvStatus"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/color_text_hint"
-                        android:textSize="12sp" />
-
-                    <ImageButton
-                        android:id="@+id/btnFavorite"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/favorite_add"
-                        android:src="@drawable/ic_star" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvCardEmoji"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:importantForAccessibility="no"
-                        android:textSize="40sp"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvEnglish"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="34sp" />
-
-                    <!-- Escuchar / repetir la palabra -->
-                    <ImageButton
-                        android:id="@+id/btnListenWord"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/audio_listen"
-                        android:src="@drawable/ic_volume_up"
-                        app:tint="@color/listen_tint" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvPronunciation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_text_secondary"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvPartOfSpeech"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/color_text_hint"
-                    android:textSize="13sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/tvSpanish"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textColor="@color/color_primary"
-                    android:textSize="22sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="16dp"
-                    android:background="@color/color_divider" />
-
-                <TextView
-                    android:id="@+id/tvExampleLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cards_example"
-                    android:textColor="@color/color_text_hint"
-                    android:textSize="12sp" />
-
-                <LinearLayout
-                    android:id="@+id/rowExample"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvExampleEn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="17sp" />
-
-                    <!-- Escuchar / repetir la oración de ejemplo -->
-                    <ImageButton
-                        android:id="@+id/btnListenExample"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/audio_listen_sentence"
-                        android:src="@drawable/ic_volume_up"
-                        app:tint="@color/listen_tint" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvExampleEs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/color_text_secondary"
-                    android:textSize="15sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_below="@id/topBar" />
 
     <LinearLayout
         android:id="@+id/navButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/color_background"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
         android:visibility="gone">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPrevious"
+            style="@style/Widget.NiJu.Button.Outlined"
             android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button_outline_background"
-            android:text="@string/cards_previous"
-            android:textAllCaps="false"
-            android:textColor="@color/color_primary" />
+            android:text="@string/cards_previous" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNextCard"
+            style="@style/Widget.NiJu.Button"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:background="@drawable/button_rounded_background"
-            android:text="@string/cards_next"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white" />
+            android:text="@string/cards_next" />
     </LinearLayout>
 </RelativeLayout>

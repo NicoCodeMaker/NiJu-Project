@@ -30,7 +30,8 @@
    5. `migrations/20261108000005_enum_values.sql` — **en una consulta aparte** y ejecútala sola:
       PostgreSQL no permite usar un valor de enum en la misma transacción que lo crea.
    6. `migrations/20261108000006_learning_v2.sql`
-   7. Contenido: `seed.sql`, luego `seed_home_transport.sql`, luego `seed_v2_contexts.sql`.
+   7. Contenido: `seed_completo.sql` (todos los INSERT en un solo archivo; termina mostrando 12 · 24 · 144 · 20 · 11).
+      Equivale a `seed.sql`, luego `seed_home_transport.sql`, luego `seed_v2_contexts.sql`.
       Están escritos para no duplicar filas si se ejecutan dos veces.
 3. Comprueba en **Table Editor**: `achievements` = 20 filas, `challenge_templates` = 11,
    `contexts` = 12, `lessons` = 24 y `words` = 144 con los tres seeds.

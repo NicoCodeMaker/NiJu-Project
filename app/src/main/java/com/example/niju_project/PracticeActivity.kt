@@ -1,5 +1,8 @@
 package com.example.niju_project
 
+import com.example.niju_project.ui.scene.SceneUi
+import com.example.niju_project.ui.scene.ContextTheme
+import com.example.niju_project.ui.scene.ContextSceneView
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -85,6 +88,7 @@ class PracticeActivity : AppCompatActivity() {
     private lateinit var cgWords: ChipGroup
     private lateinit var tvOrderPlaceholder: TextView
 
+    private val sceneTheme by lazy { ContextTheme.of(intent.getStringExtra(PracticeViewModel.EXTRA_CONTEXT_SLUG)) }
     private lateinit var correctPanel: FrameLayout
     private lateinit var wrongPanel: FrameLayout
     private lateinit var tvCorrectTitle: TextView
@@ -189,6 +193,9 @@ class PracticeActivity : AppCompatActivity() {
         btnListenQuestion = findViewById(R.id.btnListenQuestion)
 
         tvSessionTitle.text = sessionLabel()
+        // Diseño del contexto: su escena arriba y su color en opciones y botones.
+        findViewById<ContextSceneView>(R.id.sceneSession).slug = intent.getStringExtra(PracticeViewModel.EXTRA_CONTEXT_SLUG)
+        SceneUi.tint(btnNext, sceneTheme)
         tvSessionXp.text = "0"
         tvSessionXp.contentDescription = getString(R.string.session_xp_desc, 0)
 
@@ -558,16 +565,17 @@ class PracticeActivity : AppCompatActivity() {
      * y se anuncia a TalkBack como seleccionada.
      */
     private fun styleOption(btn: MaterialButton, selected: Boolean) {
+        val accent = SceneUi.accentColor(this, sceneTheme)
         btn.backgroundTintList = ColorStateList.valueOf(
-            getColor(if (selected) R.color.color_primary_container else R.color.color_surface)
+            if (selected) sceneTheme.accentAlpha(28) else getColor(R.color.color_surface)
         )
-        btn.strokeColor = ColorStateList.valueOf(
-            getColor(if (selected) R.color.color_primary else R.color.color_option_stroke)
-        )
-        btn.setTextColor(getColor(if (selected) R.color.color_on_primary_container else R.color.color_text_primary))
+        btn.strokeColor = ColorStateList.valueOf(if (selected) accent else getColor(R.color.color_option_stroke))
+        btn.setTextColor(if (selected) SceneUi.titleColor(this, sceneTheme) else getColor(R.color.color_text_primary))
         btn.isSelected = selected
         btn.setIconResource(if (selected) R.drawable.ic_check else 0)
-        btn.iconTint = ColorStateList.valueOf(getColor(R.color.color_primary))
+        btn.iconTint = ColorStateList.valueOf(accent)
+        if (selected) btn.animate().scaleX(1.02f).scaleY(1.02f).setDuration(90)
+            .withEndAction { btn.animate().scaleX(1f).scaleY(1f).setDuration(120).start() }.start()
         btn.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
         ViewCompat.setStateDescription(btn, if (selected) getString(R.string.session_option_selected) else null)
     }

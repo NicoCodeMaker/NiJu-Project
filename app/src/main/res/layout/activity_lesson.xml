@@ -28,42 +28,59 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <!-- Escena animada del contexto con su nombre y descripción encima -->
             <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.NiJu.Card"
+                style="@style/Widget.NiJu.Card.Scene"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="140dp">
+                    android:layout_height="184dp">
 
-                    <ImageView
-                        android:id="@+id/ivContextImage"
+                    <com.example.niju_project.ui.scene.ContextSceneView
+                        android:id="@+id/sceneContext"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:importantForAccessibility="no"
-                        android:scaleType="centerCrop" />
+                        android:layout_height="match_parent" />
 
-                    <TextView
-                        android:id="@+id/tvContextEmoji"
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_hero_full"
-                        android:gravity="center"
-                        android:importantForAccessibility="no"
-                        android:textSize="64sp"
-                        android:visibility="gone" />
+                        android:layout_height="96dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/bg_scene_scrim" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/tvContextName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            tools:text="Playa" />
+
+                        <TextView
+                            android:id="@+id/tvContextDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:maxLines="2"
+                            android:textColor="@color/color_on_hero_soft"
+                            android:textSize="14sp"
+                            tools:text="Sol, mar y arena: todo para un día de playa." />
+                    </LinearLayout>
                 </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/tvContextDescription"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp"
-                android:textAppearance="@style/TextAppearance.NiJu.Body"
-                tools:text="Clases, útiles y vida universitaria." />
+                android:layout_height="8dp" />
 
             <TextView
                 style="@style/NijuSectionTitle"
@@ -106,15 +123,14 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tvExamIcon"
+                        <ImageView
+                            android:id="@+id/ivExamIcon"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:background="@drawable/bg_circle_accent_soft"
-                            android:gravity="center"
                             android:importantForAccessibility="no"
-                            android:text="🎓"
-                            android:textSize="24sp" />
+                            android:padding="12dp"
+                            android:src="@drawable/ic_school" />
 
                         <LinearLayout
                             android:layout_width="0dp"

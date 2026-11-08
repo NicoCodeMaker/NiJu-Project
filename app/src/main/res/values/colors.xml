@@ -86,4 +86,7 @@
     <color name="color_confetti_3">#F59E0B</color>
     <color name="color_confetti_4">#10B981</color>
     <color name="color_confetti_5">#EC4899</color>
+    <color name="color_track">#EFEDF7</color>
+    <color name="color_on_pill">#1F1B2E</color>
+    <color name="color_xp_on_pill">#92400E</color>
 </resources>

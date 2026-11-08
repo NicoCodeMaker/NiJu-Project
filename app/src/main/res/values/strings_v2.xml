@@ -83,9 +83,9 @@
     <string name="home_route_title">Tu ruta de aprendizaje</string>
 
     <!-- ── Contextos y evaluación ───────────────────────────────────────── -->
-    <string name="contexts_subtitle">12 situaciones de la vida cotidiana, de A1 a A2.</string>
-    <string name="context_exam_passed">🎓 Evaluación aprobada</string>
-    <string name="context_exam_ready">🎓 Evaluación disponible</string>
+    <string name="contexts_subtitle">12 escenarios de la vida real, cada uno con su propio mundo. Niveles A1–A2.</string>
+    <string name="context_exam_passed">Evaluación aprobada ✓</string>
+    <string name="context_exam_ready">Evaluación disponible →</string>
     <string name="exam_title">Evaluación del contexto</string>
     <string name="exam_start">Presentar evaluación</string>
     <string name="exam_retake">Volver a presentarla</string>
@@ -278,4 +278,8 @@
     <string name="route_exam_pending">evaluación pendiente</string>
     <string name="settings_password">Contraseña</string>
     <string name="settings_password_sub">Cambiar (o crear) la contraseña de tu cuenta</string>
+    <!-- Rediseño por contexto -->
+    <string name="cards_reveal">Toca para ver el significado</string>
+    <string name="cards_meaning">Significado</string>
+    <string name="cards_status_sep">· %1$s</string>
 </resources>

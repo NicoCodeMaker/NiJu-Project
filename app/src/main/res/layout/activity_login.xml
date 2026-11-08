@@ -48,14 +48,22 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/nino"
-                android:layout_width="104dp"
-                android:layout_height="140dp"
+            <!-- Vitrina: rota por las escenas animadas de los 12 contextos -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="112dp"
+                android:layout_height="112dp"
                 android:layout_gravity="end|center_vertical"
-                android:importantForAccessibility="no"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/nino" />
+                android:layout_marginEnd="4dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#66FFFFFF"
+                app:strokeWidth="2dp">
+
+                <com.example.niju_project.ui.scene.ContextSceneView
+                    android:id="@+id/sceneLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.card.MaterialCardView>
         </FrameLayout>
 
         <!-- Tarjeta de acceso (se superpone al encabezado) -->

@@ -1,5 +1,11 @@
 package com.example.niju_project
 
+import com.example.niju_project.ui.scene.SceneUi
+import com.example.niju_project.ui.scene.ContextTheme
+import com.example.niju_project.ui.scene.ContextSceneView
+import android.widget.ImageView
+import android.graphics.drawable.GradientDrawable
+import android.content.res.ColorStateList
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -73,23 +79,28 @@ class RutaActivity : AppCompatActivity() {
         list.forEachIndexed { i, c ->
             val v = LayoutInflater.from(this).inflate(R.layout.item_route_step, steps, false)
             val complete = c.completed
+            val theme = ContextTheme.of(c.slug)
+            val accent = SceneUi.accentColor(this, theme)
             v.findViewById<TextView>(R.id.tvStepNumber).apply {
                 text = if (complete) "✓" else (i + 1).toString()
-                setBackgroundResource(if (complete) R.drawable.bg_circle_success else R.drawable.bg_circle_accent_soft)
+                background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(theme.accent) }
             }
-            v.findViewById<View>(R.id.stepLine).visibility = if (i == list.lastIndex) View.INVISIBLE else View.VISIBLE
-            v.findViewById<TextView>(R.id.tvStepEmoji).text = c.emoji ?: contextEmoji(c.slug)
-            v.findViewById<TextView>(R.id.tvStepName).text = c.name
+            v.findViewById<View>(R.id.stepLine).apply {
+                visibility = if (i == list.lastIndex) View.INVISIBLE else View.VISIBLE
+                setBackgroundColor(theme.accentAlpha(70))
+            }
+            v.findViewById<ContextSceneView>(R.id.sceneStep).slug = c.slug
+            v.findViewById<TextView>(R.id.tvStepName).apply { text = c.name; SceneUi.title(this, theme) }
             v.findViewById<TextView>(R.id.tvStepMeta).text = getString(R.string.route_step_meta,
                 c.lessonsCompleted, c.lessonsTotal, c.wordsMastered, c.wordsTotal)
             v.findViewById<LinearProgressIndicator>(R.id.progressStep).apply {
                 setProgressCompat(c.percentComplete.toInt().coerceIn(0, 100), true)
-                setIndicatorColor(ContextCompat.getColor(context, if (complete) R.color.color_success else R.color.color_accent))
+                setIndicatorColor(accent)
             }
-            v.findViewById<TextView>(R.id.tvStepBadge).text = when {
-                c.examPassed -> "🎓"
-                c.examUnlocked -> "📝"
-                else -> ""
+            v.findViewById<ImageView>(R.id.ivStepBadge).apply {
+                visibility = if (c.examPassed || c.examUnlocked) View.VISIBLE else View.GONE
+                setImageResource(if (c.examPassed) R.drawable.ic_check else R.drawable.ic_school)
+                imageTintList = ColorStateList.valueOf(accent)
             }
             v.findViewById<View>(R.id.cardStep).apply {
                 contentDescription = getString(R.string.route_step_desc, i + 1, c.name, c.lessonsCompleted, c.lessonsTotal,

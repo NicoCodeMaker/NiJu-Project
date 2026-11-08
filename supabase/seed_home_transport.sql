@@ -29,12 +29,9 @@ select c.id, v.slug, v.title, v.description, v.level::public.cefr_level, v.sort_
   join public.contexts c on c.slug = v.ctx
 on conflict (slug) do nothing;
 
-create temporary table seed_words (
-  lesson text, pos smallint, english text, spanish text, ipa text,
-  pos_tag text, level text, sentence_en text, sentence_es text
-) on commit drop;
-
-insert into seed_words values
+-- Una sola sentencia (WITH ... VALUES): no usa tablas auxiliares, así funciona igual
+-- en el SQL Editor de Supabase. tools/audio/generate_audio.py lee las tuplas de seed_words.
+with seed_words (lesson, pos, english, spanish, ipa, pos_tag, level, sentence_en, sentence_es) as (values
   -- Hogar · Las habitaciones
   ('home_rooms', 1, 'kitchen',     'cocina',     '/ˈkɪtʃɪn/',      'noun', 'A1', 'I cook dinner in the kitchen.',       'Preparo la cena en la cocina.'),
   ('home_rooms', 2, 'bedroom',     'dormitorio', '/ˈbedruːm/',     'noun', 'A1', 'My bedroom is on the second floor.',  'Mi dormitorio está en el segundo piso.'),
@@ -62,25 +59,34 @@ insert into seed_words values
   ('transport_directions', 3, 'right',    'derecha',    '/raɪt/',       'adverb',    'A1', 'Turn right at the traffic light.','Gira a la derecha en el semáforo.'),
   ('transport_directions', 4, 'straight', 'derecho',    '/streɪt/',     'adverb',    'A1', 'Go straight for two blocks.',    'Sigue derecho por dos cuadras.'),
   ('transport_directions', 5, 'corner',   'esquina',    '/ˈkɔːrnər/',   'noun',      'A1', 'Wait for me at the corner.',     'Espérame en la esquina.'),
-  ('transport_directions', 6, 'far',      'lejos',      '/fɑːr/',       'adverb',    'A1', 'Is the airport far from here?',  '¿Está el aeropuerto lejos de aquí?');
-
-insert into public.words (english, spanish, pronunciation, part_of_speech, level)
-select english, spanish, ipa, pos_tag::public.part_of_speech, level::public.cefr_level
-  from seed_words
-on conflict on constraint words_english_pos_unique do nothing;
-
-insert into public.word_examples (word_id, context_id, sentence_en, sentence_es)
-select w.id, l.context_id, s.sentence_en, s.sentence_es
-  from seed_words s
-  join public.words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
-  join public.lessons l on l.slug = s.lesson
- where not exists (select 1 from public.word_examples e
-                    where e.word_id = w.id and e.sentence_en = s.sentence_en);
-
+  ('transport_directions', 6, 'far',      'lejos',      '/fɑːr/',       'adverb',    'A1', 'Is the airport far from here?',  '¿Está el aeropuerto lejos de aquí?')
+),
+new_words as (
+  insert into public.words (english, spanish, pronunciation, part_of_speech, level)
+  select english, spanish, ipa, pos_tag::public.part_of_speech, level::public.cefr_level
+    from seed_words
+  on conflict on constraint words_english_pos_unique do nothing
+  returning id, english, part_of_speech
+),
+all_words as (                      -- palabras recién creadas + las que ya existían
+  select id, english, part_of_speech from new_words
+  union all
+  select id, english, part_of_speech from public.words
+),
+new_examples as (
+  insert into public.word_examples (word_id, context_id, sentence_en, sentence_es)
+  select w.id, l.context_id, s.sentence_en, s.sentence_es
+    from seed_words s
+    join all_words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
+    join public.lessons l on l.slug = s.lesson
+   where not exists (select 1 from public.word_examples e
+                      where e.word_id = w.id and e.sentence_en = s.sentence_en)
+  returning 1
+)
 insert into public.lesson_words (lesson_id, word_id, position)
 select l.id, w.id, s.pos
   from seed_words s
-  join public.words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
+  join all_words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
   join public.lessons l on l.slug = s.lesson
 on conflict do nothing;
 
@@ -89,5 +95,6 @@ on conflict do nothing;
 update public.achievements
    set threshold = 10, description = 'Completa 10 lecciones.'
  where code = 'all_lessons' and threshold = 6;
+
 
 commit;

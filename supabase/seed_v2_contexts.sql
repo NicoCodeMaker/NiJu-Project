@@ -57,12 +57,9 @@ select c.id, v.slug, v.title, v.description, v.level::public.cefr_level, v.sort_
   join public.contexts c on c.slug = v.ctx
 on conflict (slug) do nothing;
 
-create temporary table seed_words (
-  lesson text, pos smallint, english text, spanish text, ipa text,
-  pos_tag text, level text, sentence_en text, sentence_es text
-) on commit drop;
-
-insert into seed_words values
+-- Una sola sentencia (WITH ... VALUES): no usa tablas auxiliares, así funciona igual
+-- en el SQL Editor de Supabase. tools/audio/generate_audio.py lee las tuplas de seed_words.
+with seed_words (lesson, pos, english, spanish, ipa, pos_tag, level, sentence_en, sentence_es) as (values
   -- Escuela · En el salón
   ('school_classroom', 1, 'teacher',  'profesor',   '/ˈtiːtʃər/',  'noun', 'A1', 'Our teacher explains the lesson very well.', 'Nuestro profesor explica muy bien la lección.'),
   ('school_classroom', 2, 'student',  'estudiante', '/ˈstuːdənt/', 'noun', 'A1', 'Every student has a book.',                  'Cada estudiante tiene un libro.'),
@@ -160,25 +157,34 @@ insert into seed_words values
   ('travel_trip', 3, 'souvenir', 'recuerdo',         '/ˌsuːvəˈnɪr/', 'noun',   'A2', 'I bought a souvenir for my mother.',   'Compré un recuerdo para mi mamá.'),
   ('travel_trip', 4, 'currency', 'moneda',           '/ˈkɜːrənsi/',  'noun',   'A2', 'The local currency is the peso.',      'La moneda local es el peso.'),
   ('travel_trip', 5, 'museum',   'museo',            '/mjuˈziːəm/',  'noun',   'A2', 'The museum is closed on Mondays.',     'El museo cierra los lunes.'),
-  ('travel_trip', 6, 'abroad',   'en el extranjero', '/əˈbrɔːd/',    'adverb', 'A2', 'She wants to study abroad.',           'Ella quiere estudiar en el extranjero.');
-
-insert into public.words (english, spanish, pronunciation, part_of_speech, level)
-select english, spanish, ipa, pos_tag::public.part_of_speech, level::public.cefr_level
-  from seed_words
-on conflict on constraint words_english_pos_unique do nothing;
-
-insert into public.word_examples (word_id, context_id, sentence_en, sentence_es)
-select w.id, l.context_id, s.sentence_en, s.sentence_es
-  from seed_words s
-  join public.words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
-  join public.lessons l on l.slug = s.lesson
- where not exists (select 1 from public.word_examples e
-                    where e.word_id = w.id and e.sentence_en = s.sentence_en);
-
+  ('travel_trip', 6, 'abroad',   'en el extranjero', '/əˈbrɔːd/',    'adverb', 'A2', 'She wants to study abroad.',           'Ella quiere estudiar en el extranjero.')
+),
+new_words as (
+  insert into public.words (english, spanish, pronunciation, part_of_speech, level)
+  select english, spanish, ipa, pos_tag::public.part_of_speech, level::public.cefr_level
+    from seed_words
+  on conflict on constraint words_english_pos_unique do nothing
+  returning id, english, part_of_speech
+),
+all_words as (                      -- palabras recién creadas + las que ya existían
+  select id, english, part_of_speech from new_words
+  union all
+  select id, english, part_of_speech from public.words
+),
+new_examples as (
+  insert into public.word_examples (word_id, context_id, sentence_en, sentence_es)
+  select w.id, l.context_id, s.sentence_en, s.sentence_es
+    from seed_words s
+    join all_words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
+    join public.lessons l on l.slug = s.lesson
+   where not exists (select 1 from public.word_examples e
+                      where e.word_id = w.id and e.sentence_en = s.sentence_en)
+  returning 1
+)
 insert into public.lesson_words (lesson_id, word_id, position)
 select l.id, w.id, s.pos
   from seed_words s
-  join public.words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
+  join all_words w on w.english = s.english and w.part_of_speech = s.pos_tag::public.part_of_speech
   join public.lessons l on l.slug = s.lesson
 on conflict do nothing;
 
@@ -216,11 +222,7 @@ update public.words w set emoji = v.emoji
 -- ----------------------------------------------------------------------------
 -- Diálogos (completar conversaciones). La línea B contiene la palabra exacta.
 -- ----------------------------------------------------------------------------
-create temporary table seed_dialogues (
-  english text, line_a_en text, line_a_es text, line_b_en text, line_b_es text
-) on commit drop;
-
-insert into seed_dialogues values
+with seed_dialogues (english, line_a_en, line_a_es, line_b_en, line_b_es) as (values
   ('teacher',   'Who is that woman?',                 '¿Quién es esa mujer?',                 'She is our English teacher.',              'Es nuestra profesora de inglés.'),
   ('student',   'Do you work here?',                  '¿Trabajas aquí?',                      'No, I am a student.',                      'No, soy estudiante.'),
   ('notebook',  'Where do you write your notes?',     '¿Dónde escribes tus apuntes?',         'I write them in my notebook.',             'Los escribo en mi cuaderno.'),
@@ -304,8 +306,8 @@ insert into seed_dialogues values
   ('souvenir',  'What is in that bag?',               '¿Qué hay en esa bolsa?',               'A small souvenir from Peru.',              'Un pequeño recuerdo de Perú.'),
   ('currency',  'Can I pay in dollars?',              '¿Puedo pagar en dólares?',             'No, only in local currency.',              'No, solo en moneda local.'),
   ('museum',    'What can we do in the city?',        '¿Qué podemos hacer en la ciudad?',     'We can visit the gold museum.',            'Podemos visitar el museo del oro.'),
-  ('abroad',    'Do you travel a lot?',               '¿Viajas mucho?',                       'Yes, I often travel abroad.',              'Sí, viajo al extranjero con frecuencia.');
-
+  ('abroad',    'Do you travel a lot?',               '¿Viajas mucho?',                       'Yes, I often travel abroad.',              'Sí, viajo al extranjero con frecuencia.')
+)
 insert into public.word_dialogues (word_id, line_a_en, line_a_es, line_b_en, line_b_es)
 select w.id, d.line_a_en, d.line_a_es, d.line_b_en, d.line_b_es
   from seed_dialogues d
@@ -318,5 +320,6 @@ update public.achievements a
    set threshold = n.total, description = format('Completa las %s lecciones del catálogo.', n.total)
   from (select count(*)::integer as total from public.lessons where is_published) n
  where a.code = 'all_lessons' and a.threshold <> n.total;
+
 
 commit;

@@ -41,36 +41,5 @@ fun Activity.openTab(target: Class<out Activity>) {
     overridePendingTransition(0, 0)
 }
 
-/**
- * Imagen ilustrativa de cada contexto (por su slug en la base de datos).
- * Un contexto nuevo sin ilustración usa una genérica, nunca la de otro contexto.
- */
-fun contextImage(slug: String?): Int = when (slug) {
-    "restaurant" -> R.drawable.restaurant
-    "supermarket" -> R.drawable.supermarket
-    "airport" -> R.drawable.airport
-    "home" -> R.drawable.ctx_home
-    "transport" -> R.drawable.ctx_transport
-    "beach" -> R.drawable.beach_scene
-    else -> R.drawable.ctx_generic
-}
-
-/** ¿El contexto tiene ilustración propia? Si no, la tarjeta muestra su emoji. */
-fun hasContextImage(slug: String?): Boolean = contextImage(slug) != R.drawable.ctx_generic
-
-/** Emoji de respaldo de un contexto (el servidor también lo envía en get_context_progress). */
-fun contextEmoji(slug: String?): String = when (slug) {
-    "home" -> "🏠"
-    "school" -> "🏫"
-    "beach" -> "🏖️"
-    "restaurant" -> "🍽️"
-    "airport" -> "✈️"
-    "supermarket" -> "🛒"
-    "shopping" -> "🛍️"
-    "health" -> "🏥"
-    "transport" -> "🚌"
-    "technology" -> "💻"
-    "work" -> "💼"
-    "travel" -> "🧳"
-    else -> "📘"
-}
+// Las imágenes de contexto se reemplazaron por escenas animadas dibujadas con código:
+// ver ui/scene/ContextSceneView y ui/scene/ContextTheme.

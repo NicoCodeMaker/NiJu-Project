@@ -1,5 +1,6 @@
 package com.example.niju_project.ui.results
 
+import com.example.niju_project.ui.scene.ContextSceneView
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,6 +37,8 @@ class SessionResultActivity : AppCompatActivity() {
 
     private fun render(s: SessionSummary) {
         val header = ResultTexts.header(s)
+        findViewById<ContextSceneView>(R.id.sceneResult).slug =
+            intent.getStringExtra(PracticeViewModel.EXTRA_CONTEXT_SLUG)
         findViewById<TextView>(R.id.tvResultEmoji).text = header.emoji
         findViewById<TextView>(R.id.tvResultTitle).text = header.title
         val title = intent.getStringExtra(PracticeViewModel.EXTRA_TITLE)

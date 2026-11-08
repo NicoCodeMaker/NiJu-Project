@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Acceso rápido de Inicio: emoji · título · detalle con datos reales -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.NiJu.Card"
+    style="@style/Widget.NiJu.Card.Scene"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -15,15 +16,15 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvQuickEmoji"
+        <ImageView
+            android:id="@+id/ivQuickIcon"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:background="@drawable/bg_circle_accent_soft"
-            android:gravity="center"
+            android:background="@drawable/bg_quick_icon"
             android:importantForAccessibility="no"
-            android:textSize="22sp"
-            tools:text="🔁" />
+            android:padding="11dp"
+            app:tint="@color/white"
+            tools:src="@drawable/ic_review" />
 
         <TextView
             android:id="@+id/tvQuickTitle"

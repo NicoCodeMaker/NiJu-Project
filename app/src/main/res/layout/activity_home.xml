@@ -63,12 +63,6 @@
                             tools:text="Tienes 6 palabras para repasar" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="72dp"
-                        android:importantForAccessibility="no"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/nino" />
                 </LinearLayout>
 
                 <!-- Racha · XP · nivel -->
@@ -264,7 +258,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardContinue"
-                style="@style/Widget.NiJu.Card"
+                style="@style/Widget.NiJu.Card.Scene"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
@@ -278,25 +272,12 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="120dp">
+                        android:layout_height="132dp">
 
-                        <ImageView
-                            android:id="@+id/ivContinueImage"
+                        <com.example.niju_project.ui.scene.ContextSceneView
+                            android:id="@+id/sceneContinue"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:importantForAccessibility="no"
-                            android:scaleType="centerCrop"
-                            tools:src="@drawable/ctx_home" />
-
-                        <TextView
-                            android:id="@+id/tvContinueEmoji"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/bg_hero_full"
-                            android:gravity="center"
-                            android:importantForAccessibility="no"
-                            android:textSize="56sp"
-                            android:visibility="gone" />
+                            android:layout_height="match_parent" />
                     </FrameLayout>
 
                     <LinearLayout

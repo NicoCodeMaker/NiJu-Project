@@ -125,6 +125,13 @@
         <item name="cardCornerRadius">20dp</item>
     </style>
 
+    <!-- Tarjeta con escena de contexto: sin borde, sombra suave, esquinas amplias. -->
+    <style name="Widget.NiJu.Card.Scene" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/color_surface</item>
+        <item name="cardCornerRadius">22dp</item>
+        <item name="cardElevation">3dp</item>
+    </style>
+
     <!-- ── Campos de texto ──────────────────────────────────────────────── -->
     <style name="Widget.NiJu.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusTopStart">16dp</item>

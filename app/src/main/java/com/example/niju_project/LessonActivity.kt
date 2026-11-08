@@ -1,6 +1,12 @@
 package com.example.niju_project
 
+import com.google.android.material.button.MaterialButton
+import com.example.niju_project.ui.scene.SceneUi
+import com.example.niju_project.ui.scene.ContextTheme
+import com.example.niju_project.ui.scene.ContextSceneView
+import android.content.res.ColorStateList
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +66,7 @@ class LessonActivity : AppCompatActivity() {
     private lateinit var emptyState: View
     private lateinit var tvEmpty: TextView
     private lateinit var btnEmptyAction: Button
-    private val adapter = LessonsAdapter { onLessonClick(it) }
+    private val adapter by lazy { LessonsAdapter(ContextTheme.of(contextSlug)) { onLessonClick(it) } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +75,8 @@ class LessonActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tvHeaderTitle).text = contextName
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
-        findViewById<ImageView>(R.id.ivContextImage).setImageResource(contextImage(contextSlug))
-        findViewById<TextView>(R.id.tvContextEmoji).apply {
-            visibility = if (hasContextImage(contextSlug)) View.GONE else View.VISIBLE
-            text = contextEmoji(contextSlug)
-        }
+        findViewById<ContextSceneView>(R.id.sceneContext).slug = contextSlug
+        findViewById<TextView>(R.id.tvContextName).text = contextName
         findViewById<Button>(R.id.btnExam).setOnClickListener {
             openSession(SessionMode.EXAM, contextId = contextId, contextSlug = contextSlug,
                 title = getString(R.string.exam_session_title, contextName))
@@ -92,6 +95,13 @@ class LessonActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@LessonActivity)
             adapter = this@LessonActivity.adapter
         }
+        val theme = ContextTheme.of(contextSlug)
+        SceneUi.tint(findViewById<MaterialButton>(R.id.btnExam), theme)
+        findViewById<MaterialButton>(R.id.btnPracticeContext).apply {
+            val accent = SceneUi.accentColor(context, theme)
+            setTextColor(accent); iconTint = ColorStateList.valueOf(accent); strokeColor = ColorStateList.valueOf(accent)
+        }
+        findViewById<ImageView>(R.id.ivExamIcon).imageTintList = ColorStateList.valueOf(SceneUi.accentColor(this, theme))
         findViewById<Button>(R.id.btnPracticeContext).setOnClickListener {
             openSession(SessionMode.PRACTICE, contextId = contextId, contextSlug = contextSlug, title = contextName)
         }
@@ -130,7 +140,8 @@ class LessonActivity : AppCompatActivity() {
                 btn.setText(R.string.exam_locked_button)
             }
         }
-        findViewById<TextView>(R.id.tvExamIcon).text = if (c.examPassed) "✅" else if (c.examUnlocked) "🎓" else "🔒"
+        findViewById<ImageView>(R.id.ivExamIcon).setImageResource(
+            when { c.examPassed -> R.drawable.ic_check; c.examUnlocked -> R.drawable.ic_school; else -> R.drawable.ic_lock })
     }
 
     private fun observe() {
@@ -185,6 +196,7 @@ class LessonActivity : AppCompatActivity() {
 }
 
 private class LessonsAdapter(
+    private val theme: ContextTheme,
     private val onClick: (LessonStatus) -> Unit
 ) : RecyclerView.Adapter<LessonsAdapter.VH>() {
 
@@ -208,25 +220,27 @@ private class LessonsAdapter(
     override fun onBindViewHolder(h: VH, position: Int) {
         val l = items[position]
         val ctx = h.itemView.context
-        // Estado por forma y texto, no solo por color: ✓ superada, número disponible, 🔒 bloqueada.
+        // Estado por forma y texto, no solo por color: ✓ superada, número disponible, candado bloqueada.
+        val accent = SceneUi.accentColor(ctx, theme)
         h.number.text = when {
             l.completed -> "✓"
             l.unlocked -> (position + 1).toString()
-            else -> "🔒"
+            else -> ""
         }
-        h.number.setBackgroundResource(
-            when {
-                l.completed -> R.drawable.bg_icon_success
-                l.unlocked -> R.drawable.bg_icon_blue
-                else -> R.drawable.bg_icon_neutral
-            }
-        )
+        h.number.setCompoundDrawablesRelativeWithIntrinsicBounds(0, if (l.unlocked) 0 else R.drawable.ic_lock, 0, 0)
+        h.number.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(ctx, R.color.color_text_secondary))
+        h.number.background = GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            setColor(if (l.unlocked) accent else ContextCompat.getColor(ctx, R.color.color_track))
+            if (l.completed) setColor(theme.accentAlpha(40))
+        }
+        h.number.setTextColor(if (l.completed) accent else 0xFFFFFFFF.toInt())
         h.title.text = l.title
         h.description.text = l.description
         h.description.visibility = if (l.description.isBlank()) View.GONE else View.VISIBLE
         h.status.text = Formatters.lessonStatus(l)
         h.status.setTextColor(
-            ContextCompat.getColor(ctx, if (l.completed) R.color.color_success else R.color.color_text_secondary)
+            if (l.completed) accent else ContextCompat.getColor(ctx, R.color.color_text_secondary)
         )
         h.itemView.alpha = if (l.unlocked) 1f else 0.6f
         h.itemView.contentDescription = "${l.title}. ${Formatters.lessonStatus(l)}"

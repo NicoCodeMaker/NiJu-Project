@@ -27,7 +27,9 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import io.github.jan.supabase.auth.status.SessionStatus
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.example.niju_project.ui.scene.ContextSceneView
 import java.util.TimeZone
 
 /**
@@ -57,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        startSceneShowcase()
 
         tilEmail = findViewById(R.id.tilEmail)
         tilPassword = findViewById(R.id.tilPassword)
@@ -194,6 +197,28 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+
+
+    /** Vitrina de bienvenida: cada 2,6 s cambia a la escena animada de otro contexto. */
+    private fun startSceneShowcase() {
+        val scene = findViewById<ContextSceneView>(R.id.sceneLogin)
+        val slugs = listOf("beach", "airport", "restaurant", "school", "transport", "travel",
+            "health", "technology", "supermarket", "home", "shopping", "work")
+        scene.slug = slugs.first()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                var i = 0
+                while (true) {
+                    delay(2600)
+                    i = (i + 1) % slugs.size
+                    scene.animate().alpha(0f).setDuration(180).withEndAction {
+                        scene.slug = slugs[i]
+                        scene.animate().alpha(1f).setDuration(220).start()
+                    }.start()
+                }
+            }
+        }
+    }
 
     companion object {
         private const val TAG = "LoginActivity"
