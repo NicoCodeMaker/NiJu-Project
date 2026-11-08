@@ -1,150 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Aprender: los 12 contextos de la vida cotidiana con su avance real. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="@color/color_background"
     tools:context=".ContextsActivity">
 
-    <!-- ProgressBar global -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:elevation="10dp"
-        android:visibility="gone" />
+    <include layout="@layout/bottom_navigation" />
 
-    <!-- SCROLL PRINCIPAL -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/include_bottom_navigation"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:layout_above="@id/bottom_navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
-            <!-- ══════════ HEADER WAVE ══════════ -->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:background="@drawable/top_wave_shape">
-
-                <ImageView
-                    android:id="@+id/logoNiJu"
-                    android:layout_width="88dp"
-                    android:layout_height="78dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/logo_niju"
-                    android:contentDescription="@string/app_name" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_hero"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/logoNiJu"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp"
+                    android:accessibilityHeading="true"
+                    android:fontFamily="@font/roboto_bold"
                     android:text="@string/ui_elige_un_contexto"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
+                    android:textColor="@color/color_on_hero"
+                    android:textSize="26sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/logoNiJu"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
-                    android:text="@string/ui_donde_quieres_practicar_hoy"
-                    android:textColor="@color/color_text_secondary"
-                    android:textSize="13sp" />
-            </RelativeLayout>
+                    android:layout_marginTop="4dp"
+                    android:text="@string/contexts_subtitle"
+                    android:textColor="@color/color_on_hero_soft"
+                    android:textSize="14sp" />
 
-            <!-- ══════════ DESCRIPCIÓN ══════════ -->
-            <androidx.cardview.widget.CardView
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStartSession"
+                    style="@style/Widget.NiJu.Button.OnHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/home_free_practice"
+                    app:icon="@drawable/ic_play"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/color_hero_end" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/color_card_blue">
+                android:layout_marginTop="12dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+            <include layout="@layout/view_empty_state" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ui_texto"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="10dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/ui_cada_contexto_incluye_lecciones_con"
-                        android:textColor="@color/color_primary"
-                        android:textSize="13sp"
-                        android:lineSpacingExtra="2dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- ══════════ GRID DE CONTEXTOS ══════════ -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvContexts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="8dp"
-                android:padding="4dp"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false" />
-
-            <!-- Estado vacío / error -->
-            <include layout="@layout/view_empty_state" />
-
-            <!-- ══════════ BOTÓN PRINCIPAL ══════════ -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnStartSession"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="36dp"
-                app:backgroundTint="@color/color_accent"
-                app:cornerRadius="16dp"
-                android:text="@string/ui_practica_libre"
-                android:textAllCaps="false"
-                android:textColor="@color/color_on_solid"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:elevation="4dp" />
-
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="14dp" />
         </LinearLayout>
-    </ScrollView>
-
-    <!-- BOTTOM NAV -->
-    <include
-        android:id="@+id/include_bottom_navigation"
-        layout="@layout/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 # NiJu · Audio de pronunciación (Sección 7)
 
-Estado: **implementado con voz sintética local (Piper) pregenerada y empaquetada en la app**. Probado con pruebas
+Estado: **implementado con voz sintética local (Piper) pregenerada y empaquetada en la app**, y desde la v2
+(2026-11-08) con **respaldo en la voz en inglés del teléfono** (TextToSpeech) para el contenido sin clip (§10). Probado con pruebas
 unitarias y reconocimiento automático de voz; **no probado en un teléfono real** (ver §9).
 
 ## 1. Fuentes investigadas
@@ -93,3 +94,37 @@ esta tabla con quien responda legalmente por la licencia** — no soy abogado.
   difíciles para un reconocedor, por lo que **no prueba que estén mal ni que estén bien**: hace falta que una persona
   hable inglés las escuche (pendiente). Si alguna suena mal se regenera con `--force` o se cambia la voz.
 * No se probó en un dispositivo real: MediaPlayer, velocidad y TalkBack están sin comprobar en hardware.
+
+## 10. v2: respaldo con la voz del sistema (2026-11-08)
+
+**Por qué.** `seed_v2_contexts.sql` agrega 84 palabras con sus oraciones. Generar sus clips Piper exige descargar
+el modelo `en_US-ljspeech-medium` desde huggingface.co, y el entorno donde se desarrolló la v2 tiene ese sitio
+bloqueado. **No se inventaron archivos ni enlaces**: esos textos no tienen clip.
+
+**Cómo funciona.** `PronunciationController` decide en este orden:
+
+1. Clip local del manifiesto (búsqueda exacta, como antes).
+2. Si no hay clip: `SystemSpeech` (TextToSpeech de Android, `Locale.US`, o inglés genérico si el teléfono no tiene
+   US). Respeta la velocidad lenta. Usa la voz instalada en el teléfono: no requiere red si la voz está descargada.
+3. Si el teléfono no tiene voz en inglés: estado `Unavailable` y mensaje al usuario. Nunca suena otro audio.
+
+En ejercicios, `ExerciseAudio.forQuestion` solo reproduce el enunciado en "¿Qué significa…?" y "Escucha y elige";
+`forAnswer` reproduce la palabra o la oración correcta según el tipo.
+
+**Licencia.** La voz del sistema es del fabricante del teléfono o de Google; la app no la empaqueta ni la
+redistribuye, solo pide al sistema que hable. No cambia la tabla de licencias de §1.
+
+**Para tener clips en todo el contenido** (en un equipo con acceso a huggingface.co):
+
+```bash
+pip install -r tools/audio/requirements.txt
+# descargar en_US-ljspeech-medium.onnx y .onnx.json desde https://huggingface.co/rhasspy/piper-voices
+python tools/audio/generate_audio.py --model en_US-ljspeech-medium.onnx --voice-id piper_en_US-ljspeech-medium
+```
+
+El script ya lee todos los `supabase/seed*.sql`, así que incluirá `seed_v2_contexts.sql`. Después actualiza las
+pruebas de `AudioTests.kt` que fijan cantidades (120 entradas del manifiesto, 60 palabras de seed) y agrega
+`seed_v2_contexts.sql` a la lista de `everySeedWordAndExampleHasAudio`.
+
+**Validación.** Pruebas JVM: con clip usa el clip; sin clip y con respaldo usa el respaldo; sin respaldo, `Unavailable`.
+TextToSpeech real **no se probó en un teléfono** (pruebas M33–M34 de `PLAN_PRUEBAS.md`).

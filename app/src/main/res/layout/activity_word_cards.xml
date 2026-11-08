@@ -95,6 +95,15 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvCardEmoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:importantForAccessibility="no"
+                        android:textSize="40sp"
+                        android:visibility="gone" />
+
+                    <TextView
                         android:id="@+id/tvEnglish"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

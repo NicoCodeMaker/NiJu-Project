@@ -11,14 +11,14 @@ pendiente de aprobación) · **Implementada** · **Probada**.
 | D2 | 2026-10-16 | El cronograma RUP se elaborará al final del proyecto | Aprobada | Decisión del responsable |
 | D3 | 2026-10-16 | Se trabaja por **etapas** verificables (ver plan) | Aprobada | Menos retrabajo y menos consumo |
 | D4 | 2026-10-17 | Puntos, progreso, SM-2 y racha se calculan **en el servidor** (funciones PostgreSQL); la app no escribe en tablas de progreso | Implementada y probada | Integridad de puntos y resultados |
-| D5 | 2026-10-17 | SM-2 simplificado con respuesta binaria (acierto = calidad 4, fallo = calidad 2) | Provisional | Ejercicios de opción múltiple; sin autoevaluación 0–5 |
+| D5 | 2026-10-17 → 2026-11-08 | ~~SM-2 binario (4/2)~~ → **SM-2 con calidad 0–5** calculada en el servidor según acierto, tipo de ejercicio y tiempo de respuesta (ver `supabase/README.md`) | Implementada y probada (v2) | Con 9 tipos de ejercicio y tiempo de respuesta ya hay información para graduar la calidad sin pedir autoevaluación |
 | D6 | 2026-10-17 | "Dominada" = intervalo SM-2 ≥ 21 días | Provisional | Criterio verificable de retención |
-| D7 | 2026-10-17 | Ejercicios v1: `en_to_es`, `es_to_en`, `fill_blank` (opción múltiple, 3 opciones) | Provisional | Alcance realista; los demás tipos quedan para versiones futuras |
+| D7 | 2026-10-17 → 2026-11-08 | Ejercicios v2: **9 tipos** — `en_to_es`, `es_to_en`, `fill_blank`, `image_match`, `listen_choose`, `type_answer`, `word_order`, `spot_error`, `dialogue` (4 opciones en los de elección) | Implementada y probada (v2) | Variedad de reconocimiento y producción. Pronunciación con micrófono: no implementada |
 | D8 | 2026-10-17 | Reglas de XP, nivel, racha y logros según `supabase/README.md` | Provisional | Premian el aprendizaje, no los clics |
-| D9 | 2026-10-17 | Contenido v1: 3 contextos, 6 lecciones, 36 palabras (A1–A2) | Provisional | Base para demostrar el flujo completo |
+| D9 | 2026-10-17 → 2026-11-08 | Contenido v2: **12 contextos, 24 lecciones, 144 palabras** (A1–A2), en tres seeds | Implementada y probada (v2) | Los 12 contextos pedidos |
 | D10 | 2026-10-17 | Se mantienen Kotlin + Views/XML + ViewModel en Android | Implementada | Código existente; reescribir no aporta valor |
-| D11 | 2026-10-16 | Autenticación **solo con Microsoft** (Supabase Auth, proveedor Azure). Google queda **preparado y desactivado** (`AUTH_GOOGLE_ENABLED`) | Aprobada · implementada | Decisión del responsable |
-| D12 | 2026-10-16 | Se eliminan: correo y contraseña, teléfono (SMS), 2FA propio con TOTP, registro manual | Implementada | Consecuencia de D11: Microsoft gestiona la identidad y su seguridad |
+| D11 | 2026-10-16 → 2026-11-08 | Autenticación con **Microsoft + correo y contraseña** (Supabase Auth). Google sigue preparado y desactivado (`AUTH_GOOGLE_ENABLED`) | Aprobada (2026-11-08) · implementada | Decisión del responsable en v2: mantener Microsoft y añadir correo con recuperación |
+| D12 | 2026-10-16 | Se eliminan: ~~correo y contraseña~~ (vuelve en v2, ver D11), teléfono (SMS), 2FA propio con TOTP | Implementada | Consecuencia de D11: Microsoft gestiona la identidad y su seguridad |
 | D13 | 2026-10-16 | La base de datos de Supabase se crea desde cero; el paso a paso se dará cuando el responsable lo pida | Aprobada | Decisión del responsable |
 | D14 | 2026-10-16 | Perfil editable: nombre visible y meta diaria (10–500 XP). Sin foto propia, biografía ni país | Provisional | No hay almacenamiento de archivos en el alcance v1 |
 | D15 | 2026-10-16 | No se carga contenido real por ahora; `seed.sql` queda como demostración opcional. La app muestra estados vacíos | Aprobada · implementada | Decisión del responsable: priorizar la lógica |
@@ -97,9 +97,45 @@ pendiente de aprobación) · **Implementada** · **Probada**.
 - **Identidad visual:** azul claro / azul medio / morado suave con tokens de color y modo oscuro.
 - Pruebas: 50 unitarias (antes 35), SQL ampliado; Lint 0 errores.
 
+## Decisiones v2 (2026-11-08)
+
+| # | Decisión | Estado | Motivo |
+|---|---|---|---|
+| D23 | Correo y contraseña con **Supabase Auth** (registro, confirmación por correo, recuperación por enlace `niju://login-callback` tipo `recovery`, cambio de contraseña desde Configuración). La app nunca guarda ni registra contraseñas | Implementada · probada en JVM (validaciones) | Pedido del responsable. Supabase guarda solo el hash (bcrypt) |
+| D24 | Contraseña nueva: 8–72 caracteres, con letras y números | Implementada · probada | 72 es el límite de bcrypt |
+| D25 | Las respuestas correctas (`answer_key`, `solution`) viven en `session_items` pero la app **no puede leer esas columnas** (permisos por columna) | Implementada · probada (SQL) | Corrección en el servidor sin filtrar respuestas |
+| D26 | Lecciones alternan dos secuencias de tipos (A/B) según el intento, para que repetir no sea idéntico | Implementada · probada | Evita memorizar el orden |
+| D27 | **Evaluación por contexto**: 10 ítems, sin pistas, aprueba con 80 %, se abre al superar todas las lecciones del contexto; +100 XP la primera vez | Implementada · probada | Cierre verificable de cada contexto |
+| D28 | Estados de palabra: nueva / aprendiendo / refuerzo / repasar / dominada (≥ 21 días) y **urgente** (vencida hace 2+ días, o en refuerzo y vencida) | Implementada · probada | Pantalla Repaso y filtros |
+| D29 | **Retos**: 3 diarios por usuario (elegidos de 8 plantillas con un hash del usuario y la fecha) y 3 metas semanales. Se liquidan en el servidor con clave única en `xp_ledger` | Implementada · probada | Recompensas sin duplicados |
+| D30 | **Bonos de racha** a 3, 7, 14, 30, 60 y 100 días (15–500 XP), una vez por racha | Implementada · probada | Premiar constancia sin que reiniciar dé puntos dobles |
+| D31 | Títulos de nivel: Principiante (1), Explorador (3), Viajero (5), Conversador (8), Experto (12), Maestro (16), Leyenda (20) | Implementada | Identidad de progreso |
+| D32 | Logros: 6 → **20** | Implementada · probada | Más metas intermedias |
+| D33 | Audio: clip Piper local si existe; si no, **voz en inglés del teléfono (TextToSpeech)**; si tampoco, se avisa. No se inventan archivos | Implementada · probada (JVM) | Los 84 términos nuevos no tienen clip Piper: el entorno no pudo descargar el modelo |
+| D34 | Barra inferior de 5 pestañas: Inicio, Aprender (contextos), Repaso, Logros, Perfil. La Ruta se abre desde Inicio | Implementada | Repaso y logros eran el núcleo pedido |
+| D35 | Imágenes de palabras = **emoji** únicos por palabra concreta (sin archivos ni enlaces externos) | Implementada | Sin licencias de imágenes que gestionar; funciona sin conexión |
+| D36 | `values-night/themes.xml` se deja vacío en vez de borrarse (el tema único usa `DayNight` y colores con variante nocturna) | Implementada | No se pueden borrar archivos en la carpeta del responsable desde aquí |
+
+## Cambios v2 (2026-11-08)
+
+- **Base de datos:** migración 5 (valores nuevos de enum, se ejecuta sola) y migración 6 (`learning_v2`):
+  tipos de ejercicio, SM-2 con calidad, estados de palabra, evaluaciones, retos, bonos de racha, 14 logros nuevos,
+  diálogos por palabra, y las funciones `get_review_overview`, `get_review_words`, `get_word_detail`,
+  `get_rewards`, `claim_rewards`, `get_profile_overview`, `get_session_history`. `seed_v2_contexts.sql`: 7 contextos.
+- **App, pantallas nuevas:** Registro, Olvidé mi contraseña, Nueva contraseña, Resultado de sesión (anillo de
+  puntaje y confeti), Repaso (estados, pronóstico de 7 días, detalle de palabra), Logros y retos.
+- **App, reescritas:** Login, Práctica (9 tipos), Inicio, Perfil (estadísticas reales e historial), Ruta,
+  Contextos, Lecciones (tarjeta de evaluación), Splash; Configuración gana "Cambiar contraseña".
+- **Diseño:** tema Material 3 con roles de color azul claro / morado, degradados, tarjetas redondeadas,
+  animaciones de transición, estilos de texto y botones unificados.
+- **Pruebas:** SQL 86 → 189 comprobaciones (3 archivos); unitarias 50 → 75.
+
 ## Pendientes conocidos
 
-- Conectar Supabase y Microsoft (Azure) y ejecutar las pruebas manuales M01–M16 de `PLAN_PRUEBAS.md`.
+- Aplicar migraciones 5 y 6 y `seed_v2_contexts.sql` en Supabase; activar el proveedor Email.
+- Compilar con Gradle en el equipo del responsable (en la nube solo se compiló con `kotlinc` y validadores propios).
+- Ejecutar las pruebas manuales de `PLAN_PRUEBAS.md` (M01–M40) en un teléfono.
+- Generar clips Piper para los 84 términos nuevos (`tools/audio/generate_audio.py`); hasta entonces usan la voz del teléfono.
 - Cronograma RUP (D2): se elaborará al cierre.
 - Validación de usabilidad y pedagógica con estudiantes y docentes: no realizada.
 - R8 desactivado (D22). Advertencias de Lint restantes: menores (concatenación de textos, versiones de dependencias).

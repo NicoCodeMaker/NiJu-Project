@@ -37,10 +37,11 @@ begin
   raise exception 'FAIL: % (no lanzó error)', p_msg;
 end $$;
 
--- Respuesta correcta de un ejercicio (lo usa la prueba, no la app).
+-- Respuesta correcta de un ejercicio (lo usa la prueba, no la app). Es security definer
+-- porque la app NO puede leer la columna answer_key (migración 6).
 create function t.answer_for(p_item bigint) returns text
-language sql stable as $$
-  select case when i.exercise_type = 'en_to_es' then w.spanish else w.english end
+language sql stable security definer as $$
+  select coalesce(i.answer_key, case when i.exercise_type = 'en_to_es' then w.spanish else w.english end)
     from public.session_items i join public.words w on w.id = i.word_id
    where i.id = p_item
 $$;
@@ -49,6 +50,10 @@ create function t.as_user(p_uid text) returns void
 language sql as $$ select set_config('request.jwt.claim.sub', p_uid, true) $$;
 
 grant execute on all functions in schema t to anon, authenticated;
+
+-- Las cuentas de XP de estas pruebas (v1) no incluyen retos diarios: dependen de la
+-- fecha. Se desactivan aquí (la transacción se revierte); se prueban en 03.
+update public.challenge_templates set is_active = false;
 grant select on public.session_items, public.words to authenticated;
 
 \set A '00000000-0000-0000-0000-00000000000a'
@@ -119,12 +124,16 @@ select (start_session('lesson', (select id from lessons where slug = 'restaurant
        ->> 'session_id' as sid \gset
 select set_config('t.sid', :'sid', true);
 select t.ok(count(*) = 6, 'la lección genera 6 ejercicios') from session_items where session_id = :'sid';
-select t.ok(bool_and(cardinality(options) = 3 and t.answer_for(id) = any(options)),
-            'cada ejercicio tiene 3 opciones e incluye la correcta')
+select t.ok(bool_and(case
+              when exercise_type::text = 'type_answer' then cardinality(options) = 0
+              when exercise_type::text = 'word_order'  then cardinality(options) >= 3
+              else cardinality(options) between 3 and 4 and t.answer_for(id) = any(options) end),
+            'cada ejercicio de elegir incluye la correcta; escribir no tiene opciones')
   from session_items where session_id = :'sid';
+-- Sin emoji en este contenido, "imagen" cambia a es_to_en (alternativa equivalente).
 select t.ok(array_agg(exercise_type::text order by position)
-            = array['en_to_es','es_to_en','fill_blank','en_to_es','es_to_en','fill_blank'],
-            'los tipos rotan en la lección')
+            = array['en_to_es','es_to_en','listen_choose','fill_blank','type_answer','word_order'],
+            'la lección va de reconocer a producir (primer intento)')
   from session_items where session_id = :'sid';
 select t.ok(bool_and(prompt like '%\_\_\_\_\_%' and hint is not null),
             '"completar" muestra el hueco y la traducción')
@@ -199,7 +208,8 @@ do $$ declare r record; begin
   for r in select id from public.session_items where session_id = current_setting('t.sid')::uuid loop
     perform public.submit_answer(r.id, t.answer_for(r.id));
   end loop; end $$;
-select t.ok((select xp_total from user_stats) = 192 + 6*2,
+-- 192 + 30 del logro "Sin errores" (la práctica anterior fue perfecta: 12/12).
+select t.ok((select xp_total from user_stats) = 192 + 30 + 6*2,
             'repetir la práctica el mismo día solo da XP por palabras aún no premiadas hoy');
 select finish_session(:'p2') \gset
 
@@ -317,7 +327,7 @@ select t.throws('insert into public.user_favorite_words (user_id, word_id) value
 select t.throws('select public.toggle_favorite(999999)', 'word_not_found%', 'palabra inexistente');
 
 \echo '--- 15. Logros con avance'
-select t.ok(count(*) = 6 and bool_and(unlocked_at is null) and max(current_value) = 0, 'B sin logros todavía') from get_achievements();
+select t.ok(count(*) = (select count(*) from achievements) and bool_and(unlocked_at is null) and max(current_value) = 0, 'B sin logros todavía') from get_achievements();
 select (start_session('lesson', (select id from lessons where slug = 'restaurant_table'))) ->> 'session_id' as b1 \gset
 select set_config('t.sid', :'b1', true);
 do $$ declare r record; begin

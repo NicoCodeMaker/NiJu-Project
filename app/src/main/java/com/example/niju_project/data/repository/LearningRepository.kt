@@ -1,6 +1,13 @@
 package com.example.niju_project.data.repository
 
 import com.example.niju_project.data.model.AchievementStatus
+import com.example.niju_project.data.model.ClaimResult
+import com.example.niju_project.data.model.ProfileOverview
+import com.example.niju_project.data.model.ReviewOverview
+import com.example.niju_project.data.model.ReviewWord
+import com.example.niju_project.data.model.Rewards
+import com.example.niju_project.data.model.SessionHistoryItem
+import com.example.niju_project.data.model.WordDetail
 import com.example.niju_project.data.model.AnswerResult
 import com.example.niju_project.data.model.ContextProgress
 import com.example.niju_project.data.model.ContextRow
@@ -28,7 +35,9 @@ interface SessionRepository {
         mode: SessionMode,
         lessonId: Int? = null,
         contextId: Int? = null,
-        limit: Int = LearningRepository.DEFAULT_SESSION_SIZE
+        limit: Int = LearningRepository.DEFAULT_SESSION_SIZE,
+        /** Enfoque opcional: "reinforce"/"urgent" (repaso) o "favorites" (práctica). */
+        focus: String? = null
     ): Result<SessionStart>
 
     suspend fun submitAnswer(itemId: Long, answer: String, responseMs: Long?): Result<AnswerResult>
@@ -69,13 +78,15 @@ class LearningRepository(
         mode: SessionMode,
         lessonId: Int?,
         contextId: Int?,
-        limit: Int
+        limit: Int,
+        focus: String?
     ): Result<SessionStart> = runCatching {
         client.postgrest.rpc("start_session", buildJsonObject {
             put("p_mode", mode.apiValue)
             lessonId?.let { put("p_lesson_id", it) }
             contextId?.let { put("p_context_id", it) }
             put("p_limit", limit)
+            focus?.let { put("p_focus", it) }
         }).decodeAs<SessionStart>()
     }
 
@@ -146,7 +157,47 @@ class LearningRepository(
         client.postgrest.rpc("reset_progress").decodeAs<Int>()
     }
 
+    // ── v2 (migración 6) ─────────────────────────────────────────────────────
+
+    suspend fun getReviewOverview(): Result<ReviewOverview> = runCatching {
+        client.postgrest.rpc("get_review_overview").decodeAs<ReviewOverview>()
+    }
+
+    /** bucket: null (todas), "due", "urgent", "learning", "reinforce", "review" o "mastered". */
+    suspend fun getReviewWords(bucket: String? = null, limit: Int = 100): Result<List<ReviewWord>> = runCatching {
+        client.postgrest.rpc("get_review_words", buildJsonObject {
+            bucket?.let { put("p_bucket", it) }
+            put("p_limit", limit)
+        }).decodeList<ReviewWord>()
+    }
+
+    suspend fun getWordDetail(wordId: Int): Result<WordDetail> = runCatching {
+        client.postgrest.rpc("get_word_detail", buildJsonObject { put("p_word_id", wordId) })
+            .decodeAs<WordDetail>()
+    }
+
+    suspend fun getRewards(): Result<Rewards> = runCatching {
+        client.postgrest.rpc("get_rewards").decodeAs<Rewards>()
+    }
+
+    /** Cobra retos cumplidos y logros pendientes (no duplica premios). */
+    suspend fun claimRewards(): Result<ClaimResult> = runCatching {
+        client.postgrest.rpc("claim_rewards").decodeAs<ClaimResult>()
+    }
+
+    suspend fun getProfileOverview(): Result<ProfileOverview> = runCatching {
+        client.postgrest.rpc("get_profile_overview").decodeAs<ProfileOverview>()
+    }
+
+    suspend fun getSessionHistory(limit: Int = 20): Result<List<SessionHistoryItem>> = runCatching {
+        client.postgrest.rpc("get_session_history", buildJsonObject { put("p_limit", limit) })
+            .decodeList<SessionHistoryItem>()
+    }
+
     companion object {
         const val DEFAULT_SESSION_SIZE = 10
+        const val FOCUS_REINFORCE = "reinforce"
+        const val FOCUS_URGENT = "urgent"
+        const val FOCUS_FAVORITES = "favorites"
     }
 }

@@ -70,6 +70,10 @@ class PracticeViewModel(
     private val mode = SessionMode.fromApi(savedStateHandle.get<String>(EXTRA_MODE))
     private val lessonId: Int? = savedStateHandle.get<Int>(EXTRA_LESSON_ID)?.takeIf { it > 0 }
     private val contextId: Int? = savedStateHandle.get<Int>(EXTRA_CONTEXT_ID)?.takeIf { it > 0 }
+    private val focus: String? = savedStateHandle.get<String>(EXTRA_FOCUS)
+
+    /** Modo de la sesión (la pantalla de resultados lo necesita). */
+    val sessionMode: SessionMode get() = mode
 
     private val _state = MutableStateFlow<SessionUiState>(SessionUiState.Loading)
     val uiState: StateFlow<SessionUiState> = _state.asStateFlow()
@@ -83,7 +87,7 @@ class PracticeViewModel(
 
     /** Inicia (o reintenta iniciar) la sesión. */
     fun start() = runBusy {
-        repo.startSession(mode, lessonId, contextId)
+        repo.startSession(mode, lessonId, contextId, LearningRepository.DEFAULT_SESSION_SIZE, focus)
             .onSuccess { session ->
                 sessionId = session.sessionId
                 if (session.items.isEmpty()) {
@@ -95,7 +99,8 @@ class PracticeViewModel(
             }
             .onFailure { e ->
                 _state.value =
-                    if (NijuErrors.hasCode(e, NijuErrors.NO_DUE_REVIEWS) || NijuErrors.hasCode(e, "no_words"))
+                    if (NijuErrors.hasCode(e, NijuErrors.NO_DUE_REVIEWS) || NijuErrors.hasCode(e, "no_words") ||
+                        NijuErrors.hasCode(e, "no_favorites") || NijuErrors.hasCode(e, "exam_locked"))
                         SessionUiState.Empty(NijuErrors.messageFor(e))
                     else error(e, RetryAction.START)
             }
@@ -177,6 +182,7 @@ class PracticeViewModel(
         const val EXTRA_CONTEXT_ID = "context_id"
         const val EXTRA_CONTEXT_SLUG = "context_slug"
         const val EXTRA_TITLE = "title"
+        const val EXTRA_FOCUS = "focus"
 
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer { PracticeViewModel(createSavedStateHandle()) }

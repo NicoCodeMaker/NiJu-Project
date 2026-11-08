@@ -149,6 +149,10 @@ class WordCardsActivity : AppCompatActivity() {
         progressCards.progress = s.number * 100 / s.total
         tvStatus.text = w.status.label
         tvEnglish.text = w.english
+        findViewById<TextView>(R.id.tvCardEmoji).apply {
+            text = w.emoji.orEmpty()
+            visibility = if (w.emoji.isNullOrBlank()) View.GONE else View.VISIBLE
+        }
         tvPronunciation.text = w.pronunciation.orEmpty()
         tvPronunciation.visibility = if (w.pronunciation.isNullOrBlank()) View.GONE else View.VISIBLE
         val pos = Formatters.partOfSpeech(w.partOfSpeech)

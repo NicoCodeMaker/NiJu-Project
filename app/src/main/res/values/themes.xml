@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Tema base -->
+    <!--
+      Tema NiJu (Material 3). Los colores salen de los roles de colors.xml (claro) y
+      values-night/colors.xml (oscuro), así que este archivo sirve para ambos modos.
+    -->
     <style name="Base.Theme.NiJu_Project" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#5865F2</item>
-        <item name="colorPrimaryVariant">#4338CA</item>
-        <item name="colorSecondary">#818CF8</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorOnPrimary">@color/color_on_solid</item>
+        <item name="colorPrimaryContainer">@color/color_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/color_on_primary_container</item>
+        <item name="colorSecondary">@color/color_accent</item>
+        <item name="colorOnSecondary">@color/color_on_solid</item>
+        <item name="colorSecondaryContainer">@color/color_accent_container</item>
+        <item name="colorOnSecondaryContainer">@color/color_text_primary</item>
+        <item name="colorTertiary">@color/color_success</item>
+        <item name="colorError">@color/color_error</item>
         <item name="android:colorBackground">@color/color_background</item>
         <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSurface">@color/color_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/color_text_secondary</item>
+        <item name="colorSurfaceContainerLowest">@color/color_surface</item>
+        <item name="colorSurfaceContainerLow">@color/color_surface</item>
+        <item name="colorSurfaceContainer">@color/color_surface_variant</item>
+        <item name="colorOutline">@color/color_border</item>
+        <item name="colorOutlineVariant">@color/color_divider</item>
         <item name="android:textColorPrimary">@color/color_text_primary</item>
         <item name="android:textColorSecondary">@color/color_text_secondary</item>
-        <!-- CardView por defecto usará color_surface -->
+        <item name="android:statusBarColor">@color/color_background</item>
+        <item name="android:navigationBarColor">@color/color_surface</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="cardViewStyle">@style/Widget.NiJu.CardView</item>
+        <item name="materialCardViewStyle">@style/Widget.NiJu.Card</item>
+        <item name="materialButtonStyle">@style/Widget.NiJu.Button</item>
+        <item name="textInputStyle">@style/Widget.NiJu.TextInput</item>
+        <item name="linearProgressIndicatorStyle">@style/Widget.NiJu.Progress</item>
+        <item name="android:windowAnimationStyle">@style/NijuWindowAnimation</item>
     </style>
 
     <style name="Theme.NiJu_Project" parent="Base.Theme.NiJu_Project" />
 
-    <!-- CardView estilo app -->
+    <!-- Pantallas de sesión y resultados: sin barra de estado de color. -->
+    <style name="Theme.NiJu_Project.Immersive" parent="Theme.NiJu_Project">
+        <item name="android:statusBarColor">@color/color_hero_start</item>
+    </style>
+
+    <!-- Transición entre pantallas: desliza y aparece (suave, 220 ms). -->
+    <style name="NijuWindowAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/screen_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/screen_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/screen_pop_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/screen_pop_exit</item>
+    </style>
+
+    <!-- CardView (androidx) usado por las pantallas existentes -->
     <style name="Widget.NiJu.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/color_surface</item>
-        <item name="cardCornerRadius">16dp</item>
+        <item name="cardCornerRadius">20dp</item>
         <item name="cardElevation">2dp</item>
     </style>
 

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +38,15 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
         findViewById<LinearLayout>(R.id.rowEditProfile).setOnClickListener {
             startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+        findViewById<View>(R.id.rowChangePassword).apply {
+            findViewById<android.widget.ImageView>(R.id.rowIcon).setImageResource(R.drawable.ic_lock)
+            findViewById<TextView>(R.id.rowTitle).setText(R.string.settings_password)
+            findViewById<TextView>(R.id.rowSubtitle).setText(R.string.settings_password_sub)
+            setOnClickListener {
+                startActivity(Intent(this@SettingsActivity, com.example.niju_project.ui.auth.ResetPasswordActivity::class.java)
+                    .putExtra(com.example.niju_project.ui.auth.ResetPasswordActivity.EXTRA_FROM_SETTINGS, true))
+            }
         }
 
         // Apariencia

@@ -33,8 +33,8 @@ begin
 end $$;
 
 create function t.answer_for(p_item bigint) returns text
-language sql stable as $$
-  select case when i.exercise_type = 'en_to_es' then w.spanish else w.english end
+language sql stable security definer as $$
+  select coalesce(i.answer_key, case when i.exercise_type = 'en_to_es' then w.spanish else w.english end)
     from public.session_items i join public.words w on w.id = i.word_id
    where i.id = p_item
 $$;
@@ -102,12 +102,22 @@ begin
     select count(*) into n from public.session_items where session_id = v_sid;
     if n <> 6 then raise exception 'FAIL: % genera % ejercicios (esperado 6)', v_slug, n; end if;
     for r in select * from public.session_items where session_id = v_sid loop
-      if cardinality(r.options) <> 3 then
-        raise exception 'FAIL: % ejercicio % no tiene 3 opciones', v_slug, r.position; end if;
-      if (select count(distinct o) from unnest(r.options) o) <> 3 then
-        raise exception 'FAIL: % ejercicio % tiene opciones repetidas', v_slug, r.position; end if;
-      if not (t.answer_for(r.id) = any(r.options)) then
-        raise exception 'FAIL: % ejercicio % no incluye la respuesta correcta', v_slug, r.position; end if;
+      -- v2: escribir no tiene opciones; ordenar trae las palabras de la oración;
+      -- los demás tipos traen 3–4 opciones distintas que incluyen la correcta.
+      if r.exercise_type::text = 'type_answer' then
+        if cardinality(r.options) <> 0 then
+          raise exception 'FAIL: % ejercicio % de escribir trae opciones', v_slug, r.position; end if;
+      elsif r.exercise_type::text = 'word_order' then
+        if array_to_string(r.options, ' ') = t.answer_for(r.id) or cardinality(r.options) < 3 then
+          raise exception 'FAIL: % ejercicio % de ordenar no está mezclado', v_slug, r.position; end if;
+      else
+        if cardinality(r.options) not between 3 and 4 then
+          raise exception 'FAIL: % ejercicio % no tiene 3-4 opciones', v_slug, r.position; end if;
+        if (select count(distinct o) from unnest(r.options) o) <> cardinality(r.options) then
+          raise exception 'FAIL: % ejercicio % tiene opciones repetidas', v_slug, r.position; end if;
+        if not (t.answer_for(r.id) = any(r.options)) then
+          raise exception 'FAIL: % ejercicio % no incluye la respuesta correcta', v_slug, r.position; end if;
+      end if;
       if r.exercise_type = 'fill_blank' and r.prompt not like '%\_\_\_\_\_%' then
         raise exception 'FAIL: % ejercicio % de completar sin hueco', v_slug, r.position; end if;
     end loop;
@@ -120,7 +130,7 @@ begin
       raise exception 'FAIL: % no se superó con todo correcto', v_slug; end if;
   end loop;
 end $$;
-select t.ok(true, '4 lecciones × 6 ejercicios: 3 opciones distintas, la correcta se acepta y se supera cada lección');
+select t.ok(true, '4 lecciones × 6 ejercicios: opciones válidas por tipo, la correcta se acepta y se supera cada lección');
 
 -- Una respuesta incorrecta se corrige en el servidor (usuario A, lección 1 de Hogar).
 select t.as_user(:'A');

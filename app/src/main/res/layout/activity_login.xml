@@ -1,46 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Inicio de sesión: correo y contraseña, Microsoft y (opcional) Google. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@color/color_background"
     android:fillViewport="true"
     tools:context=".LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <!-- Forma decorativa superior -->
-        <ImageView
-            android:id="@+id/topShape"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:importantForAccessibility="no"
-            android:scaleType="fitXY"
-            android:src="@drawable/top_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- HEADER: Logo + mascota -->
-        <LinearLayout
-            android:id="@+id/header"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="52dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <!-- Encabezado de marca -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_hero"
+            android:paddingHorizontal="28dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="72dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="start|center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,9 +35,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/app_display_name"
-                    android:textColor="@color/color_primary"
-                    android:textSize="80sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/color_on_hero"
+                    android:textSize="54sp" />
 
                 <TextView
                     android:id="@+id/appSubtitle"
@@ -59,60 +44,53 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/subtitle"
-                    android:textColor="@color/color_text_secondary"
-                    android:textSize="30sp" />
+                    android:textColor="@color/color_on_hero_soft"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/nino"
-                android:layout_width="120dp"
-                android:layout_height="176dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="104dp"
+                android:layout_height="140dp"
+                android:layout_gravity="end|center_vertical"
                 android:importantForAccessibility="no"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/nino" />
-        </LinearLayout>
+        </FrameLayout>
 
-        <!-- TARJETA DE ACCESO -->
-        <androidx.cardview.widget.CardView
+        <!-- Tarjeta de acceso (se superpone al encabezado) -->
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/formContainer"
-            android:layout_width="0dp"
+            style="@style/Widget.NiJu.Card"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
-            app:cardBackgroundColor="@color/color_surface"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
-            app:layout_constraintVertical_bias="0">
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="-48dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:orientation="vertical"
-                android:padding="28dp">
+                android:padding="24dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/roboto_bold"
+                    android:accessibilityHeading="true"
                     android:text="@string/login_title"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="22sp" />
+                    android:textAppearance="@style/TextAppearance.NiJu.Headline" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/login_subtitle"
-                    android:textColor="@color/color_text_secondary"
-                    android:textSize="15sp" />
+                    android:textAppearance="@style/TextAppearance.NiJu.Body" />
 
                 <!-- Aviso cuando falta configurar Supabase -->
                 <TextView
@@ -120,61 +98,157 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/edittext_rounded_background"
-                    android:padding="12dp"
+                    android:background="@drawable/bg_soft_purple_round"
+                    android:padding="14dp"
                     android:text="@string/login_not_configured"
                     android:textColor="@color/color_warning"
                     android:textSize="13sp"
                     android:visibility="gone" />
 
-                <!-- MICROSOFT -->
-                <Button
-                    android:id="@+id/btnMicrosoft"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/button_rounded_background"
-                    android:fontFamily="@font/roboto_medium"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/auth_email"
+                    app:startIconDrawable="@drawable/ic_mail">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="emailAddress"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/auth_password"
+                    app:endIconMode="password_toggle"
+                    app:startIconDrawable="@drawable/ic_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="password"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnForgot"
+                    style="@style/Widget.NiJu.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="@string/auth_forgot" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogin"
+                    style="@style/Widget.NiJu.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/auth_login" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:contentDescription="@string/auth_working"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <!-- Separador "o continúa con" -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="18dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/color_border" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:text="@string/auth_or"
+                        android:textAppearance="@style/TextAppearance.NiJu.Caption" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/color_border" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMicrosoft"
+                    style="@style/Widget.NiJu.Button.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/login_microsoft"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:textColor="@color/color_text_primary" />
 
                 <!-- GOOGLE (se muestra solo si AUTH_GOOGLE_ENABLED=true) -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGoogle"
+                    style="@style/Widget.NiJu.Button.Outlined"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/button_social_background"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/login_google"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textColor="@color/color_text_primary"
                     android:visibility="gone"
                     app:icon="@drawable/ic_google"
                     app:iconGravity="textStart"
-                    app:iconPadding="8dp"
                     app:iconTint="@null" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="12dp"
-                    android:visibility="gone" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/auth_no_account"
+                        android:textAppearance="@style/TextAppearance.NiJu.Body" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGoRegister"
+                        style="@style/Widget.NiJu.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/auth_create_account" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTerms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:padding="8dp"
                     android:text="@string/login_terms"
-                    android:textColor="@color/color_text_hint"
-                    android:textSize="12sp" />
-
+                    android:textAppearance="@style/TextAppearance.NiJu.Caption" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 </ScrollView>

@@ -15,10 +15,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.niju_project.data.model.ContextProgress
 import com.example.niju_project.data.model.LessonStatus
 import com.example.niju_project.data.model.SessionMode
 import com.example.niju_project.data.repository.LearningRepository
@@ -43,6 +45,17 @@ class LessonActivity : AppCompatActivity() {
         factoryOf { LoaderViewModel { LearningRepository().getContextLessons(contextId) } }
     }
 
+    /** Estado de la evaluación del contexto (se recarga al volver de una lección). */
+    @Suppress("UNCHECKED_CAST")
+    private val contextVm: LoaderViewModel<ContextProgress?> by lazy {
+        // Clave propia: sin ella compartiría instancia con el otro LoaderViewModel de esta pantalla.
+        ViewModelProvider(this, factoryOf {
+            LoaderViewModel {
+                LearningRepository().getContextProgress().map { list -> list.firstOrNull { it.contextId == contextId } }
+            }
+        })["context_progress", LoaderViewModel::class.java] as LoaderViewModel<ContextProgress?>
+    }
+
     private lateinit var progressBar: ProgressBar
     private lateinit var emptyState: View
     private lateinit var tvEmpty: TextView
@@ -57,6 +70,14 @@ class LessonActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvHeaderTitle).text = contextName
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
         findViewById<ImageView>(R.id.ivContextImage).setImageResource(contextImage(contextSlug))
+        findViewById<TextView>(R.id.tvContextEmoji).apply {
+            visibility = if (hasContextImage(contextSlug)) View.GONE else View.VISIBLE
+            text = contextEmoji(contextSlug)
+        }
+        findViewById<Button>(R.id.btnExam).setOnClickListener {
+            openSession(SessionMode.EXAM, contextId = contextId, contextSlug = contextSlug,
+                title = getString(R.string.exam_session_title, contextName))
+        }
         findViewById<TextView>(R.id.tvContextDescription).apply {
             text = intent.getStringExtra(EXTRA_CONTEXT_DESCRIPTION).orEmpty()
             visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
@@ -82,9 +103,42 @@ class LessonActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.load()   // al volver de una lección, refleja el desbloqueo
+        contextVm.load()
+    }
+
+    private fun renderExam(c: ContextProgress?) {
+        val card = findViewById<View>(R.id.cardExam)
+        if (c == null || c.lessonsTotal == 0) { card.visibility = View.GONE; return }
+        card.visibility = View.VISIBLE
+        val status = findViewById<TextView>(R.id.tvExamStatus)
+        val btn = findViewById<Button>(R.id.btnExam)
+        val best = c.examBestScore.toInt()
+        when {
+            c.examPassed -> {
+                status.text = getString(R.string.exam_status_passed, best)
+                btn.isEnabled = true
+                btn.setText(R.string.exam_retake)
+            }
+            c.examUnlocked -> {
+                status.text = if (best > 0) getString(R.string.exam_status_retry, best) else getString(R.string.exam_status_ready)
+                btn.isEnabled = true
+                btn.setText(R.string.exam_start)
+            }
+            else -> {
+                status.text = getString(R.string.exam_status_locked, c.lessonsCompleted, c.lessonsTotal)
+                btn.isEnabled = false
+                btn.setText(R.string.exam_locked_button)
+            }
+        }
+        findViewById<TextView>(R.id.tvExamIcon).text = if (c.examPassed) "✅" else if (c.examUnlocked) "🎓" else "🔒"
     }
 
     private fun observe() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                contextVm.uiState.collect { state -> if (state is UiState.Success) renderExam(state.data) }
+            }
+        }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->

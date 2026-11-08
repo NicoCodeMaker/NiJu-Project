@@ -37,7 +37,7 @@ private class FakeSessionRepository : SessionRepository {
     val submitted = mutableListOf<Pair<Long, Long?>>()
     var finishCalls = 0
 
-    override suspend fun startSession(mode: SessionMode, lessonId: Int?, contextId: Int?, limit: Int) =
+    override suspend fun startSession(mode: SessionMode, lessonId: Int?, contextId: Int?, limit: Int, focus: String?) =
         startError?.let { Result.failure<SessionStart>(it) }
             ?: Result.success(session).also { startCalls += Triple(mode, lessonId, contextId) }
 

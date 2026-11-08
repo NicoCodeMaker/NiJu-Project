@@ -1,398 +1,362 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Perfil del estudiante: datos reales de get_profile_overview, actividad e historial. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="@color/color_background"
     tools:context=".ProfileActivity">
 
-    <!-- ProgressBar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:elevation="10dp"
-        android:visibility="gone" />
+    <include layout="@layout/bottom_navigation" />
 
-    <!-- SCROLL PRINCIPAL -->
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:layout_above="@id/bottom_navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- ══════════ CABECERA CON WAVE ══════════ -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/top_wave_shape">
-
-                <!-- Botón atrás -->
-                <ImageButton
-                    android:id="@+id/back_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/rounded_button_bg"
-                    android:contentDescription="@string/ui_atras"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_arrow_back" />
-
-                <!-- Foto de perfil centrada en el header -->
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="26dp"
-                    android:src="@drawable/ic_profile_user"
-                    app:civ_border_width="3dp"
-                    app:civ_border_color="@color/color_accent"
-                    tools:ignore="MissingClass" />
-
-                <!-- Nombre de usuario -->
-                <TextView
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_image"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/ui_usuario"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium"
-                    tools:text="Nombre Apellido" />
-
-                <!-- Email/fecha -->
-                <TextView
-                    android:id="@+id/user_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_name"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:text=""
-                    android:textColor="@color/color_text_secondary"
-                    android:textSize="12sp"
-                    tools:text="Registro: 2025-10" />
-            </RelativeLayout>
-
-            <!-- ══════════ NIVEL + GAMIFICACIÓN ══════════ -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rounded_bg"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp">
-
-                <TextView
-                    android:id="@+id/tvLevel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ui_nivel_1"
-                    android:textColor="@color/color_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="16dp" />
-
-                <TextView
-                    android:id="@+id/tvStreak"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ui_0_dias"
-                    android:textColor="@color/color_warning"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="16dp" />
-
-                <TextView
-                    android:id="@+id/tvXP"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ui_0_xp"
-                    android:textColor="@color/color_success"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <!-- ══════════ ESTADÍSTICAS REALES ══════════ -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/ui_mis_estadisticas"
-                android:textColor="@color/color_text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
             <LinearLayout
-                android:id="@+id/stats_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:layout_marginBottom="6dp">
-
-                <!-- Palabras -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="88dp"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/color_accent"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="8dp">
-
-                        <ImageView
-        android:importantForAccessibility="no"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_edit"
-                            app:tint="@color/color_on_solid"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:id="@+id/tvWordsCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_0"
-                            android:textColor="@color/color_on_solid"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_practicadas"
-                            android:textColor="@color/color_accent_container"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Contextos -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="88dp"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/color_primary"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="8dp">
-
-                        <ImageView
-        android:importantForAccessibility="no"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_contexts"
-                            app:tint="@color/color_on_solid"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:id="@+id/tvContextsCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_0"
-                            android:textColor="@color/color_on_solid"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_lecciones"
-                            android:textColor="@color/color_on_solid"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Plan -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="88dp"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/color_warning"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="8dp">
-
-                        <ImageView
-        android:importantForAccessibility="no"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_trofeo"
-                            app:tint="@color/color_on_solid"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:id="@+id/tvPlanName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_0"
-                            android:textColor="@color/color_on_solid"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_dominadas"
-                            android:textColor="@color/color_on_solid"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- ══════════ PROGRESO DE META DIARIA ══════════ -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="6dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/color_surface">
+                android:background="@drawable/bg_hero"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvAvatar"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:background="@drawable/bg_circle_hero"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:importantForAccessibility="no"
+                        android:textColor="@color/color_on_hero"
+                        android:textSize="28sp"
+                        tools:text="AG" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/roboto_bold"
+                            android:maxLines="1"
+                            android:textColor="@color/color_on_hero"
+                            android:textSize="22sp"
+                            tools:text="Ana Gómez" />
+
+                        <TextView
+                            android:id="@+id/user_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/color_on_hero_soft"
+                            android:textSize="14sp"
+                            tools:text="ana@correo.com" />
+
+                        <TextView
+                            android:id="@+id/tvLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_chip_hero"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:textColor="@color/color_on_hero"
+                            android:textSize="13sp"
+                            tools:text="Nivel 3 · Explorador" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditProfile"
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="@string/profile_edit"
+                        app:icon="@drawable/ic_edit"
+                        app:iconTint="@color/color_on_hero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvXP"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/color_on_hero"
+                        android:textSize="13sp"
+                        tools:text="520 XP" />
+
+                    <TextView
+                        android:id="@+id/tvNextLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_on_hero_soft"
+                        android:textSize="13sp"
+                        tools:text="900 XP para el nivel 4" />
+                </LinearLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressLevel"
+                    style="@style/Widget.NiJu.Progress.OnHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:importantForAccessibility="no"
+                    android:max="100" />
+
+                <TextView
+                    android:id="@+id/tvMemberSince"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/color_on_hero_soft"
+                    android:textSize="12sp"
+                    tools:text="Estudiante desde 8 nov · meta diaria 50 XP" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <include layout="@layout/view_empty_state" />
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    style="@style/NijuSectionTitle"
+                    android:text="@string/profile_stats_title" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/statLessons"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/statWords"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/statMastered"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/statStreak"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/statTime"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/statAccuracy"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/statExams"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/statBadges"
+                        layout="@layout/item_stat_tile_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/NijuSectionTitle"
+                    android:text="@string/profile_week_title" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.NiJu.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="8dp">
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <com.example.niju_project.ui.stats.ActivityChartView
+                            android:id="@+id/activityChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="140dp" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/tvWeekSummary"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/ui_meta_diaria"
-                            android:textColor="@color/color_text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvDailyGoalProgress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ui_0_50_xp"
-                            android:textColor="@color/color_accent"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="@style/TextAppearance.NiJu.Caption"
+                            tools:text="Esta semana: 3 h 10 min de estudio · 4 días activos" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <ProgressBar
-                        android:id="@+id/progressDailyGoal"
-                        style="?android:attr/progressBarStyleHorizontal"
+                <TextView
+                    style="@style/NijuSectionTitle"
+                    android:text="@string/profile_history_title" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.NiJu.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/historyList"
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:progress="0"
-                        android:progressTint="@color/color_accent"
-                        android:backgroundTint="@color/color_card_purple_light" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="6dp" />
+                </com.google.android.material.card.MaterialCardView>
 
-            <!-- ══════════ MENÚ DE OPCIONES ══════════ -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/ui_opciones"
-                android:textColor="@color/color_text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                <TextView
+                    style="@style/NijuSectionTitle"
+                    android:text="@string/profile_more_title" />
 
-            <LinearLayout
-                android:id="@+id/menu_options"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="36dp"
-                android:background="@drawable/rounded_menu_bg"
-                android:elevation="3dp"
-                android:orientation="vertical"
-                android:padding="8dp">
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.NiJu.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <!-- FAVORITOS -->
-                <include layout="@layout/item_option_fav" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="4dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerFavoritos"
+                        <include
+                            android:id="@+id/option_stats"
+                            layout="@layout/item_menu_row" />
+                        <include
+                            android:id="@+id/option_ruta"
+                            layout="@layout/item_menu_row" />
+                        <include
+                            android:id="@+id/option_fav"
+                            layout="@layout/item_menu_row" />
+                        <include
+                            android:id="@+id/option_config"
+                            layout="@layout/item_menu_row" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogout"
+                    style="@style/Widget.NiJu.Button.Outlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginTop="4dp"
-                    android:paddingHorizontal="16dp" />
-
-                <!-- ESTADÍSTICAS Y LOGROS -->
-                <include
-                    android:id="@+id/option_stats"
-                    layout="@layout/item_option_stats" />
-
-                <!-- CONFIGURACIÓN -->
-                <include
-                    android:id="@+id/option_config"
-                    layout="@layout/item_option_config" />
-
-                <!-- CERRAR SESIÓN -->
-                <include layout="@layout/item_option_logout" />
+                    android:layout_marginTop="20dp"
+                    android:text="@string/profile_logout"
+                    android:textColor="@color/color_error"
+                    app:icon="@drawable/ic_logout"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/color_error"
+                    app:strokeColor="@color/color_error" />
             </LinearLayout>
-
         </LinearLayout>
-    </ScrollView>
-
-    <!-- BOTTOM NAV -->
-    <include
-        android:id="@+id/bottom_navigation"
-        layout="@layout/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

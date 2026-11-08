@@ -2,7 +2,7 @@
     <!-- App -->
     <string name="app_name">NiJu</string>
     <string name="app_display_name" translatable="false">NiJu</string>
-    <string name="subtitle">English</string>
+    <string name="subtitle">Sube de nivel en inglés</string>
     <string name="title_activity_login">Iniciar sesión</string>
     <string name="logo">Logo de NiJu</string>
     <string name="point1">Etapa de la ruta</string>
@@ -12,8 +12,8 @@
     <string name="loading_text">Cargando…</string>
 
     <!-- Inicio de sesión -->
-    <string name="login_title">Bienvenido</string>
-    <string name="login_subtitle">Inicia sesión para guardar tu progreso y tus repasos.</string>
+    <string name="login_title">¡Hola de nuevo!</string>
+    <string name="login_subtitle">Inicia sesión para continuar tu ruta y tus repasos.</string>
     <string name="login_microsoft">Continuar con Microsoft</string>
     <string name="login_google">Continuar con Google</string>
     <string name="login_terms">Al continuar aceptas los términos y la política de privacidad de NiJu.</string>
@@ -77,7 +77,7 @@
     <!-- Configuración: información -->
     <string name="language_only_spanish">Por ahora NiJu está disponible solo en español.</string>
     <string name="privacy_title">Política de privacidad</string>
-    <string name="privacy_text">NiJu guarda tu nombre y correo de Microsoft, tu zona horaria, tu meta diaria y tu historial de aprendizaje (respuestas, repasos, puntos, logros y favoritas).\n\nEstos datos se usan solo para mostrar tu progreso y programar tus repasos. Nadie más puede verlos: la base de datos solo te permite leer tus propios datos.\n\nPuedes reiniciar tu progreso o eliminar tu cuenta y todos sus datos desde Configuración.</string>
+    <string name="privacy_text">NiJu guarda tu nombre y tu correo (de tu cuenta de correo o de Microsoft), tu zona horaria, tu meta diaria y tu historial de aprendizaje (respuestas, repasos, puntos, logros y favoritas).\n\nEstos datos se usan solo para mostrar tu progreso y programar tus repasos. Nadie más puede verlos: la base de datos solo te permite leer tus propios datos.\n\nPuedes reiniciar tu progreso o eliminar tu cuenta y todos sus datos desde Configuración.</string>
     <string name="terms_title">Términos y condiciones</string>
     <string name="terms_text">NiJu es un proyecto académico para practicar vocabulario en inglés. Se ofrece tal cual, sin garantías.\n\nUsa la app de forma personal y no intentes alterar los puntos ni los datos de otros usuarios.\n\nAl iniciar sesión aceptas que guardemos los datos descritos en la política de privacidad.</string>
 

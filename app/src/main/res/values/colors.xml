@@ -65,4 +65,25 @@
     <color name="color_ruta_completed">#EEF2FF</color>
     <color name="color_ruta_active">#F0FFF4</color>
     <color name="color_ruta_locked">#FFF8EC</color>
+    <!-- ── v2: identidad visual (gradiente azul → violeta) ─────────────────── -->
+    <color name="color_hero_start">#2F6DA8</color>
+    <color name="color_hero_end">#6D4FE0</color>
+    <color name="color_on_hero">#FFFFFF</color>
+    <color name="color_on_hero_soft">#E6EDFF</color>
+    <color name="color_hero_chip">#33FFFFFF</color>
+    <color name="color_soft_blue">#EEF5FE</color>
+    <color name="color_soft_purple">#F3EFFF</color>
+    <color name="color_xp">#B45309</color>
+    <color name="color_xp_container">#FEF3C7</color>
+    <color name="color_streak">#C2410C</color>
+    <color name="color_streak_container">#FFEDD5</color>
+    <color name="color_error_container">#FDECEC</color>
+    <color name="color_option_stroke">#C9D3E3</color>
+    <color name="color_slot_stroke">#9DB4D6</color>
+    <color name="color_scrim">#99000000</color>
+    <color name="color_confetti_1">#6D4FE0</color>
+    <color name="color_confetti_2">#2F6DA8</color>
+    <color name="color_confetti_3">#F59E0B</color>
+    <color name="color_confetti_4">#10B981</color>
+    <color name="color_confetti_5">#EC4899</color>
 </resources>

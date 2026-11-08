@@ -10,6 +10,7 @@
 -- ----------------------------------------------------------------------------
 -- Favoritos (dato personal; se escribe solo con toggle_favorite)
 -- ----------------------------------------------------------------------------
+drop table if exists public.user_favorite_words cascade;
 create table public.user_favorite_words (
   user_id    uuid    not null references public.profiles (id) on delete cascade,
   word_id    integer not null references public.words (id) on delete cascade,

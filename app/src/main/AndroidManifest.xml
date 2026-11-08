@@ -44,6 +44,37 @@
             </intent-filter>
         </activity>
 
+        <!-- Cuenta con correo y contraseña (Supabase Auth) -->
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false"
+            android:label="@string/auth_create_account"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.auth.ForgotPasswordActivity"
+            android:exported="false"
+            android:label="@string/auth_forgot"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- Se abre desde LoginActivity cuando llega el enlace de recuperación -->
+        <activity
+            android:name=".ui.auth.ResetPasswordActivity"
+            android:exported="false"
+            android:label="@string/auth_reset_title"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ReviewActivity"
+            android:exported="false"
+            android:label="@string/review_title" />
+        <activity
+            android:name=".RewardsActivity"
+            android:exported="false"
+            android:label="@string/rewards_title" />
+        <activity
+            android:name=".ui.results.SessionResultActivity"
+            android:exported="false"
+            android:label="@string/result_rewards_title" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false"
@@ -72,7 +103,8 @@
         <activity
             android:name=".PracticeActivity"
             android:exported="false"
-            android:label="Sesión" />
+            android:label="Sesión"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ProfileActivity"
             android:exported="false"

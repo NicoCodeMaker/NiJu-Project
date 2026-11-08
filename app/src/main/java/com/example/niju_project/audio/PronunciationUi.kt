@@ -32,7 +32,8 @@ class PronunciationUi(private val activity: AppCompatActivity) {
         catalog = { AudioCatalogHolder.get(activity) },
         engine = MediaPlayerEngine(activity),
         settings = { PronunciationController.Settings(prefs.variant, prefs.speed) },
-        report = { Log.w(TAG, it) }
+        report = { Log.w(TAG, it) },
+        fallback = SystemSpeech(activity)
     )
 
     /** ¿Reproducir automáticamente al mostrar cada palabra? (Configuración → Audio) */

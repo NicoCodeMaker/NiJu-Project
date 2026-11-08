@@ -135,6 +135,11 @@
                             app:tint="@color/color_arrow_tint" />
                     </LinearLayout>
 
+                    <!-- Contraseña (cuenta con correo; en cuentas de Microsoft crea una) -->
+                    <include
+                        android:id="@+id/rowChangePassword"
+                        layout="@layout/item_menu_row" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

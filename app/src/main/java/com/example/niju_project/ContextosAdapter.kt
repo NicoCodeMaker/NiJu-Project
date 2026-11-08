@@ -28,6 +28,8 @@ class ContextosAdapter(
         val lecciones: TextView = itemView.findViewById(R.id.tv_contexto_lecciones)
         val barra: ProgressBar = itemView.findViewById(R.id.pb_contexto)
         val hecho: TextView = itemView.findViewById(R.id.tv_contexto_hecho)
+        val emoji: TextView = itemView.findViewById(R.id.tv_contexto_emoji)
+        val examen: TextView = itemView.findViewById(R.id.tv_contexto_examen)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContextoViewHolder =
@@ -46,10 +48,20 @@ class ContextosAdapter(
         val ctx = holder.itemView.context
         val done = c.lessonsTotal > 0 && c.lessonsCompleted >= c.lessonsTotal
         holder.nombre.text = c.name
-        holder.icono.setImageResource(contextImage(c.slug))
+        // Ilustración propia si existe; si no, el emoji del contexto sobre el gradiente de marca.
+        if (hasContextImage(c.slug)) {
+            holder.icono.setImageResource(contextImage(c.slug))
+            holder.emoji.visibility = View.GONE
+        } else {
+            holder.emoji.text = c.emoji ?: contextEmoji(c.slug)
+            holder.emoji.visibility = View.VISIBLE
+        }
+        holder.examen.visibility = if (c.examPassed || c.examUnlocked) View.VISIBLE else View.GONE
+        holder.examen.text = ctx.getString(if (c.examPassed) R.string.context_exam_passed else R.string.context_exam_ready)
         holder.lecciones.text = ctx.resources.getQuantityString(
             R.plurals.context_lessons_progress, c.lessonsTotal, c.lessonsCompleted, c.lessonsTotal
         )
+        holder.barra.max = 100
         holder.barra.progress = if (c.lessonsTotal == 0) 0 else c.lessonsCompleted * 100 / c.lessonsTotal
         // El estado "completado" no depende solo del color: lleva marca ✓ y texto.
         holder.hecho.visibility = if (done) View.VISIBLE else View.GONE

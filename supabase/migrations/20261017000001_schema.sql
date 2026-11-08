@@ -13,6 +13,47 @@
 -- =============================================================================
 
 -- ----------------------------------------------------------------------------
+-- REINICIO DESDE CERO
+-- Esta migración borra y vuelve a crear todo lo de NiJu: tablas (con sus datos),
+-- tipos, funciones y el trigger de registro. Los usuarios de Supabase Auth
+-- (auth.users) NO se borran: al final se les vuelve a crear el perfil vacío.
+-- Después de ejecutarla hay que ejecutar, en orden, las migraciones 2 a 6 y los seeds.
+-- ----------------------------------------------------------------------------
+drop trigger if exists on_auth_user_created on auth.users;
+
+drop table if exists
+  public.user_challenge_claims, public.challenge_templates, public.user_context_exams,
+  public.word_dialogues, public.user_favorite_words,
+  public.user_achievements, public.xp_ledger, public.user_lesson_progress,
+  public.user_word_progress, public.attempts, public.session_items, public.study_sessions,
+  public.user_stats, public.profiles, public.achievements, public.lesson_words,
+  public.lessons, public.word_examples, public.words, public.contexts
+  cascade;
+
+-- Funciones de NiJu en el esquema público (no toca las de extensiones).
+do $$
+declare f record;
+begin
+  for f in
+    select p.oid::regprocedure as sig
+      from pg_catalog.pg_proc p
+      join pg_catalog.pg_namespace n on n.oid = p.pronamespace
+     where n.nspname = 'public'
+       and p.prokind = 'f'
+       and not exists (select 1 from pg_catalog.pg_depend d
+                        where d.objid = p.oid and d.deptype = 'e')
+  loop
+    execute 'drop function if exists ' || f.sig || ' cascade';
+  end loop;
+end;
+$$;
+
+drop schema if exists niju_private cascade;
+
+drop type if exists public.cefr_level, public.part_of_speech, public.exercise_type,
+  public.session_mode, public.achievement_metric cascade;
+
+-- ----------------------------------------------------------------------------
 -- Tipos enumerados
 -- ----------------------------------------------------------------------------
 create type public.cefr_level as enum ('A1', 'A2', 'B1', 'B2', 'C1', 'C2');
@@ -45,6 +86,7 @@ create schema if not exists niju_private;
 -- CONTENIDO COMPARTIDO
 -- ============================================================================
 
+drop table if exists public.contexts cascade;
 create table public.contexts (
   id           smallint generated always as identity primary key,
   slug         text     not null unique check (slug ~ '^[a-z0-9_]+$'),
@@ -55,6 +97,7 @@ create table public.contexts (
   is_published boolean  not null default true
 );
 
+drop table if exists public.words cascade;
 create table public.words (
   id             integer generated always as identity primary key,
   english        text not null check (length(trim(english)) > 0),
@@ -66,6 +109,7 @@ create table public.words (
   constraint words_english_pos_unique unique nulls not distinct (english, part_of_speech)
 );
 
+drop table if exists public.word_examples cascade;
 create table public.word_examples (
   id          integer generated always as identity primary key,
   word_id     integer  not null references public.words (id) on delete cascade,
@@ -76,6 +120,7 @@ create table public.word_examples (
 );
 create index word_examples_word_idx on public.word_examples (word_id);
 
+drop table if exists public.lessons cascade;
 create table public.lessons (
   id           integer generated always as identity primary key,
   context_id   smallint not null references public.contexts (id) on delete restrict,
@@ -89,6 +134,7 @@ create table public.lessons (
 );
 
 -- Una palabra puede aparecer en varias lecciones sin duplicarse.
+drop table if exists public.lesson_words cascade;
 create table public.lesson_words (
   lesson_id integer  not null references public.lessons (id) on delete cascade,
   word_id   integer  not null references public.words (id) on delete restrict,
@@ -98,6 +144,7 @@ create table public.lesson_words (
 );
 create index lesson_words_word_idx on public.lesson_words (word_id);
 
+drop table if exists public.achievements cascade;
 create table public.achievements (
   code        text primary key check (code ~ '^[a-z0-9_]+$'),
   title       text    not null,
@@ -112,6 +159,7 @@ create table public.achievements (
 -- DATOS DE CADA ESTUDIANTE
 -- ============================================================================
 
+drop table if exists public.profiles cascade;
 create table public.profiles (
   id            uuid primary key references auth.users (id) on delete cascade,
   display_name  text not null default '' check (length(display_name) <= 60),
@@ -123,6 +171,7 @@ create table public.profiles (
 );
 
 -- Contadores agregados. Solo los modifican las funciones del servidor.
+drop table if exists public.user_stats cascade;
 create table public.user_stats (
   user_id           uuid primary key references public.profiles (id) on delete cascade,
   xp_total          integer not null default 0 check (xp_total >= 0),
@@ -134,6 +183,7 @@ create table public.user_stats (
   updated_at        timestamptz not null default now()
 );
 
+drop table if exists public.study_sessions cascade;
 create table public.study_sessions (
   id            uuid primary key default gen_random_uuid(),
   user_id       uuid not null references public.profiles (id) on delete cascade,
@@ -151,6 +201,7 @@ create index study_sessions_user_idx on public.study_sessions (user_id, started_
 
 -- Ejercicios generados para una sesión. Fijarlos en el servidor permite
 -- validar cada respuesta y que cada ejercicio se responda una sola vez.
+drop table if exists public.session_items cascade;
 create table public.session_items (
   id            bigint generated always as identity primary key,
   session_id    uuid     not null references public.study_sessions (id) on delete cascade,
@@ -165,6 +216,7 @@ create table public.session_items (
 );
 
 -- Historial completo: un intento por ejercicio.
+drop table if exists public.attempts cascade;
 create table public.attempts (
   id              bigint generated always as identity primary key,
   user_id         uuid    not null references public.profiles (id) on delete cascade,
@@ -182,6 +234,7 @@ create index attempts_user_time_idx on public.attempts (user_id, created_at desc
 create index attempts_user_word_idx on public.attempts (user_id, word_id);
 
 -- Estado de repetición espaciada (SM-2) de cada palabra para cada usuario.
+drop table if exists public.user_word_progress cascade;
 create table public.user_word_progress (
   user_id          uuid    not null references public.profiles (id) on delete cascade,
   word_id          integer not null references public.words (id) on delete cascade,
@@ -198,6 +251,7 @@ create table public.user_word_progress (
 );
 create index user_word_progress_due_idx on public.user_word_progress (user_id, due_at);
 
+drop table if exists public.user_lesson_progress cascade;
 create table public.user_lesson_progress (
   user_id        uuid    not null references public.profiles (id) on delete cascade,
   lesson_id      integer not null references public.lessons (id) on delete cascade,
@@ -209,6 +263,7 @@ create table public.user_lesson_progress (
 
 -- Libro de puntos. La restricción única (usuario, motivo, referencia) impide
 -- que la misma acción otorgue puntos dos veces.
+drop table if exists public.xp_ledger cascade;
 create table public.xp_ledger (
   id         bigint generated always as identity primary key,
   user_id    uuid    not null references public.profiles (id) on delete cascade,
@@ -221,6 +276,7 @@ create table public.xp_ledger (
 );
 create index xp_ledger_user_time_idx on public.xp_ledger (user_id, created_at desc);
 
+drop table if exists public.user_achievements cascade;
 create table public.user_achievements (
   user_id          uuid not null references public.profiles (id) on delete cascade,
   achievement_code text not null references public.achievements (code) on delete cascade,
@@ -255,6 +311,7 @@ begin
 end;
 $$;
 
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function niju_private.handle_new_user();
@@ -374,3 +431,15 @@ grant select on
   to authenticated;
 
 revoke all on schema niju_private from public, anon, authenticated;
+
+-- Usuarios que ya existían en Supabase Auth antes del reinicio: se les crea el
+-- perfil y las estadísticas vacíos (el trigger solo actúa con usuarios nuevos).
+insert into public.profiles (id, display_name)
+select u.id,
+       left(coalesce(u.raw_user_meta_data ->> 'full_name', u.raw_user_meta_data ->> 'name', ''), 60)
+  from auth.users u
+on conflict (id) do nothing;
+
+insert into public.user_stats (user_id)
+select p.id from public.profiles p
+on conflict (user_id) do nothing;

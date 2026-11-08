@@ -52,4 +52,72 @@ object Formatters {
     }
 
     fun accuracy(value: Double?): String = value?.let { "${it.roundToInt()} %" } ?: "—"
+
+    /** Tiempo de estudio legible: "45 s", "12 min", "2 h 5 min". */
+    fun duration(ms: Long): String {
+        val totalSec = (ms / 1000).coerceAtLeast(0)
+        val h = totalSec / 3600
+        val m = (totalSec % 3600) / 60
+        val sec = totalSec % 60
+        return when {
+            h > 0 -> if (m > 0) "$h h $m min" else "$h h"
+            m > 0 -> "$m min"
+            else -> "$sec s"
+        }
+    }
+
+    fun days(n: Int) = if (n == 1) "1 día" else "$n días"
+
+    /** Fecha ISO (yyyy-MM-dd…) a "8 nov". */
+    fun shortDate(iso: String?): String {
+        if (iso.isNullOrBlank() || iso.length < 10) return "—"
+        val months = listOf("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
+        return runCatching {
+            val (_, mo, d) = iso.take(10).split("-").map { it.toInt() }
+            "$d ${months[mo - 1]}"
+        }.getOrDefault("—")
+    }
+
+    /** Días que faltan para un repaso (o "hoy" si ya venció), a partir de dos fechas ISO. */
+    fun dueIn(dueIso: String?, todayIso: String): String {
+        val due = epochDay(dueIso) ?: return "—"
+        val today = epochDay(todayIso) ?: return "—"
+        val days = due - today
+        return when {
+            days <= 0 -> "hoy"
+            days == 1L -> "mañana"
+            else -> "en $days días"
+        }
+    }
+
+    /** Día (contado desde 1970-01-01) de una fecha ISO; sin java.time para soportar API 24. */
+    fun epochDay(iso: String?): Long? {
+        if (iso.isNullOrBlank() || iso.length < 10) return null
+        return runCatching {
+            val (y, m, d) = iso.take(10).split("-").map { it.toInt() }
+            val cal = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC")).apply { clear(); set(y, m - 1, d) }
+            cal.timeInMillis / 86_400_000L
+        }.getOrNull()
+    }
+
+    /** Etiqueta de la calidad SM-2 (0–5). */
+    fun quality(q: Int?): String = when (q) {
+        5 -> "Fácil"
+        4 -> "Bien"
+        3 -> "Con esfuerzo"
+        2 -> "Fallo"
+        1, 0 -> "Fallo (producción)"
+        else -> "—"
+    }
+
+    /** Motivo de un premio del libro de puntos. */
+    fun rewardReason(reason: String): Pair<String, String> = when (reason) {
+        "lesson_complete" -> "📘" to "Lección superada"
+        "achievement" -> "🏆" to "Logro desbloqueado"
+        "daily_challenge" -> "🎯" to "Reto diario cumplido"
+        "weekly_goal" -> "📅" to "Meta semanal cumplida"
+        "streak_bonus" -> "🔥" to "Bono de racha"
+        "exam_pass" -> "🎓" to "Evaluación aprobada"
+        else -> "⭐" to "Recompensa"
+    }
 }

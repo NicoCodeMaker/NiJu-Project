@@ -11,9 +11,11 @@ fun Activity.openSession(
     contextId: Int? = null,
     contextSlug: String? = null,
     lessonId: Int? = null,
-    title: String? = null
+    title: String? = null,
+    focus: String? = null
 ) {
     startActivity(Intent(this, PracticeActivity::class.java).apply {
+        focus?.let { putExtra(PracticeViewModel.EXTRA_FOCUS, it) }
         putExtra(PracticeViewModel.EXTRA_MODE, mode.apiValue)
         contextId?.let { putExtra(PracticeViewModel.EXTRA_CONTEXT_ID, it) }
         contextSlug?.let { putExtra(PracticeViewModel.EXTRA_CONTEXT_SLUG, it) }
@@ -49,5 +51,26 @@ fun contextImage(slug: String?): Int = when (slug) {
     "airport" -> R.drawable.airport
     "home" -> R.drawable.ctx_home
     "transport" -> R.drawable.ctx_transport
+    "beach" -> R.drawable.beach_scene
     else -> R.drawable.ctx_generic
+}
+
+/** ¿El contexto tiene ilustración propia? Si no, la tarjeta muestra su emoji. */
+fun hasContextImage(slug: String?): Boolean = contextImage(slug) != R.drawable.ctx_generic
+
+/** Emoji de respaldo de un contexto (el servidor también lo envía en get_context_progress). */
+fun contextEmoji(slug: String?): String = when (slug) {
+    "home" -> "🏠"
+    "school" -> "🏫"
+    "beach" -> "🏖️"
+    "restaurant" -> "🍽️"
+    "airport" -> "✈️"
+    "supermarket" -> "🛒"
+    "shopping" -> "🛍️"
+    "health" -> "🏥"
+    "transport" -> "🚌"
+    "technology" -> "💻"
+    "work" -> "💼"
+    "travel" -> "🧳"
+    else -> "📘"
 }

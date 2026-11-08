@@ -1,61 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Tarjeta de contexto: ilustración o emoji, nombre, avance y estado. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.NiJu.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    android:background="@drawable/bg_contexto_default"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:gravity="center_horizontal"
-    android:minHeight="160dp"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:focusable="true">
 
-    <ImageView
-        android:id="@+id/iv_contexto_icono"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:importantForAccessibility="no"
-        android:scaleType="centerInside" />
-
-    <TextView
-        android:id="@+id/tv_contexto_nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/color_text_primary"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tv_contexto_lecciones"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="@color/color_text_secondary"
-        android:textSize="12sp" />
-
-    <ProgressBar
-        android:id="@+id/pb_contexto"
-        style="?android:attr/progressBarStyleHorizontal"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_marginTop="8dp"
-        android:importantForAccessibility="no"
-        android:progressTint="@color/color_primary"
-        android:backgroundTint="@color/color_primary_container" />
-
-    <TextView
-        android:id="@+id/tv_contexto_hecho"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="@string/context_completed"
-        android:textColor="@color/color_success"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
-</LinearLayout>
+        android:minHeight="176dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:background="@drawable/bg_soft_blue_round">
+
+            <ImageView
+                android:id="@+id/iv_contexto_icono"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_contexto_emoji"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_hero_card"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:textSize="40sp"
+                android:visibility="gone"
+                tools:text="🏫"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_contexto_hecho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_badge_success"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="@string/context_completed"
+                android:textColor="@color/color_success"
+                android:textSize="11sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_contexto_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.NiJu.Subtitle"
+                tools:text="Escuela" />
+
+            <TextView
+                android:id="@+id/tv_contexto_lecciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextAppearance.NiJu.Caption"
+                tools:text="1 de 2 lecciones" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/pb_contexto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                android:max="100"
+                app:trackThickness="6dp" />
+
+            <TextView
+                android:id="@+id/tv_contexto_examen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textAppearance="@style/TextAppearance.NiJu.Caption"
+                android:visibility="gone"
+                tools:text="🎓 Evaluación aprobada"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -61,4 +61,25 @@
     <color name="color_ruta_completed">#1E293B</color>
     <color name="color_ruta_active">#064E3B</color>
     <color name="color_ruta_locked">#451A03</color>
+    <!-- ── v2 (modo noche) ──────────────────────────────────────────────── -->
+    <color name="color_hero_start">#23456E</color>
+    <color name="color_hero_end">#4A3399</color>
+    <color name="color_on_hero">#FFFFFF</color>
+    <color name="color_on_hero_soft">#D8E2FA</color>
+    <color name="color_hero_chip">#33FFFFFF</color>
+    <color name="color_soft_blue">#17243A</color>
+    <color name="color_soft_purple">#221C3A</color>
+    <color name="color_xp">#FCD34D</color>
+    <color name="color_xp_container">#3A2E10</color>
+    <color name="color_streak">#FDBA74</color>
+    <color name="color_streak_container">#3A2213</color>
+    <color name="color_error_container">#3D1B1B</color>
+    <color name="color_option_stroke">#3B4658</color>
+    <color name="color_slot_stroke">#4C5F7D</color>
+    <color name="color_scrim">#CC000000</color>
+    <color name="color_confetti_1">#B8A9FF</color>
+    <color name="color_confetti_2">#8DB8E8</color>
+    <color name="color_confetti_3">#FBBF24</color>
+    <color name="color_confetti_4">#34D399</color>
+    <color name="color_confetti_5">#F472B6</color>
 </resources>

@@ -40,7 +40,7 @@ class SessionProgress(val items: List<SessionItem>) {
         currentAnswered = true
         answered++
         if (result.isCorrect) correct++
-        xpEarned += result.xpAwarded
+        xpEarned += result.xpAwarded + result.streakBonus
     }
 
     /**

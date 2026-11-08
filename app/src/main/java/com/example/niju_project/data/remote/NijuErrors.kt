@@ -24,7 +24,26 @@ object NijuErrors {
         "item_not_found" to "No encontramos este ejercicio.",
         "invalid_answer" to "La respuesta no es válida.",
         "invalid_timezone" to "La zona horaria no es válida.",
-        "JWT expired" to "Tu sesión expiró. Vuelve a iniciar sesión."
+        "JWT expired" to "Tu sesión expiró. Vuelve a iniciar sesión.",
+        // v2 (migración 6)
+        "exam_locked" to "Supera todas las lecciones del contexto para abrir la evaluación.",
+        "context_not_found" to "Este contexto no está disponible.",
+        "no_favorites" to "Aún no tienes palabras favoritas. Márcalas con la estrella en las tarjetas.",
+        // Supabase Auth (códigos y mensajes de la API)
+        "invalid_credentials" to "Correo o contraseña incorrectos.",
+        "Invalid login credentials" to "Correo o contraseña incorrectos.",
+        "email_not_confirmed" to "Confirma tu correo: abre el enlace que te enviamos.",
+        "Email not confirmed" to "Confirma tu correo: abre el enlace que te enviamos.",
+        "user_already_exists" to "Ya existe una cuenta con ese correo. Inicia sesión.",
+        "User already registered" to "Ya existe una cuenta con ese correo. Inicia sesión.",
+        "weak_password" to "La contraseña es muy débil: usa al menos 8 caracteres con letras y números.",
+        "same_password" to "La contraseña nueva debe ser distinta a la anterior.",
+        "over_email_send_rate_limit" to "Enviamos demasiados correos. Espera unos minutos e intenta de nuevo.",
+        "email rate limit exceeded" to "Enviamos demasiados correos. Espera unos minutos e intenta de nuevo.",
+        "email_address_invalid" to "Ese correo no es válido.",
+        "signup_disabled" to "El registro con correo está desactivado en el servidor.",
+        "Signups not allowed" to "El registro con correo está desactivado en el servidor.",
+        "email_provider_disabled" to "El inicio de sesión con correo está desactivado en el servidor."
     )
 
     /** Código de error conocido contenido en el texto, o null. */

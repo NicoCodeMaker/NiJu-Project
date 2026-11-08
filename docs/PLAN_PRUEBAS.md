@@ -3,16 +3,22 @@
 Estados: **Aprobada** = la prueba se ejecutó y pasó · **Pendiente** = falta ejecutarla
 (requiere el proyecto real de Supabase o un teléfono).
 
-Última ejecución automática: 2026-10-16 (PostgreSQL 16 local, JDK 21, Android Gradle Plugin 8.13).
+Última ejecución automática: **2026-11-08** — base de datos en PostgreSQL 16 local; pruebas unitarias compiladas
+con `kotlinc` 2.3 contra las mismas librerías del proyecto y ejecutadas con JUnit 4. **Gradle, aapt2 y Lint no se
+pudieron ejecutar en el entorno de desarrollo** (sin acceso a Google Maven): esa columna queda Pendiente hasta que
+el responsable ejecute los comandos en su equipo.
 
 ## 1. Pruebas automáticas
 
 | Suite | Cómo ejecutarla | Resultado |
 |---|---|---|
-| Base de datos: `supabase/tests/01_niju_tests.sql` (16 secciones) | ver `supabase/README.md` | 86/86 comprobaciones aprobadas |
-| App: pruebas unitarias JVM (7 clases) | `./gradlew :app:testDebugUnitTest` | 35/35 aprobadas |
-| App: análisis estático | `./gradlew :app:lintDebug` | 0 errores (92 advertencias menores) |
-| App: compilación | `./gradlew :app:assembleDebug` | APK generado |
+| Base de datos: `01_niju_tests.sql` (núcleo) | `bash supabase/tests/run_local_tests.sh` | 86/86 aprobadas |
+| Base de datos: `02_niju_home_transport_tests.sql` | (mismo comando) | 21/21 aprobadas |
+| Base de datos: `03_niju_v2_tests.sql` (v2) | (mismo comando) | 82/82 aprobadas |
+| App: pruebas unitarias JVM (10 clases) | `./gradlew :app:testDebugUnitTest` | 75/75 aprobadas (kotlinc + JUnit); **con Gradle: pendiente** |
+| App: recursos e ids de vistas | validadores propios (`check_res.py`, `check_ids.py`) | sin errores |
+| App: compilación | `./gradlew :app:assembleDebug` | **Pendiente** (equipo del responsable) |
+| App: análisis estático | `./gradlew :app:lintDebug` | **Pendiente** (v1: 0 errores) |
 
 Las pruebas de la app usan **respuestas reales del servidor** (`app/src/test/resources/fixtures/*.json`),
 generadas ejecutando las funciones SQL. Si una columna cambia en el servidor, fallan.
@@ -45,6 +51,21 @@ generadas ejecutando las funciones SQL. Si una columna cambia en el servidor, fa
 | RF22 Avance por contexto (Ruta) | `get_context_progress`, `RutaActivity` | SQL §10 | Aprobada |
 | RF23 Recordatorio diario y aviso de repasos | `ReminderPolicy`, `ReminderWorker` | `FormattersAndRemindersTest.reminderPolicy`, M12 | Aprobada / M12 pendiente |
 | RF24 Reiniciar progreso | `reset_progress` | SQL §10 | Aprobada |
+| RF25 Registro con correo y contraseña | `RegisterActivity`, `AuthRepository.signUpWithEmail`, `AuthValidation` | `LogicV2Test` (validación), M25 | Validación aprobada / M25 pendiente |
+| RF26 Ingreso con correo y cierre de sesión | `LoginActivity`, `signInWithEmail` | M26, M27 | Pendiente |
+| RF27 Recuperar y cambiar la contraseña | `ForgotPasswordActivity`, `ResetPasswordActivity`, `AuthLinks` | `LogicV2Test` (enlaces), M28, M29 | Parcial / M28–M29 pendientes |
+| RF28 Nueve tipos de ejercicio con corrección en el servidor | `build_exercise`, `submit_answer`, `PracticeActivity` | SQL 03 §3, §4; `ModelsV2DecodingTest`; `WordOrderState`; M30 | Aprobada / M30 pendiente |
+| RF29 SM-2 con calidad 0–5 | `answer_quality`, `sm2_next_q` | SQL 03 §2 | Aprobada |
+| RF30 Estados de palabra, urgentes y pantalla Repaso | `word_bucket`, `is_urgent`, `get_review_overview`, `ReviewActivity` | SQL 03 §5; `ModelsV2DecodingTest`; M31 | Aprobada / M31 pendiente |
+| RF31 Evaluación por contexto (80 %) | `exam_unlocked`, `start_session('exam')`, `finish_session` | SQL 03 §9; M32 | Aprobada / M32 pendiente |
+| RF32 Retos diarios, metas semanales y bonos de racha sin duplicados | `settle_challenges`, `streak_bonus_for`, `claim_rewards` | SQL 03 §7, §8 | Aprobada |
+| RF33 20 logros | `achievements`, `check_achievements` | SQL 01, 03 | Aprobada |
+| RF34 12 contextos con palabra, IPA, ejemplo, imagen, nivel y diálogo | `seed*.sql` | SQL 03 §1 | Aprobada |
+| RF35 Perfil con estadísticas reales e historial | `get_profile_overview`, `get_session_history`, `ProfileActivity` | SQL 03 §10; `ModelsV2DecodingTest`; M36 | Aprobada / M36 pendiente |
+| RF36 Pantalla de resultado | `SessionResultActivity`, `ResultTexts` | `LogicV2Test`; M37 | Aprobada / M37 pendiente |
+| RF37 Audio con respaldo de voz del sistema | `PronunciationController`, `SystemSpeech` | `SpeechFallbackTest`; M33, M34 | Aprobada / M33–M34 pendientes |
+| RNF10 La app no puede leer las respuestas | permisos por columna en `session_items` | SQL 03 §11 | Aprobada |
+| RNF11 Contraseñas nunca en texto plano | Supabase Auth (hash); la app no las guarda ni registra | Revisión de código | Aprobada |
 | RNF01 Cada usuario solo ve sus datos | RLS en todas las tablas personales | SQL §4, §6, §11, §16 | Aprobada |
 | RNF02 La app no puede escribir puntos ni progreso | Sin permisos de escritura; solo RPC | SQL §4, §14 | Aprobada |
 | RNF03 Sin secretos en el código | `local.properties` (no se sube), solo clave `anon` | Revisión de código | Aprobada |
@@ -89,10 +110,33 @@ generadas ejecutando las funciones SQL. Si una columna cambia en el servidor, fa
 | M23 | TalkBack en Inicio, Contextos y lecciones | Todo se anuncia con su estado (no solo color) |
 | M24 | Fuente grande + pantalla pequeña | Sin texto cortado |
 
+## 3c. Pruebas manuales v2 — NO ejecutadas aún
+
+| Id | Prueba | Esperado |
+|---|---|---|
+| M25 | Crear cuenta con correo (con "Confirm email" activo) | Pantalla "Revisa tu correo"; el enlace abre la app y entra a Inicio |
+| M26 | Iniciar sesión con correo y contraseña; con contraseña errónea | Entra / "Correo o contraseña incorrectos" |
+| M27 | Cerrar sesión y reabrir la app | Vuelve al login; no entra directo |
+| M28 | ¿Olvidaste tu contraseña? → abrir el enlace en el teléfono | Abre "Nueva contraseña"; tras guardarla entra a Inicio |
+| M29 | Configuración → Cambiar contraseña | Guarda y regresa a Configuración |
+| M30 | Una lección completa: verificar los 6 tipos de la secuencia y repetirla | Cada tipo se responde y corrige; al repetir cambia la secuencia |
+| M31 | Repaso: tocar cada estado, abrir la ficha de una palabra, Repasar urgentes | Listas reales; la ficha muestra intentos; la sesión solo trae urgentes |
+| M32 | Superar todas las lecciones de un contexto → Evaluación | Se abre; 10 ítems; con ≥ 80 % queda "Aprobada" y +100 XP |
+| M33 | Escuchar una palabra de Escuela/Playa/Salud (sin clip) | Suena la voz del teléfono en inglés |
+| M34 | Desinstalar la voz en inglés del teléfono y repetir M33 | Mensaje de audio no disponible; nada se cierra |
+| M35 | Logros: cumplir un reto diario | Al terminar la sesión aparece en el resultado; no se puede cobrar dos veces |
+| M36 | Perfil tras varias sesiones | Estadísticas e historial coinciden con lo hecho |
+| M37 | Sesión perfecta y subida de nivel | Resultado con confeti, "Sin errores" y nuevo nivel |
+| M38 | Modo oscuro en las pantallas nuevas | Todo legible |
+| M39 | TalkBack en Práctica (ordenar palabras) y Repaso | Se anuncian las palabras y su estado |
+| M40 | Girar el teléfono en Práctica a mitad de "ordenar palabras" | No se pierde la pregunta |
+
 ## 4. Limitaciones conocidas
 
 - No se pudo ejecutar la app en un emulador (el entorno de desarrollo no lo permite). Las pruebas
-  M01–M16 son la validación final.
+  M01–M40 son la validación final.
+- En la v2 tampoco se pudo ejecutar Gradle: el código se compiló con `kotlinc` y los recursos se revisaron con
+  validadores propios. aapt2 puede encontrar errores que esos validadores no ven.
 - `delete_my_account` borra de `auth.users` desde una función del servidor. Funciona en PostgreSQL
   y es el método habitual en Supabase; confirmarlo con M11.
 - La minificación R8 de la versión *release* está desactivada hasta probarla en un dispositivo.
